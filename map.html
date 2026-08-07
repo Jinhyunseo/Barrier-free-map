@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>배리어프리 길안내 Service</title>
   
+  <!-- FontAwesome 아이콘 라이브러리 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <!-- 카카오 지도 SDK -->
   <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=a6e4cc9d6599ccd6f520b7e4932b0a70&libraries=services"></script>
 
@@ -47,50 +50,125 @@
       color: #f39eba;
     }
 
-    /* [수정] 출발/도착 검색 박스 (밝고 구분이 확실한 파스텔 블루-그레이 배경) */
+    /* 🌟 1. 검색 박스 및 세련된 입력폼 디자인 새로 작성 */
     .search-box {
-      background: #eef2f6;
-      border: 1px solid #cbd5e1;
-      border-radius: 12px;
+      background: #ffffff;
+      border: 1.5px solid #f39eba;
+      border-radius: 14px;
       padding: 14px;
       display: flex;
       flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 4px 12px rgba(243, 158, 186, 0.15);
+    }
+
+    .inputs-wrapper {
+      display: flex;
+      align-items: center;
       gap: 10px;
+      position: relative;
+    }
+
+    .inputs-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+    }
+
+    /* 출발-도착 사이를 잇는 세로 점선 */
+    .inputs-container::before {
+      content: '';
+      position: absolute;
+      left: 17px;
+      top: 24px;
+      bottom: 24px;
+      width: 1.5px;
+      border-left: 2px dotted #f39eba;
+      z-index: 1;
     }
 
     .input-group {
       display: flex;
       align-items: center;
-      background: #ffffff;
-      border: 1.5px solid #cbd5e1;
-      border-radius: 8px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
       padding: 0 12px;
-      box-shadow: 0 1px 2px rgba(243, 158, 186, 0.6);
+      height: 42px;
+      position: relative;
+      z-index: 2;
+      transition: all 0.2s;
     }
-    .input-group span { font-size: 14px; font-weight: 700; color: #334155; margin-right: 8px; }
+    .input-group:focus-within {
+      border-color: #f39eba;
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(243, 158, 186, 0.2);
+    }
+
+    .input-icon {
+      font-size: 14px;
+      margin-right: 10px;
+      width: 16px;
+      text-align: center;
+    }
+    .input-icon.start { color: #2563eb; } /* 출발: 파란색 아이콘 */
+    .input-icon.end { color: #ef4444; }   /* 도착: 빨간색 아이콘 */
+
     .input-group input {
       border: none;
-      padding: 10px 0;
+      background: transparent;
       outline: none;
       width: 100%;
       font-size: 14px;
       color: #0f172a;
-      font-weight: 600;
+      font-weight: 700;
+    }
+    .input-group input::placeholder {
+      color: #94a3b8;
+      font-weight: 500;
+    }
+
+    /* 출발-도착 교환(스왑) 버튼 */
+    .swap-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid #e2e8f0;
+      background: #ffffff;
+      color: #64748b;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .swap-btn:hover {
+      background: #f8ccdb;
+      color: #000000;
+      border-color: #f39eba;
+      transform: rotate(180deg);
     }
 
     .search-btn {
       width: 100%;
       padding: 12px;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       background: #f8ccdb;
       color: rgb(0, 0, 0);
       font-size: 14px;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
-      margin-top: 2px;
       box-shadow: 0 2px 4px rgba(243, 158, 186, 0.6);
       transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
     }
     .search-btn:hover { background: #f39eba; }
 
@@ -146,6 +224,7 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 8px;
+      position: relative;
     }
     .route-no {
       background: #f8ccdb;
@@ -155,11 +234,77 @@
       padding: 4px 8px;
       border-radius: 6px;
     }
-    .route-type-tag {
-      font-size: 13px;
-      color: #475569;
-      font-weight: 700;
+
+    .info-icon-container {
+      position: relative;
+      display: inline-block;
     }
+
+    .info-icon-btn {
+      background: #e2e8f0;
+      color: #334155;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s;
+      border: 1px solid #cbd5e1;
+    }
+    .info-icon-btn:hover {
+      background: #f39eba;
+      color: #ffffff;
+      border-color: #f39eba;
+    }
+
+    .info-tooltip {
+      visibility: hidden;
+      opacity: 0;
+      width: 280px;
+      background-color: #ffffff;
+      color: #0f172a;
+      text-align: left;
+      border-radius: 10px;
+      padding: 14px;
+      position: absolute;
+      z-index: 100;
+      top: 120%;
+      right: 0;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      border: 1.5px solid #f39eba;
+      transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+    }
+
+    .info-tooltip::after {
+      content: "";
+      position: absolute;
+      bottom: 100%;
+      right: 15px;
+      border-width: 6px;
+      border-style: solid;
+      border-color: transparent transparent #f39eba transparent;
+    }
+
+    .info-icon-container:hover .info-tooltip,
+    .info-tooltip.active {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .tooltip-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 8px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .reason-item { font-size: 12px; color: #334155; margin-bottom: 6px; line-height: 1.4; }
+    .reason-item:last-child { margin-bottom: 0; }
 
     .main-time {
       font-size: 28px;
@@ -188,15 +333,25 @@
       margin-top: 2px;
     }
 
-    /* [수정] 배리어프리 편의 요약 박스 (통일된 파스텔 블루 테두리 및 은은한 배경) */
+    /* Gemini 추천 이유 박스 */
     .reason-box {
       background: #f0f9ff;
       border: 1.5px solid #f39eba;
       border-radius: 10px;
       padding: 14px;
     }
-    .reason-title { font-size: 13.5px; font-weight: 800; color: #000000; margin-bottom: 6px; }
-    .reason-item { font-size: 13px; color: #000000; margin-bottom: 4px; line-height: 1.4; }
+    .reason-title { font-size: 13.5px; font-weight: 800; color: #000000; margin-bottom: 8px; }
+    
+    .ai-reason-text {
+      font-size: 13px;
+      color: #1e293b;
+      line-height: 1.5;
+      font-weight: 600;
+      background: #ffffff;
+      padding: 10px;
+      border-radius: 6px;
+      border-left: 3px solid #f39eba;
+    }
 
     /* 이동 경로 타임라인 카드 */
     .timeline-card {
@@ -216,7 +371,7 @@
     
     .timeline {
       position: relative;
-      padding-left: 22px;
+      padding-left: 36px;
     }
     .timeline-item {
       position: relative;
@@ -227,8 +382,8 @@
     .timeline-item::before {
       content: '';
       position: absolute;
-      left: -14px;
-      top: 14px;
+      left: -19px;
+      top: 24px;
       bottom: -10px;
       width: 3px;
       background: #f8ccdb;
@@ -237,19 +392,24 @@
 
     .timeline-dot {
       position: absolute;
-      left: -20px;
-      top: 4px;
-      width: 14px;
-      height: 14px;
+      left: -35px;
+      top: 2px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
-      background: #f8ccdb;
-      border: 2px solid #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      border: 2px solid #ffffff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
     }
-    .timeline-dot.start { background: #7dd3f5; }
-    .timeline-dot.bus { background: #92ff92; }
-    .timeline-dot.subway { background: #ff98f6; }
-    .timeline-dot.transfer { background: #fffd9e; }
-    .timeline-dot.end { background: #ff8d8d; }
+    
+    .timeline-dot.walk { background: #e0f2fe; color: #0369a1; }
+    .timeline-dot.bus { background: #dcfce7; color: #15803d; }
+    .timeline-dot.subway { background: #fce7f3; color: #be185d; }
+    .timeline-dot.transfer { background: #fef9c3; color: #a16207; }
+    .timeline-dot.end { background: #fee2e2; color: #b91c1c; }
 
     .step-header {
       display: flex;
@@ -290,19 +450,40 @@
   <div class="app-container">
     <div class="sidebar">
       
-      <!-- 상단 검색바 -->
+      <!-- 상단 헤더 & 모던한 검색창 -->
       <div class="sidebar-header">
         <div class="app-title"> 배리어프리 길안내</div>
+        
         <div class="search-box">
-          <div class="input-group">
-            <span>출발</span>
-            <input type="text" id="start-input" value="야탑역" onkeypress="if(event.keyCode==13) searchRoute();">
+          <div class="inputs-wrapper">
+            
+            <!-- 출발/도착 입력 영역 -->
+            <div class="inputs-container">
+              
+              <!-- 🔵 출발지 입력 -->
+              <div class="input-group">
+                <i class="fa-regular fa-circle-dot input-icon start"></i>
+                <input type="text" id="start-input" value="야탑역" placeholder="출발지 검색" onkeypress="if(event.keyCode==13) searchRoute();">
+              </div>
+              
+              <!-- 🔴 도착지 입력 -->
+              <div class="input-group">
+                <i class="fa-solid fa-location-dot input-icon end"></i>
+                <input type="text" id="end-input" value="판교역" placeholder="도착지 검색" onkeypress="if(event.keyCode==13) searchRoute();">
+              </div>
+
+            </div>
+
+            <!-- 🔄 출발지-도착지 위치 전환(스왑) 버튼 -->
+            <button class="swap-btn" onclick="swapStartEnd()" title="출발지/도착지 바꾸기">
+              <i class="fa-solid fa-arrows-rotate"></i>
+            </button>
           </div>
-          <div class="input-group">
-            <span>도착</span>
-            <input type="text" id="end-input" value="판교역" onkeypress="if(event.keyCode==13) searchRoute();">
-          </div>
-          <button class="search-btn" onclick="searchRoute()">맞춤 경로 탐색</button>
+
+          <!-- 탐색 버튼 -->
+          <button class="search-btn" onclick="searchRoute()">
+            <i class="fa-solid fa-magnifying-glass"></i> 맞춤 경로 탐색
+          </button>
         </div>
       </div>
 
@@ -320,8 +501,19 @@
         <div class="route-summary-card">
           <div class="route-badge-row">
             <span class="route-no" id="route-no">추천 1번 경로</span>
-            <span class="route-type-tag" id="route-type-tag">100% 저상/E.V 경로</span>
+            
+            <div class="info-icon-container">
+              <button class="info-icon-btn" onclick="toggleTooltip(event)">
+                <i class="fa-solid fa-circle-info"></i> 경로 상세 조건
+              </button>
+              
+              <div class="info-tooltip" id="info-tooltip">
+                <div class="tooltip-title">📋 배리어프리 구성 요소</div>
+                <div id="reason-list"></div>
+              </div>
+            </div>
           </div>
+
           <div class="main-time" id="route-time">22분</div>
           
           <div class="sub-info-grid">
@@ -331,8 +523,8 @@
           </div>
 
           <div class="reason-box">
-            <div class="reason-title">💡 배리어프리 편의 요약</div>
-            <div id="reason-list"></div>
+            <div class="reason-title">💡 Gemini AI 추천 이유</div>
+            <div id="ai-reason" class="ai-reason-text"></div>
           </div>
         </div>
 
@@ -358,9 +550,15 @@
     var currentPolylines = [];
     var currentSelectedType = '휠체어';
 
+    var geminiReasons = {
+      '휠체어': '전 구간 계단이 없고 지하철 엘리베이터 동선과 바로 연결됩니다. 경사가 완만하고 보도 턱을 우회하여 휠체어로도 안전하고 수월하게 이동하실 수 있는 최적의 경로입니다.',
+      '노약자': '무릎 관절에 부담을 주는 오르막길을 피한 경로입니다. 에스컬레이터를 이용해 힘들이지 않고 천천히 이동하기 좋습니다.',
+      '유모차': '보도 폭이 넓고 길턱이 낮춤 처리되어 아이를 태운 유모차를 밀기에 매우 쾌적합니다. 횡단보도 신호 시간도 여유로워 안심하고 이동하실 수 있습니다.'
+    };
+
     var reasonData = {
       '휠체어': ['전 구간 저상버스 및 지하철 엘리베이터 동선', '경사도 5% 이하 평지 도로 우선 안내', '보도블록 파손 및 턱 높은 구간 우회'],
-      '노약자': ['계단 최소화 (에스컬레이터 연결 통로 우선)', '완만한 경사로 및 중간 쉼터 우회 경로'],
+      '노약자': ['계단 최소화 (에스컬레이터 연결 통로 우선)', '완만한 경사로 우회 경로'],
       '유모차': ['보도 폭 1.5m 이상 넓은 인도로만 구성', '지하보도 대신 지상 횡단보도 위주 안내']
     };
 
@@ -372,11 +570,12 @@
         trans: "1회",
         fare: "1,400원",
         steps: [
-          { title: "야탑역 출발", desc: "8번 출구 지상 엘리베이터 이용", type: "start" },
+          { title: "야탑역 출발 (도보 이동)", desc: "8번 출구 지상 엘리베이터 이용", type: "walk" },
           { 
             title: "수인분당선 야탑역 승차", 
             desc: "휠체어 전용 탑승 구역 (1-1 플랫폼)", 
             type: "subway",
+            lineName: "수인분당선",
             busType: null,
             stations: ["야탑역", "이매역"] 
           },
@@ -391,6 +590,7 @@
             title: "경강선 이매역 승차", 
             desc: "판교 방면 이동", 
             type: "subway",
+            lineName: "경강선",
             busType: null,
             stations: ["이매역", "판교역"] 
           },
@@ -404,7 +604,7 @@
         trans: "0회 (직행)",
         fare: "1,500원",
         steps: [
-          { title: "야탑역.고속버스터미널 정류장", desc: "도보 2분 이동", type: "start" },
+          { title: "야탑역 출발 (도보 이동)", desc: "고속버스터미널 정류장까지 도보 2분", type: "walk" },
           { 
             title: "333번 버스 승차", 
             desc: "배차 간격 8분", 
@@ -413,7 +613,7 @@
             busTypeName: "♿ 저상버스",
             stations: ["야탑역.고속버스터미널", "야탑3동행정복지센터", "벌말육교", "판교역.낙생육교"] 
           },
-          { title: "판교역.낙생육교 하차", desc: "에스컬레이터 탑승구로 이동", type: "end" }
+          { title: "판교역.낙생육교 하차 (도보 이동)", desc: "에스컬레이터 탑승구로 1분 이동", type: "end" }
         ]
       },
       '유모차': {
@@ -423,7 +623,7 @@
         trans: "0회 (직행)",
         fare: "1,500원",
         steps: [
-          { title: "야탑역 1번 출구 정류장", desc: "넓은 지상 인도로 접근", type: "start" },
+          { title: "야탑역 출발 (도보 이동)", desc: "넓은 지상 인도로 1번 출구 정류장 접근", type: "walk" },
           { 
             title: "55번 버스 승차", 
             desc: "배차 간격 12분 (입석 유모차 공간 확보)", 
@@ -432,7 +632,7 @@
             busTypeName: "🚌 일반버스",
             stations: ["야탑역1번출구", "성남시청", "장장골삼거리", "판교역동편"] 
           },
-          { title: "판교역동편 하차", desc: "횡단보도 이용 판교역 이동", type: "end" }
+          { title: "판교역동편 하차 (도보 이동)", desc: "횡단보도 이용 판교역 이동", type: "end" }
         ]
       }
     };
@@ -455,6 +655,18 @@
       ps = new kakao.maps.services.Places();
 
       searchRoute();
+    }
+
+    /* 🌟 출발지/도착지 내용 스왑(바꾸기) 함수 */
+    function swapStartEnd() {
+      var startInput = document.getElementById('start-input');
+      var endInput = document.getElementById('end-input');
+      
+      var temp = startInput.value;
+      startInput.value = endInput.value;
+      endInput.value = temp;
+
+      searchRoute(); // 스왑 후 자동 경로 재검색
     }
 
     function searchPlace(keyword) {
@@ -496,6 +708,17 @@
       drawColoredRoutes();
     }
 
+    function getStepIconClass(type) {
+      switch (type) {
+        case 'walk': return 'fa-solid fa-person-walking';
+        case 'bus': return 'fa-solid fa-bus';
+        case 'subway': return 'fa-solid fa-train-subway';
+        case 'transfer': return 'fa-solid fa-arrows-rotate';
+        case 'end': return 'fa-solid fa-location-dot';
+        default: return 'fa-solid fa-location-dot';
+      }
+    }
+
     function renderRouteInfo() {
       var info = routeDetails[currentSelectedType];
 
@@ -504,6 +727,8 @@
       document.getElementById('route-dist').innerText = info.dist;
       document.getElementById('route-trans').innerText = info.trans;
       document.getElementById('route-fare').innerText = info.fare;
+
+      document.getElementById('ai-reason').innerText = `"${geminiReasons[currentSelectedType]}"`;
 
       var reasonsHtml = reasonData[currentSelectedType].map(r => `<div class="reason-item">✔ ${r}</div>`).join('');
       document.getElementById('reason-list').innerHTML = reasonsHtml;
@@ -524,9 +749,13 @@
             </div>`;
         }
 
+        var iconClass = getStepIconClass(step.type);
+
         timelineHtml += `
           <div class="timeline-item">
-            <div class="timeline-dot ${step.type}"></div>
+            <div class="timeline-dot ${step.type}">
+              <i class="${iconClass}"></i>
+            </div>
             <div class="step-header">
               <span class="step-title">${step.title}</span>
               ${busBadgeHtml}
@@ -540,6 +769,39 @@
       document.getElementById('timeline-list').innerHTML = timelineHtml;
     }
 
+    function toggleTooltip(event) {
+      event.stopPropagation();
+      var tooltip = document.getElementById('info-tooltip');
+      tooltip.classList.toggle('active');
+    }
+
+    document.addEventListener('click', function(e) {
+      var tooltip = document.getElementById('info-tooltip');
+      var container = document.querySelector('.info-icon-container');
+      if (tooltip && !container.contains(e.target)) {
+        tooltip.classList.remove('active');
+      }
+    });
+
+    function getSegmentStyle(step) {
+      if (step.type === 'walk' || step.type === 'end') {
+        return { color: '#94a3b8', style: 'shortdash', weight: 5 };
+      }
+      if (step.type === 'transfer') {
+        return { color: '#f59e0b', style: 'shortdash', weight: 5 };
+      }
+      if (step.type === 'subway') {
+        if (step.lineName === '수인분당선') return { color: '#f5a623', style: 'solid', weight: 8 };
+        if (step.lineName === '경강선') return { color: '#0054a6', style: 'solid', weight: 8 };
+        return { color: '#a855f7', style: 'solid', weight: 8 };
+      }
+      if (step.type === 'bus') {
+        if (step.busType === 'low-floor') return { color: '#16a34a', style: 'solid', weight: 7 };
+        return { color: '#2563eb', style: 'solid', weight: 7 };
+      }
+      return { color: '#f39eba', style: 'solid', weight: 7 };
+    }
+
     function drawColoredRoutes() {
       if (!startPoint || !endPoint || !map) return;
 
@@ -551,39 +813,56 @@
       var eLat = endPoint.getLat();
       var eLng = endPoint.getLng();
 
+      var midLat = 37.4014;
+      var midLng = 127.1260;
+
+      var currentInfo = routeDetails[currentSelectedType];
+      var steps = currentInfo.steps;
+
       if (currentSelectedType === '휠체어') {
         var p1 = new kakao.maps.LatLng(sLat, sLng);
-        var p2 = new kakao.maps.LatLng(sLat * 0.7 + eLat * 0.3, sLng * 0.7 + eLng * 0.3);
-        var p3 = new kakao.maps.LatLng(sLat * 0.65 + eLat * 0.35, sLng * 0.65 + eLng * 0.35);
-        var p4 = new kakao.maps.LatLng(eLat, eLng);
+        var p2 = new kakao.maps.LatLng(sLat - 0.001, sLng - 0.0005);
+        createSegment([p1, p2], getSegmentStyle(steps[0]));
 
-        createSegment([p1, p2], '#ea580c', 'solid');
-        createSegment([p2, p3], '#9333ea', 'shortdash');
-        createSegment([p3, p4], '#ea580c', 'solid');
+        var p3 = new kakao.maps.LatLng(midLat, midLng);
+        createSegment([p2, p3], getSegmentStyle(steps[1]));
+
+        var p4 = new kakao.maps.LatLng(midLat - 0.0005, midLng - 0.0005);
+        createSegment([p3, p4], getSegmentStyle(steps[2]));
+
+        var p5 = new kakao.maps.LatLng(eLat + 0.0008, eLng + 0.0008);
+        createSegment([p4, p5], getSegmentStyle(steps[3]));
+
+        var p6 = new kakao.maps.LatLng(eLat, eLng);
+        createSegment([p5, p6], getSegmentStyle(steps[4]));
 
       } else if (currentSelectedType === '노약자') {
         var p1 = new kakao.maps.LatLng(sLat, sLng);
-        var way = new kakao.maps.LatLng((sLat + eLat)/2 + 0.002, (sLng + eLng)/2 - 0.002);
-        var p2 = new kakao.maps.LatLng(eLat, eLng);
+        var p2 = new kakao.maps.LatLng(sLat - 0.001, sLng);
+        var p3 = new kakao.maps.LatLng(midLat + 0.002, midLng - 0.002);
+        var p4 = new kakao.maps.LatLng(eLat, eLng);
 
-        createSegment([p1, way, p2], '#16a34a', 'solid');
+        createSegment([p1, p2], getSegmentStyle(steps[0]));
+        createSegment([p2, p3, p4], getSegmentStyle(steps[1]));
 
       } else {
         var p1 = new kakao.maps.LatLng(sLat, sLng);
-        var way = new kakao.maps.LatLng((sLat + eLat)/2 - 0.002, (sLng + eLng)/2 + 0.002);
-        var p2 = new kakao.maps.LatLng(eLat, eLng);
+        var p2 = new kakao.maps.LatLng(sLat, sLng + 0.001);
+        var p3 = new kakao.maps.LatLng(midLat - 0.002, midLng + 0.002);
+        var p4 = new kakao.maps.LatLng(eLat, eLng);
 
-        createSegment([p1, way, p2], '#2563eb', 'solid');
+        createSegment([p1, p2], getSegmentStyle(steps[0]));
+        createSegment([p2, p3, p4], getSegmentStyle(steps[1]));
       }
     }
 
-    function createSegment(path, color, style) {
+    function createSegment(path, styleConfig) {
       var polyline = new kakao.maps.Polyline({
         path: path,
-        strokeWeight: 7,
-        strokeColor: color,
+        strokeWeight: styleConfig.weight,
+        strokeColor: styleConfig.color,
         strokeOpacity: 0.9,
-        strokeStyle: style
+        strokeStyle: styleConfig.style
       });
       polyline.setMap(map);
       currentPolylines.push(polyline);
