@@ -1,0 +1,172 @@
+[
+  {
+    "railOprIsttCd": "KR",
+    "lnCd": "K1",
+    "stinCd": "K227",
+    "stinNm": "",
+    "elevators": [
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K227",
+        "exitNo": "3",
+        "dtlLoc": "(B1)서현방향대합실,(1F)3번출구광장주차장근처",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지상",
+        "runStinFlorTo": 1,
+        "rglnPsno": 15,
+        "rglnWgt": 1000
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K227",
+        "exitNo": "9",
+        "dtlLoc": "(B1)야탑방향연결통로끝,(1F)9번출입구옆",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지상",
+        "runStinFlorTo": 1,
+        "rglnPsno": 15,
+        "rglnWgt": 1000
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K227",
+        "exitNo": null,
+        "dtlLoc": "(B2)서현역방향,하행승강장6-4출입문앞,(B1)대합실북쪽",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 2,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 1,
+        "rglnPsno": 13,
+        "rglnWgt": 1000
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K227",
+        "exitNo": null,
+        "dtlLoc": "(B2)야탑역방향,상행승강장3-1출입문앞,(B1)대합실북쪽",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 2,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 1,
+        "rglnPsno": 15,
+        "rglnWgt": 1000
+      }
+    ],
+    "escalators": [
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K227",
+        "updnDvNm": "상행",
+        "exitNo": "1",
+        "dtlLoc": "(B1) 1번 출입구 아트센터 방향>(1F)1번출입구",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지상",
+        "runStinFlorTo": 1
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K227",
+        "updnDvNm": "하행",
+        "exitNo": "1",
+        "dtlLoc": "(1F) 1번 출입구 아트센터 방향>(B1)연결통로",
+        "grndDvNmFr": "지상",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 1
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K227",
+        "updnDvNm": "상행",
+        "exitNo": "8",
+        "dtlLoc": "(B1) 8번 출입구 서현역 방향>(1F)8번출입구",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지상",
+        "runStinFlorTo": 1
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K227",
+        "updnDvNm": "상행",
+        "exitNo": "9",
+        "dtlLoc": "(B1) 9번 출입구 야탑역 방향>(1F)9번출입구",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지상",
+        "runStinFlorTo": 1
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K227",
+        "updnDvNm": "하행",
+        "exitNo": "9",
+        "dtlLoc": "(1F) 9번 출입구 야탑역 방향>(B1)연결통로",
+        "grndDvNmFr": "지상",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 1
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K227",
+        "updnDvNm": "상행",
+        "exitNo": null,
+        "dtlLoc": "(B2)서현역 방향 승강장 4-1 출입문앞>(B1) 대합실",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 2,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 1
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K227",
+        "updnDvNm": "하행",
+        "exitNo": null,
+        "dtlLoc": "(B1)대합실>(B2) 서현방향 승강장 4-1",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 2
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K227",
+        "updnDvNm": "상행",
+        "exitNo": null,
+        "dtlLoc": "(B2)야탑역 방향 승강장 4-2 출입문앞>(B1) 대합실",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 2,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 1
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K227",
+        "updnDvNm": "하행",
+        "exitNo": null,
+        "dtlLoc": "(B1)대합실>(B2)야탑 방향 승강장 4-2",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 2
+      }
+    ]
+  }
+]

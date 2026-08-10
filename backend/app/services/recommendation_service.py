@@ -3,18 +3,24 @@ from __future__ import annotations
 from copy import deepcopy
 from typing import Any
 
+from app.services.movement_extraction_service import (
+    attach_station_movements,
+)
+
+from app.services.station_facility_service import (
+    get_station_facilities,
+)
+
+from app.services.station_path_service import (
+    find_realtime_safe_internal_path,
+    get_station_graph,
+)
+
 
 # ==============================================================================
-# 1. 사용자 유형별 접근성 기준 및 가중치
-#
-# 점수가 낮을수록 사용자에게 더 적합한 경로입니다.
-#
-# Hard Barrier
-# - 조건을 위반하면 해당 경로를 추천 후보에서 제외합니다.
-#
-# Soft Scoring
-# - 이용은 가능하지만 불편한 정도를 점수로 계산합니다.
+# 1. 사용자 유형별 설정
 # ==============================================================================
+
 USER_CONFIGS: dict[str, dict[str, Any]] = {
     "WHEELCHAIR": {
         "name": "휠체어",
@@ -32,6 +38,7 @@ USER_CONFIGS: dict[str, dict[str, Any]] = {
             "unknown_data_penalty": 10.0,
         },
     },
+
     "STROLLER": {
         "name": "유모차",
         "max_incline": 10.0,
@@ -48,6 +55,7 @@ USER_CONFIGS: dict[str, dict[str, Any]] = {
             "unknown_data_penalty": 7.0,
         },
     },
+
     "ELDERLY": {
         "name": "고령자",
         "max_incline": 8.3,
@@ -68,49 +76,81 @@ USER_CONFIGS: dict[str, dict[str, Any]] = {
 
 
 # ==============================================================================
-# 2. 공통 유틸리티 함수
+# 2. 공통 유틸
 # ==============================================================================
 
 def _safe_number(
     value: Any,
     default: float = 0.0,
 ) -> float:
-    """
-    int, float 또는 숫자 문자열을 float로 변환합니다.
-
-    None이거나 변환할 수 없는 값이면 default를 반환합니다.
-    """
-
     if value is None:
         return default
 
     try:
         return float(value)
-    except (TypeError, ValueError):
+
+    except (
+        TypeError,
+        ValueError,
+    ):
         return default
 
 
-def _normalize_text(value: Any) -> str:
-    """
-    문자열 비교를 위해 소문자로 변환하고
-    앞뒤 공백을 제거합니다.
-    """
-
+def _normalize_text(
+    value: Any,
+) -> str:
     if value is None:
         return ""
 
-    return str(value).strip().lower()
+    return str(
+        value
+    ).strip().lower()
 
 
-def _is_walk_step(step: dict[str, Any]) -> bool:
-    """
-    카카오 후보 경로의 step이 도보 구간인지 확인합니다.
+def _normalize_user_type(
+    user_type: str,
+) -> str:
+    return str(
+        user_type
+    ).strip().upper()
 
-    현재 카카오 응답의 step_type이 문자열인 경우를 기준으로 하며,
-    walk, walking, pedestrian, 도보 등의 값을 지원합니다.
-    """
 
-    step_type = _normalize_text(step.get("step_type"))
+def _append_unique(
+    target: list[str],
+    value: str,
+) -> None:
+    if (
+        value
+        and value
+        not in target
+    ):
+        target.append(
+            value
+        )
+
+
+def _remove_value(
+    target: list[str],
+    value: str,
+) -> None:
+    while value in target:
+        target.remove(
+            value
+        )
+
+
+# ==============================================================================
+# 3. 카카오 경로 유형 판단
+# ==============================================================================
+
+def _is_walk_step(
+    step: dict[str, Any],
+) -> bool:
+    step_type = _normalize_text(
+        step.get(
+            "step_type"
+        )
+    )
 
     walk_keywords = {
         "walk",
@@ -129,22 +169,42 @@ def _is_walk_step(step: dict[str, Any]) -> bool:
     )
 
 
-def _route_uses_bus(route: dict[str, Any]) -> bool:
-    """
-    경로에 버스 이용 구간이 포함되어 있는지 확인합니다.
-    """
+def _route_uses_bus(
+    route: dict[str, Any],
+) -> bool:
+    route_type = _normalize_text(
+        route.get(
+            "route_type"
+        )
+    )
 
-    route_type = _normalize_text(route.get("route_type"))
-
-    if "bus" in route_type or "버스" in route_type:
+    if (
+        "bus" in route_type
+        or "버스" in route_type
+    ):
         return True
 
-    for vehicle in route.get("vehicles", []):
-        if not isinstance(vehicle, dict):
+    for vehicle in route.get(
+        "vehicles",
+        [],
+    ):
+        if not isinstance(
+            vehicle,
+            dict,
+        ):
             continue
 
-        vehicle_type = _normalize_text(vehicle.get("type"))
-        vehicle_name = _normalize_text(vehicle.get("name"))
+        vehicle_type = _normalize_text(
+            vehicle.get(
+                "type"
+            )
+        )
+
+        vehicle_name = _normalize_text(
+            vehicle.get(
+                "name"
+            )
+        )
 
         if (
             "bus" in vehicle_type
@@ -154,24 +214,39 @@ def _route_uses_bus(route: dict[str, Any]) -> bool:
         ):
             return True
 
-    for step in route.get("steps", []):
-        if not isinstance(step, dict):
+    for step in route.get(
+        "steps",
+        [],
+    ):
+        if not isinstance(
+            step,
+            dict,
+        ):
             continue
 
-        step_type = _normalize_text(step.get("step_type"))
+        step_type = _normalize_text(
+            step.get(
+                "step_type"
+            )
+        )
 
-        if "bus" in step_type or "버스" in step_type:
+        if (
+            "bus" in step_type
+            or "버스" in step_type
+        ):
             return True
 
     return False
 
 
-def _route_uses_subway(route: dict[str, Any]) -> bool:
-    """
-    경로에 지하철 이용 구간이 포함되어 있는지 확인합니다.
-    """
-
-    route_type = _normalize_text(route.get("route_type"))
+def _route_uses_subway(
+    route: dict[str, Any],
+) -> bool:
+    route_type = _normalize_text(
+        route.get(
+            "route_type"
+        )
+    )
 
     subway_keywords = {
         "subway",
@@ -181,112 +256,1053 @@ def _route_uses_subway(route: dict[str, Any]) -> bool:
         "전철",
     }
 
-    if any(keyword in route_type for keyword in subway_keywords):
+    if any(
+        keyword in route_type
+        for keyword in subway_keywords
+    ):
         return True
 
-    for vehicle in route.get("vehicles", []):
-        if not isinstance(vehicle, dict):
+    for vehicle in route.get(
+        "vehicles",
+        [],
+    ):
+        if not isinstance(
+            vehicle,
+            dict,
+        ):
             continue
 
-        vehicle_type = _normalize_text(vehicle.get("type"))
-        vehicle_name = _normalize_text(vehicle.get("name"))
+        vehicle_type = _normalize_text(
+            vehicle.get(
+                "type"
+            )
+        )
+
+        vehicle_name = _normalize_text(
+            vehicle.get(
+                "name"
+            )
+        )
 
         if any(
-            keyword in vehicle_type or keyword in vehicle_name
+            (
+                keyword in vehicle_type
+                or keyword in vehicle_name
+            )
             for keyword in subway_keywords
         ):
             return True
 
-    for step in route.get("steps", []):
-        if not isinstance(step, dict):
+    for step in route.get(
+        "steps",
+        [],
+    ):
+        if not isinstance(
+            step,
+            dict,
+        ):
             continue
 
-        step_type = _normalize_text(step.get("step_type"))
+        step_type = _normalize_text(
+            step.get(
+                "step_type"
+            )
+        )
 
-        if any(keyword in step_type for keyword in subway_keywords):
+        if any(
+            keyword in step_type
+            for keyword in subway_keywords
+        ):
             return True
 
     return False
 
 
+# ==============================================================================
+# 4. 보행거리 계산
+# ==============================================================================
+
 def calculate_walk_distance(
     route: dict[str, Any],
 ) -> tuple[int, bool]:
-    """
-    카카오 후보 경로의 도보 step 거리만 합산합니다.
-
-    반환값:
-    - 도보거리(m)
-    - 도보 step을 정상적으로 식별했는지 여부
-
-    도보 step을 찾지 못했다고 해서 전체 이동거리를
-    보행거리로 간주하지 않습니다.
-    """
-
     walk_distance = 0
     found_walk_step = False
 
-    for step in route.get("steps", []):
-        if not isinstance(step, dict):
+    for step in route.get(
+        "steps",
+        [],
+    ):
+        if not isinstance(
+            step,
+            dict,
+        ):
             continue
 
-        if not _is_walk_step(step):
+        if not _is_walk_step(
+            step
+        ):
             continue
 
         found_walk_step = True
 
         distance = _safe_number(
-            step.get("distance"),
+            step.get(
+                "distance"
+            ),
             default=0.0,
         )
 
-        walk_distance += int(round(distance))
+        walk_distance += int(
+            round(
+                distance
+            )
+        )
 
-    return walk_distance, found_walk_step
+    return (
+        walk_distance,
+        found_walk_step,
+    )
 
 
 # ==============================================================================
-# 3. 접근성 데이터 읽기
-#
-# 팀원1의 접근성 API 결과는 각 경로의 accessibility에 들어온다고
-# 가정합니다.
-#
-# 예상 예시:
-#
-# "accessibility": {
-#     "status": "ANALYZED",
-#     "has_broken_elevator": False,
-#     "broken_elevator_stations": [],
-#     "has_elevator": True,
-#     "has_stairs": False,
-#     "max_incline": 3.2,
-#     "max_curb_height": 1.0,
-#     "has_low_floor_bus": True,
-#     "low_floor_bus_numbers": ["76"],
-#     "unknown_fields": [],
-#     "unavailable_reasons": []
-# }
+# 5. station_movements → 기존 시설 데이터 조회
+# ==============================================================================
+
+def _extract_station_line_pairs(
+    route: dict[str, Any],
+) -> list[dict[str, str]]:
+    movements = route.get(
+        "station_movements",
+        [],
+    )
+
+    if not isinstance(
+        movements,
+        list,
+    ):
+        return []
+
+    pairs: list[
+        dict[str, str]
+    ] = []
+
+    seen: set[
+        tuple[str, str]
+    ] = set()
+
+    for movement in movements:
+
+        if not isinstance(
+            movement,
+            dict,
+        ):
+            continue
+
+        movement_type = str(
+            movement.get(
+                "movement_type",
+                "",
+            )
+        ).strip().upper()
+
+        station_name = movement.get(
+            "station_name"
+        )
+
+        if not station_name:
+            continue
+
+        station_name = str(
+            station_name
+        ).strip()
+
+        line_names: list[str] = []
+
+        if movement_type in {
+            "BOARDING",
+            "ALIGHTING",
+        }:
+            line_name = movement.get(
+                "line_name"
+            )
+
+            if line_name:
+                line_names.append(
+                    str(
+                        line_name
+                    ).strip()
+                )
+
+        elif movement_type == "TRANSFER":
+
+            from_line = movement.get(
+                "from_line"
+            )
+
+            to_line = movement.get(
+                "to_line"
+            )
+
+            if from_line:
+                line_names.append(
+                    str(
+                        from_line
+                    ).strip()
+                )
+
+            if to_line:
+                line_names.append(
+                    str(
+                        to_line
+                    ).strip()
+                )
+
+        for line_name in line_names:
+
+            if not line_name:
+                continue
+
+            key = (
+                station_name,
+                line_name,
+            )
+
+            if key in seen:
+                continue
+
+            seen.add(
+                key
+            )
+
+            pairs.append(
+                {
+                    "station_name": station_name,
+                    "line_name": line_name,
+                }
+            )
+
+    return pairs
+
+
+def collect_station_facilities(
+    route: dict[str, Any],
+) -> list[dict[str, Any]]:
+    station_line_pairs = (
+        _extract_station_line_pairs(
+            route
+        )
+    )
+
+    results: list[
+        dict[str, Any]
+    ] = []
+
+    for pair in station_line_pairs:
+
+        station_name = pair[
+            "station_name"
+        ]
+
+        line_name = pair[
+            "line_name"
+        ]
+
+        facility_data = (
+            get_station_facilities(
+                station_name=station_name,
+                line_name=line_name,
+            )
+        )
+
+        results.append(
+            facility_data
+        )
+
+    return results
+
+
+# ==============================================================================
+# 6. 기본 시설 접근성 데이터
+# ==============================================================================
+
+def attach_facility_accessibility(
+    route: dict[str, Any],
+) -> dict[str, Any]:
+    analyzed_route = deepcopy(
+        route
+    )
+
+    existing_accessibility = (
+        analyzed_route.get(
+            "accessibility"
+        )
+    )
+
+    if not isinstance(
+        existing_accessibility,
+        dict,
+    ):
+        existing_accessibility = {}
+
+    accessibility = deepcopy(
+        existing_accessibility
+    )
+
+    station_facilities = (
+        collect_station_facilities(
+            analyzed_route
+        )
+    )
+
+    successful_facilities = [
+        facility
+        for facility in station_facilities
+        if facility.get(
+            "status"
+        ) == "SUCCESS"
+    ]
+
+    failed_facilities = [
+        facility
+        for facility in station_facilities
+        if facility.get(
+            "status"
+        ) != "SUCCESS"
+    ]
+
+    elevator_count = sum(
+        int(
+            facility.get(
+                "elevator_count",
+                0,
+            )
+            or 0
+        )
+        for facility
+        in successful_facilities
+    )
+
+    escalator_count = sum(
+        int(
+            facility.get(
+                "escalator_count",
+                0,
+            )
+            or 0
+        )
+        for facility
+        in successful_facilities
+    )
+
+    if _route_uses_subway(
+        analyzed_route
+    ):
+        if not station_facilities:
+            has_elevator = None
+
+        elif failed_facilities:
+            has_elevator = None
+
+        else:
+            has_elevator = all(
+                int(
+                    facility.get(
+                        "elevator_count",
+                        0,
+                    )
+                    or 0
+                ) > 0
+                for facility
+                in successful_facilities
+            )
+
+    else:
+        has_elevator = None
+
+    unknown_fields = accessibility.get(
+        "unknown_fields",
+        [],
+    )
+
+    if not isinstance(
+        unknown_fields,
+        list,
+    ):
+        unknown_fields = []
+
+    unknown_fields = list(
+        unknown_fields
+    )
+
+    if _route_uses_subway(
+        analyzed_route
+    ):
+        _append_unique(
+            unknown_fields,
+            "엘리베이터 고장 여부",
+        )
+
+    if failed_facilities:
+        _append_unique(
+            unknown_fields,
+            "일부 역사 시설 정보",
+        )
+
+    accessibility[
+        "has_elevator"
+    ] = has_elevator
+
+    accessibility[
+        "has_broken_elevator"
+    ] = None
+
+    accessibility[
+        "broken_elevator_stations"
+    ] = []
+
+    accessibility[
+        "station_facilities"
+    ] = station_facilities
+
+    accessibility[
+        "facility_summary"
+    ] = {
+        "station_line_count": len(
+            station_facilities
+        ),
+
+        "successful_station_line_count": len(
+            successful_facilities
+        ),
+
+        "failed_station_line_count": len(
+            failed_facilities
+        ),
+
+        "total_elevator_count": elevator_count,
+
+        "total_escalator_count": escalator_count,
+    }
+
+    accessibility[
+        "unknown_fields"
+    ] = list(
+        dict.fromkeys(
+            unknown_fields
+        )
+    )
+
+    if station_facilities:
+        accessibility[
+            "status"
+        ] = "FACILITY_ANALYZED"
+
+    else:
+        accessibility.setdefault(
+            "status",
+            "UNKNOWN",
+        )
+
+    analyzed_route[
+        "accessibility"
+    ] = accessibility
+
+    return analyzed_route
+
+
+def attach_facility_accessibility_to_routes(
+    routes: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    return [
+        attach_facility_accessibility(
+            route
+        )
+        for route in routes
+    ]
+
+
+# ==============================================================================
+# 7. 실시간 역 내부 동선 분석
+# ==============================================================================
+
+def _station_graph_exists(
+    station_name: str,
+) -> bool:
+    try:
+        graph = get_station_graph(
+            station_name
+        )
+
+    except (
+        FileNotFoundError,
+        ValueError,
+    ):
+        return False
+
+    return isinstance(
+        graph,
+        dict,
+    )
+
+
+def attach_realtime_internal_accessibility(
+    route: dict[str, Any],
+    user_type: str,
+) -> dict[str, Any]:
+    analyzed_route = deepcopy(
+        route
+    )
+
+    accessibility = analyzed_route.get(
+        "accessibility",
+        {},
+    )
+
+    if not isinstance(
+        accessibility,
+        dict,
+    ):
+        accessibility = {}
+
+    accessibility = deepcopy(
+        accessibility
+    )
+
+    movements = analyzed_route.get(
+        "station_movements",
+        [],
+    )
+
+    if not isinstance(
+        movements,
+        list,
+    ):
+        movements = []
+
+    internal_paths: list[
+        dict[str, Any]
+    ] = []
+
+    analyzed_movement_count = 0
+    unknown_movement_count = 0
+    unavailable_movement_count = 0
+
+    required_facilities: list[
+        dict[str, Any]
+    ] = []
+
+    blocked_facility_ids: list[str] = []
+    broken_or_blocked_stations: list[str] = []
+    unknown_realtime_facilities: list[str] = []
+
+    unavailable_reasons = accessibility.get(
+        "unavailable_reasons",
+        [],
+    )
+
+    if not isinstance(
+        unavailable_reasons,
+        list,
+    ):
+        unavailable_reasons = []
+
+    unavailable_reasons = list(
+        unavailable_reasons
+    )
+
+    unknown_fields = accessibility.get(
+        "unknown_fields",
+        [],
+    )
+
+    if not isinstance(
+        unknown_fields,
+        list,
+    ):
+        unknown_fields = []
+
+    unknown_fields = list(
+        unknown_fields
+    )
+
+    for movement in movements:
+
+        if not isinstance(
+            movement,
+            dict,
+        ):
+            continue
+
+        station_name = str(
+            movement.get(
+                "station_name",
+                "",
+            )
+        ).strip()
+
+        if not station_name:
+            continue
+
+        if not _station_graph_exists(
+            station_name
+        ):
+            unknown_movement_count += 1
+
+            internal_paths.append(
+                {
+                    "status": "GRAPH_NOT_AVAILABLE",
+                    "station_name": station_name,
+                    "movement": movement,
+                    "message": (
+                        "해당 역의 내부 이동 그래프가 "
+                        "구축되지 않았습니다."
+                    ),
+                }
+            )
+
+            _append_unique(
+                unknown_fields,
+                f"{station_name} 내부 이동 동선",
+            )
+
+            continue
+
+        try:
+            result = (
+                find_realtime_safe_internal_path(
+                    movement=movement,
+                    user_type=user_type,
+                )
+            )
+
+        except Exception as error:
+            unknown_movement_count += 1
+
+            internal_paths.append(
+                {
+                    "status": "ANALYSIS_ERROR",
+                    "station_name": station_name,
+                    "movement": movement,
+                    "message": str(
+                        error
+                    ),
+                }
+            )
+
+            _append_unique(
+                unknown_fields,
+                f"{station_name} 내부 이동 동선",
+            )
+
+            continue
+
+        internal_paths.append(
+            result
+        )
+
+        status = str(
+            result.get(
+                "status",
+                "UNKNOWN",
+            )
+        ).upper()
+
+        if status == "SUCCESS":
+
+            analyzed_movement_count += 1
+
+            facilities = result.get(
+                "required_facilities",
+                [],
+            )
+
+            if isinstance(
+                facilities,
+                list,
+            ):
+                required_facilities.extend(
+                    facility
+                    for facility in facilities
+                    if isinstance(
+                        facility,
+                        dict,
+                    )
+                )
+
+            blocked_ids = result.get(
+                "blocked_edge_ids",
+                [],
+            )
+
+            if isinstance(
+                blocked_ids,
+                list,
+            ):
+                for edge_id in blocked_ids:
+
+                    edge_text = str(
+                        edge_id
+                    ).strip()
+
+                    if (
+                        edge_text
+                        and edge_text
+                        not in blocked_facility_ids
+                    ):
+                        blocked_facility_ids.append(
+                            edge_text
+                        )
+
+                if (
+                    blocked_ids
+                    and station_name
+                    not in broken_or_blocked_stations
+                ):
+                    broken_or_blocked_stations.append(
+                        station_name
+                    )
+
+            if result.get(
+                "has_unknown_facility_status"
+            ) is True:
+
+                _append_unique(
+                    unknown_fields,
+                    f"{station_name} 일부 승강설비 실시간 상태",
+                )
+
+        elif status in {
+            "REALTIME_PATH_NOT_FOUND",
+            "PATH_NOT_FOUND",
+            "MAX_RETRY_EXCEEDED",
+        }:
+
+            unavailable_movement_count += 1
+
+            reason = (
+                f"{station_name}에서 "
+                "사용자 유형에 맞는 이용 가능한 "
+                "역 내부 이동 동선을 찾지 못했습니다."
+            )
+
+            _append_unique(
+                unavailable_reasons,
+                reason,
+            )
+
+            blocked_ids = result.get(
+                "blocked_edge_ids",
+                [],
+            )
+
+            if isinstance(
+                blocked_ids,
+                list,
+            ):
+
+                for edge_id in blocked_ids:
+
+                    edge_text = str(
+                        edge_id
+                    ).strip()
+
+                    if (
+                        edge_text
+                        and edge_text
+                        not in blocked_facility_ids
+                    ):
+                        blocked_facility_ids.append(
+                            edge_text
+                        )
+
+                if (
+                    blocked_ids
+                    and station_name
+                    not in broken_or_blocked_stations
+                ):
+                    broken_or_blocked_stations.append(
+                        station_name
+                    )
+
+        else:
+
+            unknown_movement_count += 1
+
+            _append_unique(
+                unknown_fields,
+                f"{station_name} 내부 이동 동선",
+            )
+
+    elevator_facilities = [
+        facility
+        for facility in required_facilities
+        if str(
+            facility.get(
+                "facility_type",
+                "",
+            )
+        ).upper()
+        == "ELEVATOR"
+    ]
+
+    escalator_facilities = [
+        facility
+        for facility in required_facilities
+        if str(
+            facility.get(
+                "facility_type",
+                "",
+            )
+        ).upper()
+        == "ESCALATOR"
+    ]
+
+    for facility in required_facilities:
+
+        realtime = facility.get(
+            "realtime",
+            {},
+        )
+
+        if not isinstance(
+            realtime,
+            dict,
+        ):
+            realtime = {}
+
+        realtime_status = str(
+            realtime.get(
+                "realtime_status",
+                "UNKNOWN",
+            )
+        ).upper()
+
+        if realtime_status == "UNKNOWN":
+
+            edge_id = str(
+                facility.get(
+                    "edge_id",
+                    "",
+                )
+            ).strip()
+
+            if (
+                edge_id
+                and edge_id
+                not in unknown_realtime_facilities
+            ):
+                unknown_realtime_facilities.append(
+                    edge_id
+                )
+
+    if analyzed_movement_count > 0:
+
+        if elevator_facilities:
+            accessibility[
+                "has_elevator"
+            ] = True
+
+        elif _route_uses_subway(
+            analyzed_route
+        ):
+            accessibility.setdefault(
+                "has_elevator",
+                None,
+            )
+
+    if unavailable_movement_count > 0:
+
+        if blocked_facility_ids:
+            accessibility[
+                "has_broken_elevator"
+            ] = True
+
+        else:
+            accessibility[
+                "has_broken_elevator"
+            ] = None
+
+    elif unknown_realtime_facilities:
+
+        accessibility[
+            "has_broken_elevator"
+        ] = None
+
+    elif analyzed_movement_count > 0:
+
+        accessibility[
+            "has_broken_elevator"
+        ] = False
+
+    if (
+        analyzed_movement_count > 0
+        and not unknown_realtime_facilities
+        and unavailable_movement_count == 0
+    ):
+        _remove_value(
+            unknown_fields,
+            "엘리베이터 고장 여부",
+        )
+
+    if unavailable_movement_count > 0:
+        internal_path_available: bool | None = False
+
+    elif (
+        analyzed_movement_count > 0
+        and unknown_movement_count == 0
+    ):
+        internal_path_available = True
+
+    else:
+        internal_path_available = None
+
+    accessibility[
+        "internal_path_available"
+    ] = internal_path_available
+
+    accessibility[
+        "internal_paths"
+    ] = internal_paths
+
+    accessibility[
+        "required_facilities"
+    ] = required_facilities
+
+    accessibility[
+        "required_facility_count"
+    ] = len(
+        required_facilities
+    )
+
+    accessibility[
+        "required_elevator_count"
+    ] = len(
+        elevator_facilities
+    )
+
+    accessibility[
+        "required_escalator_count"
+    ] = len(
+        escalator_facilities
+    )
+
+    accessibility[
+        "blocked_facility_ids"
+    ] = blocked_facility_ids
+
+    accessibility[
+        "rerouted_due_to_facility_failure"
+    ] = bool(
+        blocked_facility_ids
+        and unavailable_movement_count == 0
+    )
+
+    accessibility[
+        "broken_elevator_stations"
+    ] = (
+        broken_or_blocked_stations
+        if accessibility.get(
+            "has_broken_elevator"
+        ) is True
+        else []
+    )
+
+    accessibility[
+        "facility_failure_detected_stations"
+    ] = broken_or_blocked_stations
+
+    accessibility[
+        "unknown_realtime_facilities"
+    ] = unknown_realtime_facilities
+
+    accessibility[
+        "analyzed_internal_movement_count"
+    ] = analyzed_movement_count
+
+    accessibility[
+        "unknown_internal_movement_count"
+    ] = unknown_movement_count
+
+    accessibility[
+        "unavailable_internal_movement_count"
+    ] = unavailable_movement_count
+
+    accessibility[
+        "unknown_fields"
+    ] = list(
+        dict.fromkeys(
+            unknown_fields
+        )
+    )
+
+    accessibility[
+        "unavailable_reasons"
+    ] = list(
+        dict.fromkeys(
+            unavailable_reasons
+        )
+    )
+
+    if unavailable_movement_count > 0:
+
+        accessibility[
+            "status"
+        ] = "INTERNAL_PATH_UNAVAILABLE"
+
+    elif (
+        analyzed_movement_count > 0
+        and unknown_movement_count == 0
+        and not unknown_realtime_facilities
+    ):
+
+        accessibility[
+            "status"
+        ] = "REALTIME_ANALYZED"
+
+    elif analyzed_movement_count > 0:
+
+        accessibility[
+            "status"
+        ] = "PARTIALLY_REALTIME_ANALYZED"
+
+    else:
+        accessibility.setdefault(
+            "status",
+            "UNKNOWN",
+        )
+
+    analyzed_route[
+        "accessibility"
+    ] = accessibility
+
+    return analyzed_route
+
+
+# ==============================================================================
+# 8. 접근성 데이터 읽기
 # ==============================================================================
 
 def get_accessibility_data(
     route: dict[str, Any],
 ) -> dict[str, Any]:
-    """
-    route의 accessibility 값을 안전하게 읽습니다.
+    accessibility = route.get(
+        "accessibility"
+    )
 
-    값이 없는 항목은 None 또는 빈 리스트로 유지해
-    '정보 없음'과 False를 구분합니다.
-    """
-
-    accessibility = route.get("accessibility")
-
-    if not isinstance(accessibility, dict):
+    if not isinstance(
+        accessibility,
+        dict,
+    ):
         accessibility = {}
 
-    max_incline = accessibility.get("max_incline")
+    max_incline = accessibility.get(
+        "max_incline"
+    )
 
     if max_incline is None:
-        max_incline = accessibility.get("incline")
+        max_incline = accessibility.get(
+            "incline"
+        )
 
     max_curb_height = accessibility.get(
         "max_curb_height"
@@ -302,7 +1318,10 @@ def get_accessibility_data(
         [],
     )
 
-    if not isinstance(unknown_fields, list):
+    if not isinstance(
+        unknown_fields,
+        list,
+    ):
         unknown_fields = []
 
     unavailable_reasons = accessibility.get(
@@ -310,7 +1329,10 @@ def get_accessibility_data(
         [],
     )
 
-    if not isinstance(unavailable_reasons, list):
+    if not isinstance(
+        unavailable_reasons,
+        list,
+    ):
         unavailable_reasons = []
 
     return {
@@ -318,398 +1340,744 @@ def get_accessibility_data(
             "status",
             "UNKNOWN",
         ),
-        "has_broken_elevator": accessibility.get(
-            "has_broken_elevator"
+
+        "internal_path_available": (
+            accessibility.get(
+                "internal_path_available"
+            )
         ),
-        "broken_elevator_stations": accessibility.get(
-            "broken_elevator_stations",
-            [],
+
+        "internal_paths": (
+            accessibility.get(
+                "internal_paths",
+                [],
+            )
         ),
-        "has_elevator": accessibility.get(
-            "has_elevator"
+
+        "required_facilities": (
+            accessibility.get(
+                "required_facilities",
+                [],
+            )
         ),
-        "has_stairs": accessibility.get(
-            "has_stairs"
+
+        "required_facility_count": (
+            accessibility.get(
+                "required_facility_count",
+                0,
+            )
         ),
+
+        "required_elevator_count": (
+            accessibility.get(
+                "required_elevator_count",
+                0,
+            )
+        ),
+
+        "required_escalator_count": (
+            accessibility.get(
+                "required_escalator_count",
+                0,
+            )
+        ),
+
+        "blocked_facility_ids": (
+            accessibility.get(
+                "blocked_facility_ids",
+                [],
+            )
+        ),
+
+        "rerouted_due_to_facility_failure": (
+            accessibility.get(
+                "rerouted_due_to_facility_failure",
+                False,
+            )
+        ),
+
+        "has_broken_elevator": (
+            accessibility.get(
+                "has_broken_elevator"
+            )
+        ),
+
+        "broken_elevator_stations": (
+            accessibility.get(
+                "broken_elevator_stations",
+                [],
+            )
+        ),
+
+        "has_elevator": (
+            accessibility.get(
+                "has_elevator"
+            )
+        ),
+
+        "has_stairs": (
+            accessibility.get(
+                "has_stairs"
+            )
+        ),
+
         "max_incline": max_incline,
-        "has_steep_slope": accessibility.get(
-            "has_steep_slope"
+
+        "has_steep_slope": (
+            accessibility.get(
+                "has_steep_slope"
+            )
         ),
-        "max_curb_height": max_curb_height,
-        "has_low_floor_bus": accessibility.get(
-            "has_low_floor_bus"
+
+        "max_curb_height": (
+            max_curb_height
         ),
-        "low_floor_bus_numbers": accessibility.get(
-            "low_floor_bus_numbers",
-            [],
+
+        "has_low_floor_bus": (
+            accessibility.get(
+                "has_low_floor_bus"
+            )
         ),
-        "unknown_fields": unknown_fields,
-        "unavailable_reasons": unavailable_reasons,
+
+        "low_floor_bus_numbers": (
+            accessibility.get(
+                "low_floor_bus_numbers",
+                [],
+            )
+        ),
+
+        "station_facilities": (
+            accessibility.get(
+                "station_facilities",
+                [],
+            )
+        ),
+
+        "facility_summary": (
+            accessibility.get(
+                "facility_summary",
+                {},
+            )
+        ),
+
+        "unknown_fields": (
+            unknown_fields
+        ),
+
+        "unavailable_reasons": (
+            unavailable_reasons
+        ),
     }
 
 
 # ==============================================================================
-# 4. Hard Barrier 검사
+# 9. Hard Barrier 검사
 # ==============================================================================
 
 def check_hard_barriers(
     route: dict[str, Any],
     user_type: str,
 ) -> list[str]:
-    """
-    후보 경로가 사용자에게 물리적으로 이용 불가능한지 검사합니다.
+    config = USER_CONFIGS[
+        user_type
+    ]
 
-    이용 불가능한 조건이 여러 개라면 모든 사유를 반환합니다.
-    """
+    accessibility = (
+        get_accessibility_data(
+            route
+        )
+    )
 
-    config = USER_CONFIGS[user_type]
-    accessibility = get_accessibility_data(route)
+    exclusion_reasons: list[
+        str
+    ] = []
 
-    exclusion_reasons: list[str] = []
+    for reason in accessibility[
+        "unavailable_reasons"
+    ]:
+        if (
+            reason
+            and reason
+            not in exclusion_reasons
+        ):
+            exclusion_reasons.append(
+                str(
+                    reason
+                )
+            )
 
-    # 접근성 API에서 직접 전달한 이용 불가 사유
-    for reason in accessibility["unavailable_reasons"]:
-        if reason and reason not in exclusion_reasons:
-            exclusion_reasons.append(str(reason))
+    # --------------------------------------------------------------------------
+    # 역 내부 경로 자체가 이용 불가능
+    # --------------------------------------------------------------------------
 
+    if (
+        accessibility[
+            "internal_path_available"
+        ] is False
+    ):
+        _append_unique(
+            exclusion_reasons,
+            (
+                "역 내부에서 사용자 유형에 맞는 "
+                "이동 동선을 확보할 수 없습니다."
+            ),
+        )
+
+    # --------------------------------------------------------------------------
     # 계단
-    has_stairs = accessibility["has_stairs"]
+    # --------------------------------------------------------------------------
+
+    has_stairs = accessibility[
+        "has_stairs"
+    ]
 
     if (
         has_stairs is True
-        and not config["allow_stairs"]
+        and not config[
+            "allow_stairs"
+        ]
     ):
-        exclusion_reasons.append(
-            "계단이 포함된 경로입니다."
+        _append_unique(
+            exclusion_reasons,
+            "계단이 포함된 경로입니다.",
         )
 
+    # --------------------------------------------------------------------------
     # 경사도
-    max_incline = accessibility["max_incline"]
+    # --------------------------------------------------------------------------
 
-    if max_incline is not None:
-        incline_value = _safe_number(max_incline)
-
-        if incline_value >= config["max_incline"]:
-            exclusion_reasons.append(
-                "허용 기준을 초과하는 경사가 "
-                f"포함되어 있습니다. "
-                f"({incline_value:.1f}% 이상)"
-            )
-
-    # 경사도 값 대신 has_steep_slope만 제공된 경우
-    elif accessibility["has_steep_slope"] is True:
-        exclusion_reasons.append(
-            "급경사 구간이 포함되어 있습니다."
-        )
-
-    # 보도 턱
-    max_curb_height = accessibility[
-        "max_curb_height"
+    max_incline = accessibility[
+        "max_incline"
     ]
 
-    if max_curb_height is not None:
-        curb_value = _safe_number(max_curb_height)
+    if max_incline is not None:
 
-        if curb_value > config["max_curb"]:
-            exclusion_reasons.append(
-                "허용 기준보다 높은 보도 턱이 "
-                f"포함되어 있습니다. "
-                f"({curb_value:.1f}cm)"
+        incline_value = (
+            _safe_number(
+                max_incline
+            )
+        )
+
+        if (
+            incline_value
+            >= config[
+                "max_incline"
+            ]
+        ):
+            _append_unique(
+                exclusion_reasons,
+                (
+                    "허용 기준을 초과하는 경사가 "
+                    "포함되어 있습니다. "
+                    f"({incline_value:.1f}% 이상)"
+                ),
             )
 
-    # 고장 난 엘리베이터
+    elif (
+        accessibility[
+            "has_steep_slope"
+        ] is True
+    ):
+        _append_unique(
+            exclusion_reasons,
+            "급경사 구간이 포함되어 있습니다.",
+        )
+
+    # --------------------------------------------------------------------------
+    # 보도 턱
+    # --------------------------------------------------------------------------
+
+    max_curb_height = (
+        accessibility[
+            "max_curb_height"
+        ]
+    )
+
+    if max_curb_height is not None:
+
+        curb_value = (
+            _safe_number(
+                max_curb_height
+            )
+        )
+
+        if (
+            curb_value
+            > config[
+                "max_curb"
+            ]
+        ):
+            _append_unique(
+                exclusion_reasons,
+                (
+                    "허용 기준보다 높은 보도 턱이 "
+                    "포함되어 있습니다. "
+                    f"({curb_value:.1f}cm)"
+                ),
+            )
+
+    # --------------------------------------------------------------------------
+    # 우회 불가능한 승강기 고장
+    # --------------------------------------------------------------------------
+
     if (
-        config["broken_elevator_is_barrier"]
+        config[
+            "broken_elevator_is_barrier"
+        ]
         and accessibility[
             "has_broken_elevator"
         ] is True
     ):
-        broken_stations = accessibility.get(
-            "broken_elevator_stations",
-            [],
+
+        broken_stations = (
+            accessibility.get(
+                "broken_elevator_stations",
+                [],
+            )
         )
 
         if broken_stations:
+
             station_text = ", ".join(
-                str(station)
-                for station in broken_stations
+                str(
+                    station
+                )
+                for station
+                in broken_stations
             )
 
-            exclusion_reasons.append(
-                "이용 동선에 엘리베이터가 고장 난 "
-                f"역이 포함되어 있습니다: {station_text}"
+            _append_unique(
+                exclusion_reasons,
+                (
+                    "이용 동선의 승강기 고장으로 "
+                    "대체 내부 경로를 확보하지 못했습니다: "
+                    f"{station_text}"
+                ),
             )
+
         else:
-            exclusion_reasons.append(
-                "이용 동선에 고장 난 엘리베이터가 "
-                "포함되어 있습니다."
+            _append_unique(
+                exclusion_reasons,
+                (
+                    "이용 동선의 승강기 고장으로 "
+                    "안전한 이동 경로를 확보하지 못했습니다."
+                ),
             )
 
-    # 휠체어가 버스를 이용하는 경우 저상버스 필수
+    # --------------------------------------------------------------------------
+    # ★ 휠체어 + 버스 → 저상버스가 '확인된 경우에만' 허용
+    #
+    # 이전:
+    # has_low_floor_bus is False → 제외
+    #
+    # 수정:
+    # has_low_floor_bus is not True → 제외
+    #
+    # 따라서 None(미확인)도 휠체어 사용자에게는 제외됩니다.
+    # --------------------------------------------------------------------------
+
     if (
-        config["require_low_floor_bus"]
-        and _route_uses_bus(route)
+        config[
+            "require_low_floor_bus"
+        ]
+        and _route_uses_bus(
+            route
+        )
         and accessibility[
             "has_low_floor_bus"
-        ] is False
+        ] is not True
     ):
-        exclusion_reasons.append(
-            "휠체어 이용이 가능한 저상버스가 "
-            "확인되지 않은 경로입니다."
+        _append_unique(
+            exclusion_reasons,
+            (
+                "휠체어 이용이 가능한 저상버스로 "
+                "확인되지 않은 경로입니다."
+            ),
         )
 
-    # 중복 사유 제거
-    return list(dict.fromkeys(exclusion_reasons))
+    return list(
+        dict.fromkeys(
+            exclusion_reasons
+        )
+    )
 
 
 # ==============================================================================
-# 5. 정보 미확인 항목 계산
+# 10. 정보 미확인 항목
 # ==============================================================================
 
 def find_unknown_fields(
     route: dict[str, Any],
 ) -> list[str]:
-    """
-    경로 평가에 필요하지만 확인되지 않은 접근성 정보를 반환합니다.
-
-    정보가 없다는 이유만으로 경로를 즉시 제외하지 않고,
-    점수에 불확실성 패널티를 적용합니다.
-    """
-
-    accessibility = get_accessibility_data(route)
-
-    unknown_fields: list[str] = list(
-        accessibility["unknown_fields"]
+    accessibility = (
+        get_accessibility_data(
+            route
+        )
     )
 
-    # 모든 경로에서 필요한 정보
-    if accessibility["has_stairs"] is None:
-        unknown_fields.append("계단 여부")
+    unknown_fields: list[
+        str
+    ] = list(
+        accessibility[
+            "unknown_fields"
+        ]
+    )
 
     if (
-        accessibility["max_incline"] is None
-        and accessibility["has_steep_slope"] is None
+        accessibility[
+            "has_stairs"
+        ] is None
     ):
-        unknown_fields.append("경사도")
+        _append_unique(
+            unknown_fields,
+            "계단 여부",
+        )
 
-    if accessibility["max_curb_height"] is None:
-        unknown_fields.append("보도 턱 높이")
-
-    # 버스 경로에서 필요한 정보
     if (
-        _route_uses_bus(route)
+        accessibility[
+            "max_incline"
+        ] is None
+        and accessibility[
+            "has_steep_slope"
+        ] is None
+    ):
+        _append_unique(
+            unknown_fields,
+            "경사도",
+        )
+
+    if (
+        accessibility[
+            "max_curb_height"
+        ] is None
+    ):
+        _append_unique(
+            unknown_fields,
+            "보도 턱 높이",
+        )
+
+    if (
+        _route_uses_bus(
+            route
+        )
         and accessibility[
             "has_low_floor_bus"
         ] is None
     ):
-        unknown_fields.append("저상버스 여부")
+        _append_unique(
+            unknown_fields,
+            "저상버스 여부",
+        )
 
-    # 지하철 경로에서 필요한 정보
-    if _route_uses_subway(route):
-        if accessibility["has_elevator"] is None:
-            unknown_fields.append("엘리베이터 설치 여부")
+    if _route_uses_subway(
+        route
+    ):
+
+        if (
+            accessibility[
+                "has_elevator"
+            ] is None
+        ):
+            _append_unique(
+                unknown_fields,
+                "엘리베이터 설치 여부",
+            )
 
         if (
             accessibility[
                 "has_broken_elevator"
             ] is None
         ):
-            unknown_fields.append(
-                "엘리베이터 고장 여부"
+            _append_unique(
+                unknown_fields,
+                "엘리베이터 고장 여부",
             )
 
-    return list(dict.fromkeys(unknown_fields))
+    return list(
+        dict.fromkeys(
+            unknown_fields
+        )
+    )
 
 
 # ==============================================================================
-# 6. 후보 경로 점수 계산
+# 11. 후보 경로 점수 계산
 # ==============================================================================
 
 def calculate_route_score(
     route: dict[str, Any],
     user_type: str,
-) -> tuple[float, list[str], list[str]]:
-    """
-    후보 경로 하나의 불편 점수를 계산합니다.
+) -> tuple[
+    float,
+    list[str],
+    list[str],
+]:
+    config = USER_CONFIGS[
+        user_type
+    ]
 
-    반환:
-    - 점수
-    - 추천 근거
-    - 정보 미확인 항목
+    weights = config[
+        "weights"
+    ]
 
-    점수가 낮을수록 좋은 경로입니다.
-    """
-
-    config = USER_CONFIGS[user_type]
-    weights = config["weights"]
-    accessibility = get_accessibility_data(route)
+    accessibility = (
+        get_accessibility_data(
+            route
+        )
+    )
 
     score = 0.0
-    positive_reasons: list[str] = []
 
-    # ------------------------------------------------------------------
-    # 1. 총 소요시간
-    # ------------------------------------------------------------------
-    total_time_minutes = _safe_number(
-        route.get("total_time_minutes"),
-        default=0.0,
+    positive_reasons: list[
+        str
+    ] = []
+
+    total_time_minutes = (
+        _safe_number(
+            route.get(
+                "total_time_minutes"
+            ),
+            default=0.0,
+        )
     )
 
     score += (
         total_time_minutes
-        * weights["time_per_min"]
+        * weights[
+            "time_per_min"
+        ]
     )
 
-    # ------------------------------------------------------------------
-    # 2. 보행거리
-    # ------------------------------------------------------------------
-    walk_distance, found_walk_step = (
-        calculate_walk_distance(route)
+    (
+        walk_distance,
+        found_walk_step,
+    ) = calculate_walk_distance(
+        route
     )
 
     score += (
         walk_distance
-        * weights["walk_dist_per_m"]
+        * weights[
+            "walk_dist_per_m"
+        ]
     )
 
-    if walk_distance <= 300 and found_walk_step:
+    if (
+        walk_distance <= 300
+        and found_walk_step
+    ):
         positive_reasons.append(
             "보행 구간이 비교적 짧습니다."
         )
 
-    # ------------------------------------------------------------------
-    # 3. 환승 횟수
-    # ------------------------------------------------------------------
     transfer_count = int(
         _safe_number(
-            route.get("transfer_count"),
+            route.get(
+                "transfer_count"
+            ),
             default=0.0,
         )
     )
 
     score += (
         transfer_count
-        * weights["transfer_penalty"]
+        * weights[
+            "transfer_penalty"
+        ]
     )
 
     if transfer_count == 0:
         positive_reasons.append(
             "환승 없이 이동할 수 있습니다."
         )
+
     elif transfer_count == 1:
         positive_reasons.append(
             "환승 횟수가 1회로 비교적 적습니다."
         )
 
-    # ------------------------------------------------------------------
-    # 4. 엘리베이터
-    # ------------------------------------------------------------------
-    if accessibility["has_elevator"] is True:
-        score += weights["elevator_bonus"]
-
-        positive_reasons.append(
-            "엘리베이터를 이용할 수 있는 "
-            "동선입니다."
+    if (
+        accessibility[
+            "has_elevator"
+        ] is True
+    ):
+        score += (
+            weights[
+                "elevator_bonus"
+            ]
         )
 
-    # ------------------------------------------------------------------
-    # 5. 저상버스
-    # ------------------------------------------------------------------
+        positive_reasons.append(
+            "실제 이용 동선에서 엘리베이터를 "
+            "사용할 수 있습니다."
+        )
+
     if (
-        _route_uses_bus(route)
+        accessibility[
+            "rerouted_due_to_facility_failure"
+        ] is True
+    ):
+        positive_reasons.append(
+            "운행 불가 승강설비를 피해 "
+            "대체 역사 내부 동선을 찾았습니다."
+        )
+
+    if (
+        _route_uses_bus(
+            route
+        )
         and accessibility[
             "has_low_floor_bus"
         ] is True
     ):
-        score += weights["low_floor_bus_bonus"]
 
-        low_floor_bus_numbers = accessibility.get(
-            "low_floor_bus_numbers",
-            [],
+        score += (
+            weights[
+                "low_floor_bus_bonus"
+            ]
+        )
+
+        low_floor_bus_numbers = (
+            accessibility.get(
+                "low_floor_bus_numbers",
+                [],
+            )
         )
 
         if low_floor_bus_numbers:
+
             bus_text = ", ".join(
-                str(number)
-                for number in low_floor_bus_numbers
+                str(
+                    number
+                )
+                for number
+                in low_floor_bus_numbers
             )
 
             positive_reasons.append(
-                f"저상버스({bus_text})를 이용할 수 "
-                "있습니다."
+                f"저상버스({bus_text})를 "
+                "이용할 수 있습니다."
             )
+
         else:
             positive_reasons.append(
                 "저상버스를 이용할 수 있습니다."
             )
 
-    # ------------------------------------------------------------------
-    # 6. 계단·경사·턱이 안전하다고 확인된 경우
-    # ------------------------------------------------------------------
-    if accessibility["has_stairs"] is False:
+    if (
+        accessibility[
+            "has_stairs"
+        ] is False
+    ):
         positive_reasons.append(
             "계단이 없는 경로로 확인되었습니다."
         )
 
-    max_incline = accessibility["max_incline"]
-
-    if max_incline is not None:
-        incline_value = _safe_number(max_incline)
-
-        if incline_value < config["max_incline"]:
-            positive_reasons.append(
-                "사용자 유형의 허용 기준 이내인 "
-                f"경사도입니다. ({incline_value:.1f}%)"
-            )
-
-    max_curb_height = accessibility[
-        "max_curb_height"
+    max_incline = accessibility[
+        "max_incline"
     ]
 
-    if max_curb_height is not None:
-        curb_value = _safe_number(max_curb_height)
+    if max_incline is not None:
 
-        if curb_value <= config["max_curb"]:
+        incline_value = (
+            _safe_number(
+                max_incline
+            )
+        )
+
+        if (
+            incline_value
+            < config[
+                "max_incline"
+            ]
+        ):
             positive_reasons.append(
-                "보도 턱 높이가 사용자 기준 이내입니다."
+                (
+                    "사용자 유형의 허용 기준 이내인 "
+                    f"경사도입니다. "
+                    f"({incline_value:.1f}%)"
+                )
             )
 
-    # ------------------------------------------------------------------
-    # 7. 정보 미확인 패널티
-    # ------------------------------------------------------------------
-    unknown_fields = find_unknown_fields(route)
-
-    score += (
-        len(unknown_fields)
-        * weights["unknown_data_penalty"]
+    max_curb_height = (
+        accessibility[
+            "max_curb_height"
+        ]
     )
 
-    # 점수가 음수가 되는 것을 방지
-    final_score = max(round(score, 2), 0.1)
+    if max_curb_height is not None:
+
+        curb_value = (
+            _safe_number(
+                max_curb_height
+            )
+        )
+
+        if (
+            curb_value
+            <= config[
+                "max_curb"
+            ]
+        ):
+            positive_reasons.append(
+                (
+                    "보도 턱 높이가 사용자 기준 "
+                    "이내입니다."
+                )
+            )
+
+    unknown_fields = (
+        find_unknown_fields(
+            route
+        )
+    )
+
+    score += (
+        len(
+            unknown_fields
+        )
+        * weights[
+            "unknown_data_penalty"
+        ]
+    )
+
+    final_score = max(
+        round(
+            score,
+            2,
+        ),
+        0.1,
+    )
 
     return (
         final_score,
-        list(dict.fromkeys(positive_reasons)),
+
+        list(
+            dict.fromkeys(
+                positive_reasons
+            )
+        ),
+
         unknown_fields,
     )
 
 
 # ==============================================================================
-# 7. 후보 경로 하나 평가
+# 12. 후보 경로 하나 평가
 # ==============================================================================
 
 def evaluate_candidate_route(
     route: dict[str, Any],
     user_type: str,
 ) -> dict[str, Any]:
-    """
-    카카오 후보 경로 하나를 평가합니다.
-
-    기존 경로 데이터를 유지하면서 evaluation 필드에
-    이용 가능 여부, 점수, 추천 근거, 제외 이유 등을 추가합니다.
-    """
+    user_type = (
+        _normalize_user_type(
+            user_type
+        )
+    )
 
     if user_type not in USER_CONFIGS:
+
         supported_types = ", ".join(
             USER_CONFIGS.keys()
         )
@@ -720,43 +2088,90 @@ def evaluate_candidate_route(
             f"지원 유형: {supported_types}"
         )
 
-    evaluated_route = deepcopy(route)
-
-    exclusion_reasons = check_hard_barriers(
-        route,
-        user_type,
+    evaluated_route = (
+        attach_facility_accessibility(
+            route
+        )
     )
 
-    is_available = len(exclusion_reasons) == 0
+    evaluated_route = (
+        attach_realtime_internal_accessibility(
+            route=evaluated_route,
+            user_type=user_type,
+        )
+    )
+
+    exclusion_reasons = (
+        check_hard_barriers(
+            evaluated_route,
+            user_type,
+        )
+    )
+
+    is_available = (
+        len(
+            exclusion_reasons
+        )
+        == 0
+    )
 
     if is_available:
+
         (
             score,
             positive_reasons,
             unknown_fields,
         ) = calculate_route_score(
-            route,
+            evaluated_route,
             user_type,
         )
+
     else:
+
         score = None
         positive_reasons = []
-        unknown_fields = find_unknown_fields(route)
 
-    evaluated_route["evaluation"] = {
-        "is_available": is_available,
+        unknown_fields = (
+            find_unknown_fields(
+                evaluated_route
+            )
+        )
+
+    evaluated_route[
+        "evaluation"
+    ] = {
+        "is_available": (
+            is_available
+        ),
+
         "score": score,
+
         "is_recommended": False,
-        "positive_reasons": positive_reasons,
-        "exclusion_reasons": exclusion_reasons,
-        "unknown_fields": unknown_fields,
-        "has_unknown_accessibility_data": bool(
+
+        "positive_reasons": (
+            positive_reasons
+        ),
+
+        "exclusion_reasons": (
+            exclusion_reasons
+        ),
+
+        "unknown_fields": (
             unknown_fields
+        ),
+
+        "has_unknown_accessibility_data": (
+            bool(
+                unknown_fields
+            )
         ),
     }
 
-    # Flutter가 바로 사용할 수 있도록 보행거리도 추가
-    walk_distance, _ = calculate_walk_distance(route)
+    walk_distance, _ = (
+        calculate_walk_distance(
+            evaluated_route
+        )
+    )
 
     evaluated_route[
         "total_walk_distance_meters"
@@ -766,134 +2181,299 @@ def evaluate_candidate_route(
 
 
 # ==============================================================================
-# 8. 모든 후보 경로 평가
+# 13. 모든 후보 경로 평가
 # ==============================================================================
 
 def evaluate_all_candidates(
     routes: list[dict[str, Any]],
     user_type: str,
 ) -> list[dict[str, Any]]:
-    """
-    카카오 후보 경로 전체를 평가합니다.
-    """
+    user_type = (
+        _normalize_user_type(
+            user_type
+        )
+    )
+
+    routes_copy = [
+        deepcopy(
+            route
+        )
+        for route in routes
+    ]
+
+    needs_movement_attachment = any(
+        not isinstance(
+            route.get(
+                "station_movements"
+            ),
+            list,
+        )
+        for route in routes_copy
+    )
+
+    if needs_movement_attachment:
+
+        routes_with_movements = (
+            attach_station_movements(
+                routes_copy
+            )
+        )
+
+    else:
+
+        routes_with_movements = (
+            routes_copy
+        )
 
     return [
         evaluate_candidate_route(
             route=route,
             user_type=user_type,
         )
-        for route in routes
+        for route
+        in routes_with_movements
     ]
 
 
 # ==============================================================================
-# 9. 최적 후보 경로 선택
+# 14. 최적 후보 경로 선택
 # ==============================================================================
 
 def select_best_candidate(
     routes: list[dict[str, Any]],
     user_type: str,
 ) -> dict[str, Any]:
-    """
-    카카오 후보 경로들을 사용자 유형에 따라 평가한 뒤
-    최적 경로 하나를 선택합니다.
+    user_type = (
+        _normalize_user_type(
+            user_type
+        )
+    )
 
-    선택 우선순위:
-    1. 불편 점수가 낮은 경로
-    2. 총 소요시간이 짧은 경로
-    3. 환승 횟수가 적은 경로
-    4. 총 이동거리가 짧은 경로
-    """
+    if user_type not in USER_CONFIGS:
 
-    evaluated_routes = evaluate_all_candidates(
-        routes=routes,
-        user_type=user_type,
+        supported_types = ", ".join(
+            USER_CONFIGS.keys()
+        )
+
+        raise ValueError(
+            f"지원하지 않는 사용자 유형입니다: "
+            f"{user_type}. "
+            f"지원 유형: {supported_types}"
+        )
+
+    evaluated_routes = (
+        evaluate_all_candidates(
+            routes=routes,
+            user_type=user_type,
+        )
     )
 
     available_routes = [
         route
-        for route in evaluated_routes
-        if route["evaluation"]["is_available"]
+        for route
+        in evaluated_routes
+        if route[
+            "evaluation"
+        ][
+            "is_available"
+        ]
     ]
 
     excluded_routes = [
         {
-            "route_id": route.get("route_id"),
-            "route_type": route.get("route_type"),
-            "exclusion_reasons": route[
-                "evaluation"
-            ]["exclusion_reasons"],
-            "unknown_fields": route[
-                "evaluation"
-            ]["unknown_fields"],
+            "route_id": (
+                route.get(
+                    "route_id"
+                )
+            ),
+
+            "route_type": (
+                route.get(
+                    "route_type"
+                )
+            ),
+
+            "exclusion_reasons": (
+                route[
+                    "evaluation"
+                ][
+                    "exclusion_reasons"
+                ]
+            ),
+
+            "unknown_fields": (
+                route[
+                    "evaluation"
+                ][
+                    "unknown_fields"
+                ]
+            ),
+
+            "accessibility_status": (
+                route.get(
+                    "accessibility",
+                    {},
+                ).get(
+                    "status",
+                    "UNKNOWN",
+                )
+            ),
         }
-        for route in evaluated_routes
-        if not route["evaluation"]["is_available"]
+
+        for route
+        in evaluated_routes
+
+        if not route[
+            "evaluation"
+        ][
+            "is_available"
+        ]
     ]
 
     if not available_routes:
+
         return {
             "user_type": user_type,
-            "user_type_name": USER_CONFIGS[
-                user_type
-            ]["name"],
-            "recommended_route": None,
-            "alternative_routes": [],
-            "excluded_routes": excluded_routes,
-            "message": (
-                "해당 사용자 유형으로 안전하게 이용할 수 "
-                "있는 경로를 찾지 못했습니다."
+
+            "user_type_name": (
+                USER_CONFIGS[
+                    user_type
+                ][
+                    "name"
+                ]
             ),
+
+            "recommended_route": None,
+
+            "alternative_routes": [],
+
+            "excluded_routes": (
+                excluded_routes
+            ),
+
+            "message": (
+                "해당 사용자 유형으로 "
+                "안전하게 이용할 수 있는 "
+                "경로를 찾지 못했습니다."
+            ),
+
+            "summary": {
+                "total_candidate_count": (
+                    len(
+                        evaluated_routes
+                    )
+                ),
+
+                "available_route_count": 0,
+
+                "excluded_route_count": (
+                    len(
+                        excluded_routes
+                    )
+                ),
+            },
         }
 
     available_routes.sort(
         key=lambda route: (
             _safe_number(
-                route["evaluation"].get("score"),
-                default=float("inf"),
+                route[
+                    "evaluation"
+                ].get(
+                    "score"
+                ),
+                default=float(
+                    "inf"
+                ),
             ),
+
             _safe_number(
-                route.get("total_time_minutes"),
-                default=float("inf"),
+                route.get(
+                    "total_time_minutes"
+                ),
+                default=float(
+                    "inf"
+                ),
             ),
+
             _safe_number(
-                route.get("transfer_count"),
-                default=float("inf"),
+                route.get(
+                    "transfer_count"
+                ),
+                default=float(
+                    "inf"
+                ),
             ),
+
             _safe_number(
                 route.get(
                     "total_distance_meters"
                 ),
-                default=float("inf"),
+                default=float(
+                    "inf"
+                ),
             ),
         )
     )
 
-    recommended_route = available_routes[0]
-    recommended_route["evaluation"][
+    recommended_route = (
+        available_routes[
+            0
+        ]
+    )
+
+    recommended_route[
+        "evaluation"
+    ][
         "is_recommended"
     ] = True
 
-    # 추천 경로를 제외한 이용 가능한 후보
-    alternative_routes = available_routes[1:]
+    alternative_routes = (
+        available_routes[
+            1:
+        ]
+    )
 
     return {
         "user_type": user_type,
-        "user_type_name": USER_CONFIGS[
-            user_type
-        ]["name"],
-        "recommended_route": recommended_route,
-        "alternative_routes": alternative_routes,
-        "excluded_routes": excluded_routes,
+
+        "user_type_name": (
+            USER_CONFIGS[
+                user_type
+            ][
+                "name"
+            ]
+        ),
+
+        "recommended_route": (
+            recommended_route
+        ),
+
+        "alternative_routes": (
+            alternative_routes
+        ),
+
+        "excluded_routes": (
+            excluded_routes
+        ),
+
         "summary": {
-            "total_candidate_count": len(
-                evaluated_routes
+            "total_candidate_count": (
+                len(
+                    evaluated_routes
+                )
             ),
-            "available_route_count": len(
-                available_routes
+
+            "available_route_count": (
+                len(
+                    available_routes
+                )
             ),
-            "excluded_route_count": len(
-                excluded_routes
+
+            "excluded_route_count": (
+                len(
+                    excluded_routes
+                )
             ),
         },
     }
