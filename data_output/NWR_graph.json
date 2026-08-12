@@ -1,0 +1,680 @@
+{
+  "station_code": "NWR",
+  "station_name": "남위례역",
+  "nodes": [
+    {
+      "id": "NWR_1F_HUB",
+      "station_code": "NWR",
+      "station_name": "남위례역",
+      "floor": "1F",
+      "type": "FLOOR_HUB",
+      "description": "남위례역 1F 대합실/통로 중앙"
+    },
+    {
+      "id": "NWR_2F_HUB",
+      "station_code": "NWR",
+      "station_name": "남위례역",
+      "floor": "2F",
+      "type": "FLOOR_HUB",
+      "description": "남위례역 2F 대합실/통로 중앙"
+    },
+    {
+      "id": "NWR_1F_FAC_2249470_START",
+      "station_code": "NWR",
+      "station_name": "남위례역",
+      "floor": "1F",
+      "type": "FACILITY_POINT",
+      "description": "남위례역 1F (대합실(1번출구))"
+    },
+    {
+      "id": "NWR_2F_FAC_2249470_END",
+      "station_code": "NWR",
+      "station_name": "남위례역",
+      "floor": "2F",
+      "type": "FACILITY_POINT",
+      "description": "남위례역 2F (대합실(1번출구))"
+    },
+    {
+      "id": "NWR_4F_HUB",
+      "station_code": "NWR",
+      "station_name": "남위례역",
+      "floor": "4F",
+      "type": "FLOOR_HUB",
+      "description": "남위례역 4F 대합실/통로 중앙"
+    },
+    {
+      "id": "NWR_1F_FAC_2249471_START",
+      "station_code": "NWR",
+      "station_name": "남위례역",
+      "floor": "1F",
+      "type": "FACILITY_POINT",
+      "description": "남위례역 1F (5번출구측)"
+    },
+    {
+      "id": "NWR_4F_FAC_2249471_END",
+      "station_code": "NWR",
+      "station_name": "남위례역",
+      "floor": "4F",
+      "type": "FACILITY_POINT",
+      "description": "남위례역 4F (5번출구측)"
+    },
+    {
+      "id": "NWR_3F_HUB",
+      "station_code": "NWR",
+      "station_name": "남위례역",
+      "floor": "3F",
+      "type": "FLOOR_HUB",
+      "description": "남위례역 3F 대합실/통로 중앙"
+    },
+    {
+      "id": "NWR_2F_FAC_2249472_START",
+      "station_code": "NWR",
+      "station_name": "남위례역",
+      "floor": "2F",
+      "type": "FACILITY_POINT",
+      "description": "남위례역 2F (산성방면3-4)"
+    },
+    {
+      "id": "NWR_3F_FAC_2249472_END",
+      "station_code": "NWR",
+      "station_name": "남위례역",
+      "floor": "3F",
+      "type": "FACILITY_POINT",
+      "description": "남위례역 3F (산성방면3-4)"
+    },
+    {
+      "id": "NWR_2F_FAC_3813886_START",
+      "station_code": "NWR",
+      "station_name": "남위례역",
+      "floor": "2F",
+      "type": "FACILITY_POINT",
+      "description": "남위례역 2F (산성방면5-1)"
+    },
+    {
+      "id": "NWR_3F_FAC_3813886_END",
+      "station_code": "NWR",
+      "station_name": "남위례역",
+      "floor": "3F",
+      "type": "FACILITY_POINT",
+      "description": "남위례역 3F (산성방면5-1)"
+    },
+    {
+      "id": "NWR_1F_FAC_3813888_START",
+      "station_code": "NWR",
+      "station_name": "남위례역",
+      "floor": "1F",
+      "type": "FACILITY_POINT",
+      "description": "남위례역 1F (5번출구측)"
+    },
+    {
+      "id": "NWR_2F_FAC_3813888_END",
+      "station_code": "NWR",
+      "station_name": "남위례역",
+      "floor": "2F",
+      "type": "FACILITY_POINT",
+      "description": "남위례역 2F (5번출구측)"
+    },
+    {
+      "id": "NWR_3F_FAC_3813887_START",
+      "station_code": "NWR",
+      "station_name": "남위례역",
+      "floor": "3F",
+      "type": "FACILITY_POINT",
+      "description": "남위례역 3F (산성방면5-1)"
+    },
+    {
+      "id": "NWR_2F_FAC_3813887_END",
+      "station_code": "NWR",
+      "station_name": "남위례역",
+      "floor": "2F",
+      "type": "FACILITY_POINT",
+      "description": "남위례역 2F (산성방면5-1)"
+    },
+    {
+      "id": "NWR_1F_FAC_3813889_START",
+      "station_code": "NWR",
+      "station_name": "남위례역",
+      "floor": "1F",
+      "type": "FACILITY_POINT",
+      "description": "남위례역 1F (1번출구측)"
+    },
+    {
+      "id": "NWR_2F_FAC_3813889_END",
+      "station_code": "NWR",
+      "station_name": "남위례역",
+      "floor": "2F",
+      "type": "FACILITY_POINT",
+      "description": "남위례역 2F (1번출구측)"
+    },
+    {
+      "id": "NWR_3F_FAC_3813892_START",
+      "station_code": "NWR",
+      "station_name": "남위례역",
+      "floor": "3F",
+      "type": "FACILITY_POINT",
+      "description": "남위례역 3F (대합실)"
+    },
+    {
+      "id": "NWR_2F_FAC_3813892_END",
+      "station_code": "NWR",
+      "station_name": "남위례역",
+      "floor": "2F",
+      "type": "FACILITY_POINT",
+      "description": "남위례역 2F (대합실)"
+    },
+    {
+      "id": "NWR_2F_FAC_3813891_START",
+      "station_code": "NWR",
+      "station_name": "남위례역",
+      "floor": "2F",
+      "type": "FACILITY_POINT",
+      "description": "남위례역 2F (대합실)"
+    },
+    {
+      "id": "NWR_3F_FAC_3813891_END",
+      "station_code": "NWR",
+      "station_name": "남위례역",
+      "floor": "3F",
+      "type": "FACILITY_POINT",
+      "description": "남위례역 3F (대합실)"
+    },
+    {
+      "id": "NWR_2F_FAC_3813890_START",
+      "station_code": "NWR",
+      "station_name": "남위례역",
+      "floor": "2F",
+      "type": "FACILITY_POINT",
+      "description": "남위례역 2F (1번출구측)"
+    },
+    {
+      "id": "NWR_1F_FAC_3813890_END",
+      "station_code": "NWR",
+      "station_name": "남위례역",
+      "floor": "1F",
+      "type": "FACILITY_POINT",
+      "description": "남위례역 1F (1번출구측)"
+    }
+  ],
+  "edges": [
+    {
+      "id": "EDGE_NWR_2249470_UP",
+      "from_node": "NWR_1F_FAC_2249470_START",
+      "to_node": "NWR_2F_FAC_2249470_END",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NWR_2249470_DOWN",
+      "from_node": "NWR_2F_FAC_2249470_END",
+      "to_node": "NWR_1F_FAC_2249470_START",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NWR_1F_FAC_2249470_START_HUB",
+      "from_node": "NWR_1F_FAC_2249470_START",
+      "to_node": "NWR_1F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NWR_1F_FAC_2249470_START",
+      "from_node": "NWR_1F_HUB",
+      "to_node": "NWR_1F_FAC_2249470_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NWR_2F_FAC_2249470_END_HUB",
+      "from_node": "NWR_2F_FAC_2249470_END",
+      "to_node": "NWR_2F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NWR_2F_FAC_2249470_END",
+      "from_node": "NWR_2F_HUB",
+      "to_node": "NWR_2F_FAC_2249470_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NWR_2249471_UP",
+      "from_node": "NWR_1F_FAC_2249471_START",
+      "to_node": "NWR_4F_FAC_2249471_END",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NWR_2249471_DOWN",
+      "from_node": "NWR_4F_FAC_2249471_END",
+      "to_node": "NWR_1F_FAC_2249471_START",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NWR_1F_FAC_2249471_START_HUB",
+      "from_node": "NWR_1F_FAC_2249471_START",
+      "to_node": "NWR_1F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NWR_1F_FAC_2249471_START",
+      "from_node": "NWR_1F_HUB",
+      "to_node": "NWR_1F_FAC_2249471_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NWR_4F_FAC_2249471_END_HUB",
+      "from_node": "NWR_4F_FAC_2249471_END",
+      "to_node": "NWR_4F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NWR_4F_FAC_2249471_END",
+      "from_node": "NWR_4F_HUB",
+      "to_node": "NWR_4F_FAC_2249471_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NWR_2249472_UP",
+      "from_node": "NWR_2F_FAC_2249472_START",
+      "to_node": "NWR_3F_FAC_2249472_END",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NWR_2249472_DOWN",
+      "from_node": "NWR_3F_FAC_2249472_END",
+      "to_node": "NWR_2F_FAC_2249472_START",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NWR_2F_FAC_2249472_START_HUB",
+      "from_node": "NWR_2F_FAC_2249472_START",
+      "to_node": "NWR_2F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NWR_2F_FAC_2249472_START",
+      "from_node": "NWR_2F_HUB",
+      "to_node": "NWR_2F_FAC_2249472_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NWR_3F_FAC_2249472_END_HUB",
+      "from_node": "NWR_3F_FAC_2249472_END",
+      "to_node": "NWR_3F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NWR_3F_FAC_2249472_END",
+      "from_node": "NWR_3F_HUB",
+      "to_node": "NWR_3F_FAC_2249472_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NWR_3813886_UP",
+      "from_node": "NWR_2F_FAC_3813886_START",
+      "to_node": "NWR_3F_FAC_3813886_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NWR_3813886_DOWN",
+      "from_node": "NWR_3F_FAC_3813886_END",
+      "to_node": "NWR_2F_FAC_3813886_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NWR_2F_FAC_3813886_START_HUB",
+      "from_node": "NWR_2F_FAC_3813886_START",
+      "to_node": "NWR_2F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NWR_2F_FAC_3813886_START",
+      "from_node": "NWR_2F_HUB",
+      "to_node": "NWR_2F_FAC_3813886_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NWR_3F_FAC_3813886_END_HUB",
+      "from_node": "NWR_3F_FAC_3813886_END",
+      "to_node": "NWR_3F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NWR_3F_FAC_3813886_END",
+      "from_node": "NWR_3F_HUB",
+      "to_node": "NWR_3F_FAC_3813886_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NWR_3813888_UP",
+      "from_node": "NWR_1F_FAC_3813888_START",
+      "to_node": "NWR_2F_FAC_3813888_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NWR_3813888_DOWN",
+      "from_node": "NWR_2F_FAC_3813888_END",
+      "to_node": "NWR_1F_FAC_3813888_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NWR_1F_FAC_3813888_START_HUB",
+      "from_node": "NWR_1F_FAC_3813888_START",
+      "to_node": "NWR_1F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NWR_1F_FAC_3813888_START",
+      "from_node": "NWR_1F_HUB",
+      "to_node": "NWR_1F_FAC_3813888_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NWR_2F_FAC_3813888_END_HUB",
+      "from_node": "NWR_2F_FAC_3813888_END",
+      "to_node": "NWR_2F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NWR_2F_FAC_3813888_END",
+      "from_node": "NWR_2F_HUB",
+      "to_node": "NWR_2F_FAC_3813888_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NWR_3813887_UP",
+      "from_node": "NWR_3F_FAC_3813887_START",
+      "to_node": "NWR_2F_FAC_3813887_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NWR_3813887_DOWN",
+      "from_node": "NWR_2F_FAC_3813887_END",
+      "to_node": "NWR_3F_FAC_3813887_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NWR_3F_FAC_3813887_START_HUB",
+      "from_node": "NWR_3F_FAC_3813887_START",
+      "to_node": "NWR_3F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NWR_3F_FAC_3813887_START",
+      "from_node": "NWR_3F_HUB",
+      "to_node": "NWR_3F_FAC_3813887_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NWR_2F_FAC_3813887_END_HUB",
+      "from_node": "NWR_2F_FAC_3813887_END",
+      "to_node": "NWR_2F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NWR_2F_FAC_3813887_END",
+      "from_node": "NWR_2F_HUB",
+      "to_node": "NWR_2F_FAC_3813887_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NWR_3813889_UP",
+      "from_node": "NWR_1F_FAC_3813889_START",
+      "to_node": "NWR_2F_FAC_3813889_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NWR_3813889_DOWN",
+      "from_node": "NWR_2F_FAC_3813889_END",
+      "to_node": "NWR_1F_FAC_3813889_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NWR_1F_FAC_3813889_START_HUB",
+      "from_node": "NWR_1F_FAC_3813889_START",
+      "to_node": "NWR_1F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NWR_1F_FAC_3813889_START",
+      "from_node": "NWR_1F_HUB",
+      "to_node": "NWR_1F_FAC_3813889_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NWR_2F_FAC_3813889_END_HUB",
+      "from_node": "NWR_2F_FAC_3813889_END",
+      "to_node": "NWR_2F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NWR_2F_FAC_3813889_END",
+      "from_node": "NWR_2F_HUB",
+      "to_node": "NWR_2F_FAC_3813889_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NWR_3813892_UP",
+      "from_node": "NWR_3F_FAC_3813892_START",
+      "to_node": "NWR_2F_FAC_3813892_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NWR_3813892_DOWN",
+      "from_node": "NWR_2F_FAC_3813892_END",
+      "to_node": "NWR_3F_FAC_3813892_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NWR_3F_FAC_3813892_START_HUB",
+      "from_node": "NWR_3F_FAC_3813892_START",
+      "to_node": "NWR_3F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NWR_3F_FAC_3813892_START",
+      "from_node": "NWR_3F_HUB",
+      "to_node": "NWR_3F_FAC_3813892_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NWR_2F_FAC_3813892_END_HUB",
+      "from_node": "NWR_2F_FAC_3813892_END",
+      "to_node": "NWR_2F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NWR_2F_FAC_3813892_END",
+      "from_node": "NWR_2F_HUB",
+      "to_node": "NWR_2F_FAC_3813892_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NWR_3813891_UP",
+      "from_node": "NWR_2F_FAC_3813891_START",
+      "to_node": "NWR_3F_FAC_3813891_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NWR_3813891_DOWN",
+      "from_node": "NWR_3F_FAC_3813891_END",
+      "to_node": "NWR_2F_FAC_3813891_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NWR_2F_FAC_3813891_START_HUB",
+      "from_node": "NWR_2F_FAC_3813891_START",
+      "to_node": "NWR_2F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NWR_2F_FAC_3813891_START",
+      "from_node": "NWR_2F_HUB",
+      "to_node": "NWR_2F_FAC_3813891_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NWR_3F_FAC_3813891_END_HUB",
+      "from_node": "NWR_3F_FAC_3813891_END",
+      "to_node": "NWR_3F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NWR_3F_FAC_3813891_END",
+      "from_node": "NWR_3F_HUB",
+      "to_node": "NWR_3F_FAC_3813891_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NWR_3813890_UP",
+      "from_node": "NWR_2F_FAC_3813890_START",
+      "to_node": "NWR_1F_FAC_3813890_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NWR_3813890_DOWN",
+      "from_node": "NWR_1F_FAC_3813890_END",
+      "to_node": "NWR_2F_FAC_3813890_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NWR_2F_FAC_3813890_START_HUB",
+      "from_node": "NWR_2F_FAC_3813890_START",
+      "to_node": "NWR_2F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NWR_2F_FAC_3813890_START",
+      "from_node": "NWR_2F_HUB",
+      "to_node": "NWR_2F_FAC_3813890_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NWR_1F_FAC_3813890_END_HUB",
+      "from_node": "NWR_1F_FAC_3813890_END",
+      "to_node": "NWR_1F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NWR_1F_FAC_3813890_END",
+      "from_node": "NWR_1F_HUB",
+      "to_node": "NWR_1F_FAC_3813890_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    }
+  ]
+}

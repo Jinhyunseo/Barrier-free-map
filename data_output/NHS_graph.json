@@ -1,0 +1,424 @@
+{
+  "station_code": "NHS",
+  "station_name": "남한산성입구역",
+  "nodes": [
+    {
+      "id": "NHS_B3_HUB",
+      "station_code": "NHS",
+      "station_name": "남한산성입구역",
+      "floor": "B3",
+      "type": "FLOOR_HUB",
+      "description": "남한산성입구역 B3 대합실/통로 중앙"
+    },
+    {
+      "id": "NHS_B2_HUB",
+      "station_code": "NHS",
+      "station_name": "남한산성입구역",
+      "floor": "B2",
+      "type": "FLOOR_HUB",
+      "description": "남한산성입구역 B2 대합실/통로 중앙"
+    },
+    {
+      "id": "NHS_B3_FAC_2022967_START",
+      "station_code": "NHS",
+      "station_name": "남한산성입구역",
+      "floor": "B3",
+      "type": "FACILITY_POINT",
+      "description": "남한산성입구역 B3 (산성방면3-4)"
+    },
+    {
+      "id": "NHS_B2_FAC_2022967_END",
+      "station_code": "NHS",
+      "station_name": "남한산성입구역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "남한산성입구역 B2 (산성방면3-4)"
+    },
+    {
+      "id": "NHS_1F_HUB",
+      "station_code": "NHS",
+      "station_name": "남한산성입구역",
+      "floor": "1F",
+      "type": "FLOOR_HUB",
+      "description": "남한산성입구역 1F 대합실/통로 중앙"
+    },
+    {
+      "id": "NHS_1F_FAC_2231773_START",
+      "station_code": "NHS",
+      "station_name": "남한산성입구역",
+      "floor": "1F",
+      "type": "FACILITY_POINT",
+      "description": "남한산성입구역 1F (단대오거리방면4-1)"
+    },
+    {
+      "id": "NHS_B3_FAC_2231773_END",
+      "station_code": "NHS",
+      "station_name": "남한산성입구역",
+      "floor": "B3",
+      "type": "FACILITY_POINT",
+      "description": "남한산성입구역 B3 (단대오거리방면4-1)"
+    },
+    {
+      "id": "NHS_B1_HUB",
+      "station_code": "NHS",
+      "station_name": "남한산성입구역",
+      "floor": "B1",
+      "type": "FLOOR_HUB",
+      "description": "남한산성입구역 B1 대합실/통로 중앙"
+    },
+    {
+      "id": "NHS_B2_FAC_3805603_START",
+      "station_code": "NHS",
+      "station_name": "남한산성입구역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "남한산성입구역 B2 (대합실)"
+    },
+    {
+      "id": "NHS_B1_FAC_3805603_END",
+      "station_code": "NHS",
+      "station_name": "남한산성입구역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "남한산성입구역 B1 (대합실)"
+    },
+    {
+      "id": "NHS_B1_FAC_3805604_START",
+      "station_code": "NHS",
+      "station_name": "남한산성입구역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "남한산성입구역 B1 (대합실)"
+    },
+    {
+      "id": "NHS_B2_FAC_3805604_END",
+      "station_code": "NHS",
+      "station_name": "남한산성입구역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "남한산성입구역 B2 (대합실)"
+    },
+    {
+      "id": "NHS_B1_FAC_3802079_START",
+      "station_code": "NHS",
+      "station_name": "남한산성입구역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "남한산성입구역 B1 (1번출구측)"
+    },
+    {
+      "id": "NHS_1F_FAC_3802079_END",
+      "station_code": "NHS",
+      "station_name": "남한산성입구역",
+      "floor": "1F",
+      "type": "FACILITY_POINT",
+      "description": "남한산성입구역 1F (1번출구측)"
+    },
+    {
+      "id": "NHS_1F_FAC_3802080_START",
+      "station_code": "NHS",
+      "station_name": "남한산성입구역",
+      "floor": "1F",
+      "type": "FACILITY_POINT",
+      "description": "남한산성입구역 1F (1번출구측)"
+    },
+    {
+      "id": "NHS_B1_FAC_3802080_END",
+      "station_code": "NHS",
+      "station_name": "남한산성입구역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "남한산성입구역 B1 (1번출구측)"
+    }
+  ],
+  "edges": [
+    {
+      "id": "EDGE_NHS_2022967_UP",
+      "from_node": "NHS_B3_FAC_2022967_START",
+      "to_node": "NHS_B2_FAC_2022967_END",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중지(불합격)"
+    },
+    {
+      "id": "EDGE_NHS_2022967_DOWN",
+      "from_node": "NHS_B2_FAC_2022967_END",
+      "to_node": "NHS_B3_FAC_2022967_START",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중지(불합격)"
+    },
+    {
+      "id": "WALK_NHS_B3_FAC_2022967_START_HUB",
+      "from_node": "NHS_B3_FAC_2022967_START",
+      "to_node": "NHS_B3_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NHS_B3_FAC_2022967_START",
+      "from_node": "NHS_B3_HUB",
+      "to_node": "NHS_B3_FAC_2022967_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NHS_B2_FAC_2022967_END_HUB",
+      "from_node": "NHS_B2_FAC_2022967_END",
+      "to_node": "NHS_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NHS_B2_FAC_2022967_END",
+      "from_node": "NHS_B2_HUB",
+      "to_node": "NHS_B2_FAC_2022967_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NHS_2231773_UP",
+      "from_node": "NHS_1F_FAC_2231773_START",
+      "to_node": "NHS_B3_FAC_2231773_END",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NHS_2231773_DOWN",
+      "from_node": "NHS_B3_FAC_2231773_END",
+      "to_node": "NHS_1F_FAC_2231773_START",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NHS_1F_FAC_2231773_START_HUB",
+      "from_node": "NHS_1F_FAC_2231773_START",
+      "to_node": "NHS_1F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NHS_1F_FAC_2231773_START",
+      "from_node": "NHS_1F_HUB",
+      "to_node": "NHS_1F_FAC_2231773_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NHS_B3_FAC_2231773_END_HUB",
+      "from_node": "NHS_B3_FAC_2231773_END",
+      "to_node": "NHS_B3_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NHS_B3_FAC_2231773_END",
+      "from_node": "NHS_B3_HUB",
+      "to_node": "NHS_B3_FAC_2231773_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NHS_3805603_UP",
+      "from_node": "NHS_B2_FAC_3805603_START",
+      "to_node": "NHS_B1_FAC_3805603_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NHS_3805603_DOWN",
+      "from_node": "NHS_B1_FAC_3805603_END",
+      "to_node": "NHS_B2_FAC_3805603_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NHS_B2_FAC_3805603_START_HUB",
+      "from_node": "NHS_B2_FAC_3805603_START",
+      "to_node": "NHS_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NHS_B2_FAC_3805603_START",
+      "from_node": "NHS_B2_HUB",
+      "to_node": "NHS_B2_FAC_3805603_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NHS_B1_FAC_3805603_END_HUB",
+      "from_node": "NHS_B1_FAC_3805603_END",
+      "to_node": "NHS_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NHS_B1_FAC_3805603_END",
+      "from_node": "NHS_B1_HUB",
+      "to_node": "NHS_B1_FAC_3805603_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NHS_3805604_UP",
+      "from_node": "NHS_B1_FAC_3805604_START",
+      "to_node": "NHS_B2_FAC_3805604_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NHS_3805604_DOWN",
+      "from_node": "NHS_B2_FAC_3805604_END",
+      "to_node": "NHS_B1_FAC_3805604_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NHS_B1_FAC_3805604_START_HUB",
+      "from_node": "NHS_B1_FAC_3805604_START",
+      "to_node": "NHS_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NHS_B1_FAC_3805604_START",
+      "from_node": "NHS_B1_HUB",
+      "to_node": "NHS_B1_FAC_3805604_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NHS_B2_FAC_3805604_END_HUB",
+      "from_node": "NHS_B2_FAC_3805604_END",
+      "to_node": "NHS_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NHS_B2_FAC_3805604_END",
+      "from_node": "NHS_B2_HUB",
+      "to_node": "NHS_B2_FAC_3805604_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NHS_3802079_UP",
+      "from_node": "NHS_B1_FAC_3802079_START",
+      "to_node": "NHS_1F_FAC_3802079_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NHS_3802079_DOWN",
+      "from_node": "NHS_1F_FAC_3802079_END",
+      "to_node": "NHS_B1_FAC_3802079_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NHS_B1_FAC_3802079_START_HUB",
+      "from_node": "NHS_B1_FAC_3802079_START",
+      "to_node": "NHS_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NHS_B1_FAC_3802079_START",
+      "from_node": "NHS_B1_HUB",
+      "to_node": "NHS_B1_FAC_3802079_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NHS_1F_FAC_3802079_END_HUB",
+      "from_node": "NHS_1F_FAC_3802079_END",
+      "to_node": "NHS_1F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NHS_1F_FAC_3802079_END",
+      "from_node": "NHS_1F_HUB",
+      "to_node": "NHS_1F_FAC_3802079_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NHS_3802080_UP",
+      "from_node": "NHS_1F_FAC_3802080_START",
+      "to_node": "NHS_B1_FAC_3802080_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_NHS_3802080_DOWN",
+      "from_node": "NHS_B1_FAC_3802080_END",
+      "to_node": "NHS_1F_FAC_3802080_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NHS_1F_FAC_3802080_START_HUB",
+      "from_node": "NHS_1F_FAC_3802080_START",
+      "to_node": "NHS_1F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NHS_1F_FAC_3802080_START",
+      "from_node": "NHS_1F_HUB",
+      "to_node": "NHS_1F_FAC_3802080_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_NHS_B1_FAC_3802080_END_HUB",
+      "from_node": "NHS_B1_FAC_3802080_END",
+      "to_node": "NHS_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_NHS_B1_FAC_3802080_END",
+      "from_node": "NHS_B1_HUB",
+      "to_node": "NHS_B1_FAC_3802080_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    }
+  ]
+}

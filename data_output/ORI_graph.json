@@ -1,0 +1,1264 @@
+{
+  "station_code": "ORI",
+  "station_name": "오리역",
+  "nodes": [
+    {
+      "id": "ORI_B2_HUB",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B2",
+      "type": "FLOOR_HUB",
+      "description": "오리역 B2 대합실/통로 중앙"
+    },
+    {
+      "id": "ORI_B1_HUB",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B1",
+      "type": "FLOOR_HUB",
+      "description": "오리역 B1 대합실/통로 중앙"
+    },
+    {
+      "id": "ORI_B2_FAC_2056549_START",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "오리역 B2 ((B1)남쯕게이트옆(B2)(상행)인천방향승강장5-4)"
+    },
+    {
+      "id": "ORI_B1_FAC_2056549_END",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "오리역 B1 ((B1)남쯕게이트옆(B2)(상행)인천방향승강장5-4)"
+    },
+    {
+      "id": "ORI_B2_FAC_2056550_START",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "오리역 B2 ((B1)남쯕게이트옆(B2)(하행)왕십리방향승강장2-2)"
+    },
+    {
+      "id": "ORI_B1_FAC_2056550_END",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "오리역 B1 ((B1)남쯕게이트옆(B2)(하행)왕십리방향승강장2-2)"
+    },
+    {
+      "id": "ORI_1F_HUB",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "1F",
+      "type": "FLOOR_HUB",
+      "description": "오리역 1F 대합실/통로 중앙"
+    },
+    {
+      "id": "ORI_B1_FAC_2056548_START",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "오리역 B1 ((1F)6번출입구옆(B1)고객맞이방편의점옆)"
+    },
+    {
+      "id": "ORI_1F_FAC_2056548_END",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "1F",
+      "type": "FACILITY_POINT",
+      "description": "오리역 1F ((1F)6번출입구옆(B1)고객맞이방편의점옆)"
+    },
+    {
+      "id": "ORI_B1_FAC_3807432_START",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "오리역 B1 (북쪽맞이방>7번출구지하1층중층7번출구지하1중층)"
+    },
+    {
+      "id": "ORI_B2_FAC_3807432_END",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "오리역 B2 (북쪽맞이방>7번출구지하1층중층7번출구지하1중층)"
+    },
+    {
+      "id": "ORI_B2_FAC_3807431_START",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "오리역 B2 (7번출구지하1층중층>북쪽맞이방북쪽맞이방)"
+    },
+    {
+      "id": "ORI_B1_FAC_3807431_END",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "오리역 B1 (7번출구지하1층중층>북쪽맞이방북쪽맞이방)"
+    },
+    {
+      "id": "ORI_B1_FAC_3807434_START",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "오리역 B1 (북쪽맞이방>7번출구7번출구(우체국방향))"
+    },
+    {
+      "id": "ORI_1F_FAC_3807434_END",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "1F",
+      "type": "FACILITY_POINT",
+      "description": "오리역 1F (북쪽맞이방>7번출구7번출구(우체국방향))"
+    },
+    {
+      "id": "ORI_1F_FAC_3807433_START",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "1F",
+      "type": "FACILITY_POINT",
+      "description": "오리역 1F (7번출구(우체국방향)>북쪽맞이방7번출구지하1중층)"
+    },
+    {
+      "id": "ORI_B1_FAC_3807433_END",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "오리역 B1 (7번출구(우체국방향)>북쪽맞이방7번출구지하1중층)"
+    },
+    {
+      "id": "ORI_1F_FAC_3807436_START",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "1F",
+      "type": "FACILITY_POINT",
+      "description": "오리역 1F (3번출구(죽전방향)>남쪽맞이방남쪽맞이방게이트앞)"
+    },
+    {
+      "id": "ORI_B1_FAC_3807436_END",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "오리역 B1 (3번출구(죽전방향)>남쪽맞이방남쪽맞이방게이트앞)"
+    },
+    {
+      "id": "ORI_B1_FAC_3807435_START",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "오리역 B1 (남쪽맞이방게이트앞>3번출구3번출구(죽전방향))"
+    },
+    {
+      "id": "ORI_1F_FAC_3807435_END",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "1F",
+      "type": "FACILITY_POINT",
+      "description": "오리역 1F (남쪽맞이방게이트앞>3번출구3번출구(죽전방향))"
+    },
+    {
+      "id": "ORI_B1_FAC_3802436_START",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "오리역 B1 (남쪽맞이방>상행승강장상행승강장5-2)"
+    },
+    {
+      "id": "ORI_B2_FAC_3802436_END",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "오리역 B2 (남쪽맞이방>상행승강장상행승강장5-2)"
+    },
+    {
+      "id": "ORI_B2_FAC_3802438_START",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "오리역 B2 (하행승강장>남쪽맞이방남쪽맞이방게이트앞)"
+    },
+    {
+      "id": "ORI_B1_FAC_3802438_END",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "오리역 B1 (하행승강장>남쪽맞이방남쪽맞이방게이트앞)"
+    },
+    {
+      "id": "ORI_B1_FAC_3802439_START",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "오리역 B1 (남쪽맞이방>하행승강장하행승강장2-4)"
+    },
+    {
+      "id": "ORI_B2_FAC_3802439_END",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "오리역 B2 (남쪽맞이방>하행승강장하행승강장2-4)"
+    },
+    {
+      "id": "ORI_B2_FAC_3802437_START",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "오리역 B2 (상행승강장>남쪽맞이방남쪽맞이방게이트앞)"
+    },
+    {
+      "id": "ORI_B1_FAC_3802437_END",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "오리역 B1 (상행승강장>남쪽맞이방남쪽맞이방게이트앞)"
+    },
+    {
+      "id": "ORI_B1_FAC_3807437_START",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "오리역 B1 (남쪽맞이방게이트앞>6번출구6번출구(홈플러스방향))"
+    },
+    {
+      "id": "ORI_1F_FAC_3807437_END",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "1F",
+      "type": "FACILITY_POINT",
+      "description": "오리역 1F (남쪽맞이방게이트앞>6번출구6번출구(홈플러스방향))"
+    },
+    {
+      "id": "ORI_1F_FAC_3807438_START",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "1F",
+      "type": "FACILITY_POINT",
+      "description": "오리역 1F (6번출구(홈플러스방향)>남쪽맞이방남쪽맞이방게이트앞)"
+    },
+    {
+      "id": "ORI_B1_FAC_3807438_END",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "오리역 B1 (6번출구(홈플러스방향)>남쪽맞이방남쪽맞이방게이트앞)"
+    },
+    {
+      "id": "ORI_B1_FAC_3818279_START",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "오리역 B1 (남쪽맞이방2번출구중층>2번출구2번출구(환승주차장출입구방향))"
+    },
+    {
+      "id": "ORI_1F_FAC_3818279_END",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "1F",
+      "type": "FACILITY_POINT",
+      "description": "오리역 1F (남쪽맞이방2번출구중층>2번출구2번출구(환승주차장출입구방향))"
+    },
+    {
+      "id": "ORI_M_HUB",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "M",
+      "type": "FLOOR_HUB",
+      "description": "오리역 M 대합실/통로 중앙"
+    },
+    {
+      "id": "ORI_M_FAC_3818293_START",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "M",
+      "type": "FACILITY_POINT",
+      "description": "오리역 M (4번출구중층>4번출구4번출구(하나로마트방향))"
+    },
+    {
+      "id": "ORI_1F_FAC_3818293_END",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "1F",
+      "type": "FACILITY_POINT",
+      "description": "오리역 1F (4번출구중층>4번출구4번출구(하나로마트방향))"
+    },
+    {
+      "id": "ORI_B3_HUB",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B3",
+      "type": "FLOOR_HUB",
+      "description": "오리역 B3 대합실/통로 중앙"
+    },
+    {
+      "id": "ORI_B3_FAC_3818292_START",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B3",
+      "type": "FACILITY_POINT",
+      "description": "오리역 B3 (남쪽맞이방>4.5번출구중층4.5번출구중층)"
+    },
+    {
+      "id": "ORI_M_FAC_3818292_END",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "M",
+      "type": "FACILITY_POINT",
+      "description": "오리역 M (남쪽맞이방>4.5번출구중층4.5번출구중층)"
+    },
+    {
+      "id": "ORI_B1_FAC_3818326_START",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "오리역 B1 (북쪽맞이방1번출구증층>1번출구1번출구(LH방향))"
+    },
+    {
+      "id": "ORI_1F_FAC_3818326_END",
+      "station_code": "ORI",
+      "station_name": "오리역",
+      "floor": "1F",
+      "type": "FACILITY_POINT",
+      "description": "오리역 1F (북쪽맞이방1번출구증층>1번출구1번출구(LH방향))"
+    }
+  ],
+  "edges": [
+    {
+      "id": "EDGE_ORI_2056549_UP",
+      "from_node": "ORI_B2_FAC_2056549_START",
+      "to_node": "ORI_B1_FAC_2056549_END",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_2056549_DOWN",
+      "from_node": "ORI_B1_FAC_2056549_END",
+      "to_node": "ORI_B2_FAC_2056549_START",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_B2_FAC_2056549_START_HUB",
+      "from_node": "ORI_B2_FAC_2056549_START",
+      "to_node": "ORI_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_B2_FAC_2056549_START",
+      "from_node": "ORI_B2_HUB",
+      "to_node": "ORI_B2_FAC_2056549_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_B1_FAC_2056549_END_HUB",
+      "from_node": "ORI_B1_FAC_2056549_END",
+      "to_node": "ORI_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_B1_FAC_2056549_END",
+      "from_node": "ORI_B1_HUB",
+      "to_node": "ORI_B1_FAC_2056549_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_2056550_UP",
+      "from_node": "ORI_B2_FAC_2056550_START",
+      "to_node": "ORI_B1_FAC_2056550_END",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_2056550_DOWN",
+      "from_node": "ORI_B1_FAC_2056550_END",
+      "to_node": "ORI_B2_FAC_2056550_START",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_B2_FAC_2056550_START_HUB",
+      "from_node": "ORI_B2_FAC_2056550_START",
+      "to_node": "ORI_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_B2_FAC_2056550_START",
+      "from_node": "ORI_B2_HUB",
+      "to_node": "ORI_B2_FAC_2056550_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_B1_FAC_2056550_END_HUB",
+      "from_node": "ORI_B1_FAC_2056550_END",
+      "to_node": "ORI_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_B1_FAC_2056550_END",
+      "from_node": "ORI_B1_HUB",
+      "to_node": "ORI_B1_FAC_2056550_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_2056548_UP",
+      "from_node": "ORI_B1_FAC_2056548_START",
+      "to_node": "ORI_1F_FAC_2056548_END",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_2056548_DOWN",
+      "from_node": "ORI_1F_FAC_2056548_END",
+      "to_node": "ORI_B1_FAC_2056548_START",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_B1_FAC_2056548_START_HUB",
+      "from_node": "ORI_B1_FAC_2056548_START",
+      "to_node": "ORI_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_B1_FAC_2056548_START",
+      "from_node": "ORI_B1_HUB",
+      "to_node": "ORI_B1_FAC_2056548_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_1F_FAC_2056548_END_HUB",
+      "from_node": "ORI_1F_FAC_2056548_END",
+      "to_node": "ORI_1F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_1F_FAC_2056548_END",
+      "from_node": "ORI_1F_HUB",
+      "to_node": "ORI_1F_FAC_2056548_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3807432_UP",
+      "from_node": "ORI_B1_FAC_3807432_START",
+      "to_node": "ORI_B2_FAC_3807432_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3807432_DOWN",
+      "from_node": "ORI_B2_FAC_3807432_END",
+      "to_node": "ORI_B1_FAC_3807432_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_B1_FAC_3807432_START_HUB",
+      "from_node": "ORI_B1_FAC_3807432_START",
+      "to_node": "ORI_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_B1_FAC_3807432_START",
+      "from_node": "ORI_B1_HUB",
+      "to_node": "ORI_B1_FAC_3807432_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_B2_FAC_3807432_END_HUB",
+      "from_node": "ORI_B2_FAC_3807432_END",
+      "to_node": "ORI_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_B2_FAC_3807432_END",
+      "from_node": "ORI_B2_HUB",
+      "to_node": "ORI_B2_FAC_3807432_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3807431_UP",
+      "from_node": "ORI_B2_FAC_3807431_START",
+      "to_node": "ORI_B1_FAC_3807431_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3807431_DOWN",
+      "from_node": "ORI_B1_FAC_3807431_END",
+      "to_node": "ORI_B2_FAC_3807431_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_B2_FAC_3807431_START_HUB",
+      "from_node": "ORI_B2_FAC_3807431_START",
+      "to_node": "ORI_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_B2_FAC_3807431_START",
+      "from_node": "ORI_B2_HUB",
+      "to_node": "ORI_B2_FAC_3807431_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_B1_FAC_3807431_END_HUB",
+      "from_node": "ORI_B1_FAC_3807431_END",
+      "to_node": "ORI_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_B1_FAC_3807431_END",
+      "from_node": "ORI_B1_HUB",
+      "to_node": "ORI_B1_FAC_3807431_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3807434_UP",
+      "from_node": "ORI_B1_FAC_3807434_START",
+      "to_node": "ORI_1F_FAC_3807434_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3807434_DOWN",
+      "from_node": "ORI_1F_FAC_3807434_END",
+      "to_node": "ORI_B1_FAC_3807434_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_B1_FAC_3807434_START_HUB",
+      "from_node": "ORI_B1_FAC_3807434_START",
+      "to_node": "ORI_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_B1_FAC_3807434_START",
+      "from_node": "ORI_B1_HUB",
+      "to_node": "ORI_B1_FAC_3807434_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_1F_FAC_3807434_END_HUB",
+      "from_node": "ORI_1F_FAC_3807434_END",
+      "to_node": "ORI_1F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_1F_FAC_3807434_END",
+      "from_node": "ORI_1F_HUB",
+      "to_node": "ORI_1F_FAC_3807434_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3807433_UP",
+      "from_node": "ORI_1F_FAC_3807433_START",
+      "to_node": "ORI_B1_FAC_3807433_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3807433_DOWN",
+      "from_node": "ORI_B1_FAC_3807433_END",
+      "to_node": "ORI_1F_FAC_3807433_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_1F_FAC_3807433_START_HUB",
+      "from_node": "ORI_1F_FAC_3807433_START",
+      "to_node": "ORI_1F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_1F_FAC_3807433_START",
+      "from_node": "ORI_1F_HUB",
+      "to_node": "ORI_1F_FAC_3807433_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_B1_FAC_3807433_END_HUB",
+      "from_node": "ORI_B1_FAC_3807433_END",
+      "to_node": "ORI_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_B1_FAC_3807433_END",
+      "from_node": "ORI_B1_HUB",
+      "to_node": "ORI_B1_FAC_3807433_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3807436_UP",
+      "from_node": "ORI_1F_FAC_3807436_START",
+      "to_node": "ORI_B1_FAC_3807436_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3807436_DOWN",
+      "from_node": "ORI_B1_FAC_3807436_END",
+      "to_node": "ORI_1F_FAC_3807436_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_1F_FAC_3807436_START_HUB",
+      "from_node": "ORI_1F_FAC_3807436_START",
+      "to_node": "ORI_1F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_1F_FAC_3807436_START",
+      "from_node": "ORI_1F_HUB",
+      "to_node": "ORI_1F_FAC_3807436_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_B1_FAC_3807436_END_HUB",
+      "from_node": "ORI_B1_FAC_3807436_END",
+      "to_node": "ORI_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_B1_FAC_3807436_END",
+      "from_node": "ORI_B1_HUB",
+      "to_node": "ORI_B1_FAC_3807436_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3807435_UP",
+      "from_node": "ORI_B1_FAC_3807435_START",
+      "to_node": "ORI_1F_FAC_3807435_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3807435_DOWN",
+      "from_node": "ORI_1F_FAC_3807435_END",
+      "to_node": "ORI_B1_FAC_3807435_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_B1_FAC_3807435_START_HUB",
+      "from_node": "ORI_B1_FAC_3807435_START",
+      "to_node": "ORI_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_B1_FAC_3807435_START",
+      "from_node": "ORI_B1_HUB",
+      "to_node": "ORI_B1_FAC_3807435_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_1F_FAC_3807435_END_HUB",
+      "from_node": "ORI_1F_FAC_3807435_END",
+      "to_node": "ORI_1F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_1F_FAC_3807435_END",
+      "from_node": "ORI_1F_HUB",
+      "to_node": "ORI_1F_FAC_3807435_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3802436_UP",
+      "from_node": "ORI_B1_FAC_3802436_START",
+      "to_node": "ORI_B2_FAC_3802436_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3802436_DOWN",
+      "from_node": "ORI_B2_FAC_3802436_END",
+      "to_node": "ORI_B1_FAC_3802436_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_B1_FAC_3802436_START_HUB",
+      "from_node": "ORI_B1_FAC_3802436_START",
+      "to_node": "ORI_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_B1_FAC_3802436_START",
+      "from_node": "ORI_B1_HUB",
+      "to_node": "ORI_B1_FAC_3802436_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_B2_FAC_3802436_END_HUB",
+      "from_node": "ORI_B2_FAC_3802436_END",
+      "to_node": "ORI_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_B2_FAC_3802436_END",
+      "from_node": "ORI_B2_HUB",
+      "to_node": "ORI_B2_FAC_3802436_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3802438_UP",
+      "from_node": "ORI_B2_FAC_3802438_START",
+      "to_node": "ORI_B1_FAC_3802438_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3802438_DOWN",
+      "from_node": "ORI_B1_FAC_3802438_END",
+      "to_node": "ORI_B2_FAC_3802438_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_B2_FAC_3802438_START_HUB",
+      "from_node": "ORI_B2_FAC_3802438_START",
+      "to_node": "ORI_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_B2_FAC_3802438_START",
+      "from_node": "ORI_B2_HUB",
+      "to_node": "ORI_B2_FAC_3802438_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_B1_FAC_3802438_END_HUB",
+      "from_node": "ORI_B1_FAC_3802438_END",
+      "to_node": "ORI_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_B1_FAC_3802438_END",
+      "from_node": "ORI_B1_HUB",
+      "to_node": "ORI_B1_FAC_3802438_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3802439_UP",
+      "from_node": "ORI_B1_FAC_3802439_START",
+      "to_node": "ORI_B2_FAC_3802439_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3802439_DOWN",
+      "from_node": "ORI_B2_FAC_3802439_END",
+      "to_node": "ORI_B1_FAC_3802439_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_B1_FAC_3802439_START_HUB",
+      "from_node": "ORI_B1_FAC_3802439_START",
+      "to_node": "ORI_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_B1_FAC_3802439_START",
+      "from_node": "ORI_B1_HUB",
+      "to_node": "ORI_B1_FAC_3802439_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_B2_FAC_3802439_END_HUB",
+      "from_node": "ORI_B2_FAC_3802439_END",
+      "to_node": "ORI_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_B2_FAC_3802439_END",
+      "from_node": "ORI_B2_HUB",
+      "to_node": "ORI_B2_FAC_3802439_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3802437_UP",
+      "from_node": "ORI_B2_FAC_3802437_START",
+      "to_node": "ORI_B1_FAC_3802437_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3802437_DOWN",
+      "from_node": "ORI_B1_FAC_3802437_END",
+      "to_node": "ORI_B2_FAC_3802437_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_B2_FAC_3802437_START_HUB",
+      "from_node": "ORI_B2_FAC_3802437_START",
+      "to_node": "ORI_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_B2_FAC_3802437_START",
+      "from_node": "ORI_B2_HUB",
+      "to_node": "ORI_B2_FAC_3802437_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_B1_FAC_3802437_END_HUB",
+      "from_node": "ORI_B1_FAC_3802437_END",
+      "to_node": "ORI_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_B1_FAC_3802437_END",
+      "from_node": "ORI_B1_HUB",
+      "to_node": "ORI_B1_FAC_3802437_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3807437_UP",
+      "from_node": "ORI_B1_FAC_3807437_START",
+      "to_node": "ORI_1F_FAC_3807437_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3807437_DOWN",
+      "from_node": "ORI_1F_FAC_3807437_END",
+      "to_node": "ORI_B1_FAC_3807437_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_B1_FAC_3807437_START_HUB",
+      "from_node": "ORI_B1_FAC_3807437_START",
+      "to_node": "ORI_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_B1_FAC_3807437_START",
+      "from_node": "ORI_B1_HUB",
+      "to_node": "ORI_B1_FAC_3807437_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_1F_FAC_3807437_END_HUB",
+      "from_node": "ORI_1F_FAC_3807437_END",
+      "to_node": "ORI_1F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_1F_FAC_3807437_END",
+      "from_node": "ORI_1F_HUB",
+      "to_node": "ORI_1F_FAC_3807437_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3807438_UP",
+      "from_node": "ORI_1F_FAC_3807438_START",
+      "to_node": "ORI_B1_FAC_3807438_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3807438_DOWN",
+      "from_node": "ORI_B1_FAC_3807438_END",
+      "to_node": "ORI_1F_FAC_3807438_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_1F_FAC_3807438_START_HUB",
+      "from_node": "ORI_1F_FAC_3807438_START",
+      "to_node": "ORI_1F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_1F_FAC_3807438_START",
+      "from_node": "ORI_1F_HUB",
+      "to_node": "ORI_1F_FAC_3807438_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_B1_FAC_3807438_END_HUB",
+      "from_node": "ORI_B1_FAC_3807438_END",
+      "to_node": "ORI_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_B1_FAC_3807438_END",
+      "from_node": "ORI_B1_HUB",
+      "to_node": "ORI_B1_FAC_3807438_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3818279_UP",
+      "from_node": "ORI_B1_FAC_3818279_START",
+      "to_node": "ORI_1F_FAC_3818279_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3818279_DOWN",
+      "from_node": "ORI_1F_FAC_3818279_END",
+      "to_node": "ORI_B1_FAC_3818279_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_B1_FAC_3818279_START_HUB",
+      "from_node": "ORI_B1_FAC_3818279_START",
+      "to_node": "ORI_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_B1_FAC_3818279_START",
+      "from_node": "ORI_B1_HUB",
+      "to_node": "ORI_B1_FAC_3818279_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_1F_FAC_3818279_END_HUB",
+      "from_node": "ORI_1F_FAC_3818279_END",
+      "to_node": "ORI_1F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_1F_FAC_3818279_END",
+      "from_node": "ORI_1F_HUB",
+      "to_node": "ORI_1F_FAC_3818279_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3818293_UP",
+      "from_node": "ORI_M_FAC_3818293_START",
+      "to_node": "ORI_1F_FAC_3818293_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3818293_DOWN",
+      "from_node": "ORI_1F_FAC_3818293_END",
+      "to_node": "ORI_M_FAC_3818293_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_M_FAC_3818293_START_HUB",
+      "from_node": "ORI_M_FAC_3818293_START",
+      "to_node": "ORI_M_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_M_FAC_3818293_START",
+      "from_node": "ORI_M_HUB",
+      "to_node": "ORI_M_FAC_3818293_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_1F_FAC_3818293_END_HUB",
+      "from_node": "ORI_1F_FAC_3818293_END",
+      "to_node": "ORI_1F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_1F_FAC_3818293_END",
+      "from_node": "ORI_1F_HUB",
+      "to_node": "ORI_1F_FAC_3818293_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3818292_UP",
+      "from_node": "ORI_B3_FAC_3818292_START",
+      "to_node": "ORI_M_FAC_3818292_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3818292_DOWN",
+      "from_node": "ORI_M_FAC_3818292_END",
+      "to_node": "ORI_B3_FAC_3818292_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_B3_FAC_3818292_START_HUB",
+      "from_node": "ORI_B3_FAC_3818292_START",
+      "to_node": "ORI_B3_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_B3_FAC_3818292_START",
+      "from_node": "ORI_B3_HUB",
+      "to_node": "ORI_B3_FAC_3818292_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_M_FAC_3818292_END_HUB",
+      "from_node": "ORI_M_FAC_3818292_END",
+      "to_node": "ORI_M_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_M_FAC_3818292_END",
+      "from_node": "ORI_M_HUB",
+      "to_node": "ORI_M_FAC_3818292_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3818326_UP",
+      "from_node": "ORI_B1_FAC_3818326_START",
+      "to_node": "ORI_1F_FAC_3818326_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_ORI_3818326_DOWN",
+      "from_node": "ORI_1F_FAC_3818326_END",
+      "to_node": "ORI_B1_FAC_3818326_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_B1_FAC_3818326_START_HUB",
+      "from_node": "ORI_B1_FAC_3818326_START",
+      "to_node": "ORI_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_B1_FAC_3818326_START",
+      "from_node": "ORI_B1_HUB",
+      "to_node": "ORI_B1_FAC_3818326_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_ORI_1F_FAC_3818326_END_HUB",
+      "from_node": "ORI_1F_FAC_3818326_END",
+      "to_node": "ORI_1F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_ORI_1F_FAC_3818326_END",
+      "from_node": "ORI_1F_HUB",
+      "to_node": "ORI_1F_FAC_3818326_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    }
+  ]
+}

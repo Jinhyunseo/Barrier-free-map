@@ -1,0 +1,2480 @@
+{
+  "station_code": "JGJ",
+  "station_name": "정자역",
+  "nodes": [
+    {
+      "id": "JGJ_B2_HUB",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B2",
+      "type": "FLOOR_HUB",
+      "description": "정자역 B2 대합실/통로 중앙"
+    },
+    {
+      "id": "JGJ_B1_HUB",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B1",
+      "type": "FLOOR_HUB",
+      "description": "정자역 B1 대합실/통로 중앙"
+    },
+    {
+      "id": "JGJ_B2_FAC_2050986_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B2 ((B1)수내방향(상행)맞이방남쪽표내는곳앞(B2)수내방면(상행)승강장6-4위치)"
+    },
+    {
+      "id": "JGJ_B1_FAC_2050986_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B1 ((B1)수내방향(상행)맞이방남쪽표내는곳앞(B2)수내방면(상행)승강장6-4위치)"
+    },
+    {
+      "id": "JGJ_B2_FAC_2050987_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B2 ((B1)미금방향(하행)맞이방남쪽표내는곳앞(B2)미금방면(하행)승강장2-1위치)"
+    },
+    {
+      "id": "JGJ_B1_FAC_2050987_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B1 ((B1)미금방향(하행)맞이방남쪽표내는곳앞(B2)미금방면(하행)승강장2-1위치)"
+    },
+    {
+      "id": "JGJ_1F_HUB",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "1F",
+      "type": "FLOOR_HUB",
+      "description": "정자역 1F 대합실/통로 중앙"
+    },
+    {
+      "id": "JGJ_B1_FAC_2056152_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B1 ((1F)4번출입구옆(B1)맞이방3번/4번출입구중층에스컬레이터옆)"
+    },
+    {
+      "id": "JGJ_1F_FAC_2056152_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "1F",
+      "type": "FACILITY_POINT",
+      "description": "정자역 1F ((1F)4번출입구옆(B1)맞이방3번/4번출입구중층에스컬레이터옆)"
+    },
+    {
+      "id": "JGJ_B1_FAC_2056151_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B1 ((1F)2번출입구앞(B1)맞이방미금방향역무실옆통로)"
+    },
+    {
+      "id": "JGJ_1F_FAC_2056151_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "1F",
+      "type": "FACILITY_POINT",
+      "description": "정자역 1F ((1F)2번출입구앞(B1)맞이방미금방향역무실옆통로)"
+    },
+    {
+      "id": "JGJ_B2_FAC_2051675_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B2 ((B1)미금역방향승강장6-4출입문앞(B2)환승표내는곳방향통로)"
+    },
+    {
+      "id": "JGJ_B1_FAC_2051675_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B1 ((B1)미금역방향승강장6-4출입문앞(B2)환승표내는곳방향통로)"
+    },
+    {
+      "id": "JGJ_B2_FAC_2051676_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B2 ((B1)수내역방향승강장1-1출입문앞(B2)환승표내는곳방향통로)"
+    },
+    {
+      "id": "JGJ_B1_FAC_2051676_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B1 ((B1)수내역방향승강장1-1출입문앞(B2)환승표내는곳방향통로)"
+    },
+    {
+      "id": "JGJ_B3_HUB",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B3",
+      "type": "FLOOR_HUB",
+      "description": "정자역 B3 대합실/통로 중앙"
+    },
+    {
+      "id": "JGJ_B3_FAC_2051673_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B3",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B3 ((B2)운임구역대합실표내는곳방향(B3)판교역방향승강장3-4출입문앞)"
+    },
+    {
+      "id": "JGJ_B2_FAC_2051673_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B2 ((B2)운임구역대합실표내는곳방향(B3)판교역방향승강장3-4출입문앞)"
+    },
+    {
+      "id": "JGJ_B3_FAC_2051674_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B3",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B3 ((B2)운임구역대합실표내는곳방향(B3)미금역방향승강장4-1출입문앞)"
+    },
+    {
+      "id": "JGJ_B2_FAC_2051674_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B2 ((B2)운임구역대합실표내는곳방향(B3)미금역방향승강장4-1출입문앞)"
+    },
+    {
+      "id": "JGJ_B2_FAC_2051672_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B2 ((1F)6번출입구뒤(B1)비운임구역대합실표내는곳방향)"
+    },
+    {
+      "id": "JGJ_1F_FAC_2051672_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "1F",
+      "type": "FACILITY_POINT",
+      "description": "정자역 1F ((1F)6번출입구뒤(B1)비운임구역대합실표내는곳방향)"
+    },
+    {
+      "id": "JGJ_B2_FAC_3802222_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B2 ((B1과 F1중층)> B1(스토리웨이 인근 맞이방))"
+    },
+    {
+      "id": "JGJ_B1_FAC_3802222_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B1 ((B1과 F1중층)> B1(스토리웨이 인근 맞이방))"
+    },
+    {
+      "id": "JGJ_B1_FAC_3807406_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B1 ((B1과 F1중층, 환승주차장입구)>(1F)4번출입구)"
+    },
+    {
+      "id": "JGJ_1F_FAC_3807406_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "1F",
+      "type": "FACILITY_POINT",
+      "description": "정자역 1F ((B1과 F1중층, 환승주차장입구)>(1F)4번출입구)"
+    },
+    {
+      "id": "JGJ_1F_FAC_3807405_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "1F",
+      "type": "FACILITY_POINT",
+      "description": "정자역 1F ((1F)4번출입구>(B1과 F1중층, 환승주차장 입구))"
+    },
+    {
+      "id": "JGJ_B1_FAC_3807405_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B1 ((1F)4번출입구>(B1과 F1중층, 환승주차장 입구))"
+    },
+    {
+      "id": "JGJ_B2_FAC_3807403_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B2 ((B1)1번출입구 방향(스토리웨이 인근)>B1과 1F중층)"
+    },
+    {
+      "id": "JGJ_B1_FAC_3807403_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B1 ((B1)1번출입구 방향(스토리웨이 인근)>B1과 1F중층)"
+    },
+    {
+      "id": "JGJ_B1_FAC_3807404_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B1 ((B1과 F1중층) > (1F)1번출입구 지상)"
+    },
+    {
+      "id": "JGJ_1F_FAC_3807404_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "1F",
+      "type": "FACILITY_POINT",
+      "description": "정자역 1F ((B1과 F1중층) > (1F)1번출입구 지상)"
+    },
+    {
+      "id": "JGJ_M_HUB",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "M",
+      "type": "FLOOR_HUB",
+      "description": "정자역 M 대합실/통로 중앙"
+    },
+    {
+      "id": "JGJ_B1_FAC_3807408_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B1 ((B1)맞이방> 중층(지하주차장입구))"
+    },
+    {
+      "id": "JGJ_M_FAC_3807408_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "M",
+      "type": "FACILITY_POINT",
+      "description": "정자역 M ((B1)맞이방> 중층(지하주차장입구))"
+    },
+    {
+      "id": "JGJ_M_FAC_3807407_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "M",
+      "type": "FACILITY_POINT",
+      "description": "정자역 M ((B1과 F1중층, 환승주차장 입구)>(B1)맞이방)"
+    },
+    {
+      "id": "JGJ_B1_FAC_3807407_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B1 ((B1과 F1중층, 환승주차장 입구)>(B1)맞이방)"
+    },
+    {
+      "id": "JGJ_B2_FAC_3807410_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B2 ((B2)수내방향 승강장 4-1>(B1)북쪽 맞이방,표내는곳 내)"
+    },
+    {
+      "id": "JGJ_B1_FAC_3807410_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B1 ((B2)수내방향 승강장 4-1>(B1)북쪽 맞이방,표내는곳 내)"
+    },
+    {
+      "id": "JGJ_B1_FAC_3807409_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B1 ((B1)북쪽 맞이방,표내는곳 내> (B2)수내방향 승강장 4-1)"
+    },
+    {
+      "id": "JGJ_B2_FAC_3807409_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B2 ((B1)북쪽 맞이방,표내는곳 내> (B2)수내방향 승강장 4-1)"
+    },
+    {
+      "id": "JGJ_B2_FAC_3807412_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B2 ((B2)미금방향승강장 4-4>(B1)북쪽 맞이방, 표내는곳 내)"
+    },
+    {
+      "id": "JGJ_B1_FAC_3807412_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B1 ((B2)미금방향승강장 4-4>(B1)북쪽 맞이방, 표내는곳 내)"
+    },
+    {
+      "id": "JGJ_B1_FAC_3807411_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B1 ((B1)북쪽 맞이방,표내는곳 내> (B2)미금방향승강장 4-4)"
+    },
+    {
+      "id": "JGJ_B2_FAC_3807411_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B2 ((B1)북쪽 맞이방,표내는곳 내> (B2)미금방향승강장 4-4)"
+    },
+    {
+      "id": "JGJ_B1_FAC_3802223_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B1 ((1F)2번출입구 >(B1과 1F중층))"
+    },
+    {
+      "id": "JGJ_1F_FAC_3802223_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "1F",
+      "type": "FACILITY_POINT",
+      "description": "정자역 1F ((1F)2번출입구 >(B1과 1F중층))"
+    },
+    {
+      "id": "JGJ_B2_FAC_3802264_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B2 ((B1M) 대합실 통로 아래층 방향)"
+    },
+    {
+      "id": "JGJ_B1_FAC_3802264_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B1 ((B1M) 대합실 통로 아래층 방향)"
+    },
+    {
+      "id": "JGJ_B1_FAC_3802263_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B1 ((B2) 비운임구역 대합실 표 내는 곳 방향)"
+    },
+    {
+      "id": "JGJ_B2_FAC_3802263_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B2 ((B2) 비운임구역 대합실 표 내는 곳 방향)"
+    },
+    {
+      "id": "JGJ_B2_FAC_3802261_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B2 ((B1) 6번 출입구 앞)"
+    },
+    {
+      "id": "JGJ_M_FAC_3802261_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "M",
+      "type": "FACILITY_POINT",
+      "description": "정자역 M ((B1) 6번 출입구 앞)"
+    },
+    {
+      "id": "JGJ_M_FAC_3802262_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "M",
+      "type": "FACILITY_POINT",
+      "description": "정자역 M ((B2) 비운임구역 대합실 표 내는 곳 방향)"
+    },
+    {
+      "id": "JGJ_B2_FAC_3802262_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B2 ((B2) 비운임구역 대합실 표 내는 곳 방향)"
+    },
+    {
+      "id": "JGJ_1F_FAC_3802268_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "1F",
+      "type": "FACILITY_POINT",
+      "description": "정자역 1F ((B1M) 대합실 통로 위층 방향)"
+    },
+    {
+      "id": "JGJ_M_FAC_3802268_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "M",
+      "type": "FACILITY_POINT",
+      "description": "정자역 M ((B1M) 대합실 통로 위층 방향)"
+    },
+    {
+      "id": "JGJ_B1_FAC_3802269_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B1 ((B1M) 대합실 통로 위층 방향)"
+    },
+    {
+      "id": "JGJ_M_FAC_3802269_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "M",
+      "type": "FACILITY_POINT",
+      "description": "정자역 M ((B1M) 대합실 통로 위층 방향)"
+    },
+    {
+      "id": "JGJ_M_FAC_3802267_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "M",
+      "type": "FACILITY_POINT",
+      "description": "정자역 M ((1) 5번 출입구)"
+    },
+    {
+      "id": "JGJ_1F_FAC_3802267_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "1F",
+      "type": "FACILITY_POINT",
+      "description": "정자역 1F ((1) 5번 출입구)"
+    },
+    {
+      "id": "JGJ_B3_FAC_3802265_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B3",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B3 ((B1) 미금역 방향 6-4 출입문 근처)"
+    },
+    {
+      "id": "JGJ_B1_FAC_3802265_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B1 ((B1) 미금역 방향 6-4 출입문 근처)"
+    },
+    {
+      "id": "JGJ_B3_FAC_3802272_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B3",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B3 ((B2) 운임구역 대합실 표 내는 곳 방향)"
+    },
+    {
+      "id": "JGJ_B2_FAC_3802272_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B2 ((B2) 운임구역 대합실 표 내는 곳 방향)"
+    },
+    {
+      "id": "JGJ_B3_FAC_3802273_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B3",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B3 ((B2) 운임구역 대합실 표 내는 곳 방향)"
+    },
+    {
+      "id": "JGJ_B2_FAC_3802273_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B2 ((B2) 운임구역 대합실 표 내는 곳 방향)"
+    },
+    {
+      "id": "JGJ_B3_FAC_3802274_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B3",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B3 ((B2) 운임구역 대합실 표 내는 곳 방향)"
+    },
+    {
+      "id": "JGJ_B2_FAC_3802274_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B2 ((B2) 운임구역 대합실 표 내는 곳 방향)"
+    },
+    {
+      "id": "JGJ_B2_FAC_3802275_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B2 ((B3) 판교역 방향 5-4 출입문 앞)"
+    },
+    {
+      "id": "JGJ_B3_FAC_3802275_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B3",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B3 ((B3) 판교역 방향 5-4 출입문 앞)"
+    },
+    {
+      "id": "JGJ_B2_FAC_3802277_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B2 ((B3) 판교역 방향 2-4 출입문 앞)"
+    },
+    {
+      "id": "JGJ_B3_FAC_3802277_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B3",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B3 ((B3) 판교역 방향 2-4 출입문 앞)"
+    },
+    {
+      "id": "JGJ_B2_FAC_3802270_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B2 ((B2) 환승 표 내는 곳 방향 통로)"
+    },
+    {
+      "id": "JGJ_B1_FAC_3802270_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B1 ((B2) 환승 표 내는 곳 방향 통로)"
+    },
+    {
+      "id": "JGJ_B1_FAC_3802271_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B1 ((B1) 수내역 방향 1-1 출입문 근처)"
+    },
+    {
+      "id": "JGJ_B2_FAC_3802271_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B2 ((B1) 수내역 방향 1-1 출입문 근처)"
+    },
+    {
+      "id": "JGJ_B1_FAC_3802266_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B1",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B1 ((B2) 환승 표 내는 곳 방향 통로)"
+    },
+    {
+      "id": "JGJ_B3_FAC_3802266_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B3",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B3 ((B2) 환승 표 내는 곳 방향 통로)"
+    },
+    {
+      "id": "JGJ_B2_FAC_3802276_START",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B2",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B2 ((B3) 판교역 방향 5-4 출입문 앞)"
+    },
+    {
+      "id": "JGJ_B3_FAC_3802276_END",
+      "station_code": "JGJ",
+      "station_name": "정자역",
+      "floor": "B3",
+      "type": "FACILITY_POINT",
+      "description": "정자역 B3 ((B3) 판교역 방향 5-4 출입문 앞)"
+    }
+  ],
+  "edges": [
+    {
+      "id": "EDGE_JGJ_2050986_UP",
+      "from_node": "JGJ_B2_FAC_2050986_START",
+      "to_node": "JGJ_B1_FAC_2050986_END",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_2050986_DOWN",
+      "from_node": "JGJ_B1_FAC_2050986_END",
+      "to_node": "JGJ_B2_FAC_2050986_START",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B2_FAC_2050986_START_HUB",
+      "from_node": "JGJ_B2_FAC_2050986_START",
+      "to_node": "JGJ_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B2_FAC_2050986_START",
+      "from_node": "JGJ_B2_HUB",
+      "to_node": "JGJ_B2_FAC_2050986_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B1_FAC_2050986_END_HUB",
+      "from_node": "JGJ_B1_FAC_2050986_END",
+      "to_node": "JGJ_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B1_FAC_2050986_END",
+      "from_node": "JGJ_B1_HUB",
+      "to_node": "JGJ_B1_FAC_2050986_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_2050987_UP",
+      "from_node": "JGJ_B2_FAC_2050987_START",
+      "to_node": "JGJ_B1_FAC_2050987_END",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_2050987_DOWN",
+      "from_node": "JGJ_B1_FAC_2050987_END",
+      "to_node": "JGJ_B2_FAC_2050987_START",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B2_FAC_2050987_START_HUB",
+      "from_node": "JGJ_B2_FAC_2050987_START",
+      "to_node": "JGJ_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B2_FAC_2050987_START",
+      "from_node": "JGJ_B2_HUB",
+      "to_node": "JGJ_B2_FAC_2050987_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B1_FAC_2050987_END_HUB",
+      "from_node": "JGJ_B1_FAC_2050987_END",
+      "to_node": "JGJ_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B1_FAC_2050987_END",
+      "from_node": "JGJ_B1_HUB",
+      "to_node": "JGJ_B1_FAC_2050987_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_2056152_UP",
+      "from_node": "JGJ_B1_FAC_2056152_START",
+      "to_node": "JGJ_1F_FAC_2056152_END",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_2056152_DOWN",
+      "from_node": "JGJ_1F_FAC_2056152_END",
+      "to_node": "JGJ_B1_FAC_2056152_START",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B1_FAC_2056152_START_HUB",
+      "from_node": "JGJ_B1_FAC_2056152_START",
+      "to_node": "JGJ_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B1_FAC_2056152_START",
+      "from_node": "JGJ_B1_HUB",
+      "to_node": "JGJ_B1_FAC_2056152_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_1F_FAC_2056152_END_HUB",
+      "from_node": "JGJ_1F_FAC_2056152_END",
+      "to_node": "JGJ_1F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_1F_FAC_2056152_END",
+      "from_node": "JGJ_1F_HUB",
+      "to_node": "JGJ_1F_FAC_2056152_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_2056151_UP",
+      "from_node": "JGJ_B1_FAC_2056151_START",
+      "to_node": "JGJ_1F_FAC_2056151_END",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_2056151_DOWN",
+      "from_node": "JGJ_1F_FAC_2056151_END",
+      "to_node": "JGJ_B1_FAC_2056151_START",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B1_FAC_2056151_START_HUB",
+      "from_node": "JGJ_B1_FAC_2056151_START",
+      "to_node": "JGJ_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B1_FAC_2056151_START",
+      "from_node": "JGJ_B1_HUB",
+      "to_node": "JGJ_B1_FAC_2056151_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_1F_FAC_2056151_END_HUB",
+      "from_node": "JGJ_1F_FAC_2056151_END",
+      "to_node": "JGJ_1F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_1F_FAC_2056151_END",
+      "from_node": "JGJ_1F_HUB",
+      "to_node": "JGJ_1F_FAC_2056151_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_2051675_UP",
+      "from_node": "JGJ_B2_FAC_2051675_START",
+      "to_node": "JGJ_B1_FAC_2051675_END",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_2051675_DOWN",
+      "from_node": "JGJ_B1_FAC_2051675_END",
+      "to_node": "JGJ_B2_FAC_2051675_START",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B2_FAC_2051675_START_HUB",
+      "from_node": "JGJ_B2_FAC_2051675_START",
+      "to_node": "JGJ_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B2_FAC_2051675_START",
+      "from_node": "JGJ_B2_HUB",
+      "to_node": "JGJ_B2_FAC_2051675_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B1_FAC_2051675_END_HUB",
+      "from_node": "JGJ_B1_FAC_2051675_END",
+      "to_node": "JGJ_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B1_FAC_2051675_END",
+      "from_node": "JGJ_B1_HUB",
+      "to_node": "JGJ_B1_FAC_2051675_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_2051676_UP",
+      "from_node": "JGJ_B2_FAC_2051676_START",
+      "to_node": "JGJ_B1_FAC_2051676_END",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_2051676_DOWN",
+      "from_node": "JGJ_B1_FAC_2051676_END",
+      "to_node": "JGJ_B2_FAC_2051676_START",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B2_FAC_2051676_START_HUB",
+      "from_node": "JGJ_B2_FAC_2051676_START",
+      "to_node": "JGJ_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B2_FAC_2051676_START",
+      "from_node": "JGJ_B2_HUB",
+      "to_node": "JGJ_B2_FAC_2051676_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B1_FAC_2051676_END_HUB",
+      "from_node": "JGJ_B1_FAC_2051676_END",
+      "to_node": "JGJ_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B1_FAC_2051676_END",
+      "from_node": "JGJ_B1_HUB",
+      "to_node": "JGJ_B1_FAC_2051676_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_2051673_UP",
+      "from_node": "JGJ_B3_FAC_2051673_START",
+      "to_node": "JGJ_B2_FAC_2051673_END",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_2051673_DOWN",
+      "from_node": "JGJ_B2_FAC_2051673_END",
+      "to_node": "JGJ_B3_FAC_2051673_START",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B3_FAC_2051673_START_HUB",
+      "from_node": "JGJ_B3_FAC_2051673_START",
+      "to_node": "JGJ_B3_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B3_FAC_2051673_START",
+      "from_node": "JGJ_B3_HUB",
+      "to_node": "JGJ_B3_FAC_2051673_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B2_FAC_2051673_END_HUB",
+      "from_node": "JGJ_B2_FAC_2051673_END",
+      "to_node": "JGJ_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B2_FAC_2051673_END",
+      "from_node": "JGJ_B2_HUB",
+      "to_node": "JGJ_B2_FAC_2051673_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_2051674_UP",
+      "from_node": "JGJ_B3_FAC_2051674_START",
+      "to_node": "JGJ_B2_FAC_2051674_END",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_2051674_DOWN",
+      "from_node": "JGJ_B2_FAC_2051674_END",
+      "to_node": "JGJ_B3_FAC_2051674_START",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B3_FAC_2051674_START_HUB",
+      "from_node": "JGJ_B3_FAC_2051674_START",
+      "to_node": "JGJ_B3_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B3_FAC_2051674_START",
+      "from_node": "JGJ_B3_HUB",
+      "to_node": "JGJ_B3_FAC_2051674_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B2_FAC_2051674_END_HUB",
+      "from_node": "JGJ_B2_FAC_2051674_END",
+      "to_node": "JGJ_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B2_FAC_2051674_END",
+      "from_node": "JGJ_B2_HUB",
+      "to_node": "JGJ_B2_FAC_2051674_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_2051672_UP",
+      "from_node": "JGJ_B2_FAC_2051672_START",
+      "to_node": "JGJ_1F_FAC_2051672_END",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_2051672_DOWN",
+      "from_node": "JGJ_1F_FAC_2051672_END",
+      "to_node": "JGJ_B2_FAC_2051672_START",
+      "transport_type": "ELEVATOR",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B2_FAC_2051672_START_HUB",
+      "from_node": "JGJ_B2_FAC_2051672_START",
+      "to_node": "JGJ_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B2_FAC_2051672_START",
+      "from_node": "JGJ_B2_HUB",
+      "to_node": "JGJ_B2_FAC_2051672_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_1F_FAC_2051672_END_HUB",
+      "from_node": "JGJ_1F_FAC_2051672_END",
+      "to_node": "JGJ_1F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_1F_FAC_2051672_END",
+      "from_node": "JGJ_1F_HUB",
+      "to_node": "JGJ_1F_FAC_2051672_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802222_UP",
+      "from_node": "JGJ_B2_FAC_3802222_START",
+      "to_node": "JGJ_B1_FAC_3802222_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802222_DOWN",
+      "from_node": "JGJ_B1_FAC_3802222_END",
+      "to_node": "JGJ_B2_FAC_3802222_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B2_FAC_3802222_START_HUB",
+      "from_node": "JGJ_B2_FAC_3802222_START",
+      "to_node": "JGJ_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B2_FAC_3802222_START",
+      "from_node": "JGJ_B2_HUB",
+      "to_node": "JGJ_B2_FAC_3802222_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B1_FAC_3802222_END_HUB",
+      "from_node": "JGJ_B1_FAC_3802222_END",
+      "to_node": "JGJ_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B1_FAC_3802222_END",
+      "from_node": "JGJ_B1_HUB",
+      "to_node": "JGJ_B1_FAC_3802222_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3807406_UP",
+      "from_node": "JGJ_B1_FAC_3807406_START",
+      "to_node": "JGJ_1F_FAC_3807406_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3807406_DOWN",
+      "from_node": "JGJ_1F_FAC_3807406_END",
+      "to_node": "JGJ_B1_FAC_3807406_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B1_FAC_3807406_START_HUB",
+      "from_node": "JGJ_B1_FAC_3807406_START",
+      "to_node": "JGJ_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B1_FAC_3807406_START",
+      "from_node": "JGJ_B1_HUB",
+      "to_node": "JGJ_B1_FAC_3807406_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_1F_FAC_3807406_END_HUB",
+      "from_node": "JGJ_1F_FAC_3807406_END",
+      "to_node": "JGJ_1F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_1F_FAC_3807406_END",
+      "from_node": "JGJ_1F_HUB",
+      "to_node": "JGJ_1F_FAC_3807406_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3807405_UP",
+      "from_node": "JGJ_1F_FAC_3807405_START",
+      "to_node": "JGJ_B1_FAC_3807405_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3807405_DOWN",
+      "from_node": "JGJ_B1_FAC_3807405_END",
+      "to_node": "JGJ_1F_FAC_3807405_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_1F_FAC_3807405_START_HUB",
+      "from_node": "JGJ_1F_FAC_3807405_START",
+      "to_node": "JGJ_1F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_1F_FAC_3807405_START",
+      "from_node": "JGJ_1F_HUB",
+      "to_node": "JGJ_1F_FAC_3807405_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B1_FAC_3807405_END_HUB",
+      "from_node": "JGJ_B1_FAC_3807405_END",
+      "to_node": "JGJ_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B1_FAC_3807405_END",
+      "from_node": "JGJ_B1_HUB",
+      "to_node": "JGJ_B1_FAC_3807405_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3807403_UP",
+      "from_node": "JGJ_B2_FAC_3807403_START",
+      "to_node": "JGJ_B1_FAC_3807403_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3807403_DOWN",
+      "from_node": "JGJ_B1_FAC_3807403_END",
+      "to_node": "JGJ_B2_FAC_3807403_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B2_FAC_3807403_START_HUB",
+      "from_node": "JGJ_B2_FAC_3807403_START",
+      "to_node": "JGJ_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B2_FAC_3807403_START",
+      "from_node": "JGJ_B2_HUB",
+      "to_node": "JGJ_B2_FAC_3807403_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B1_FAC_3807403_END_HUB",
+      "from_node": "JGJ_B1_FAC_3807403_END",
+      "to_node": "JGJ_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B1_FAC_3807403_END",
+      "from_node": "JGJ_B1_HUB",
+      "to_node": "JGJ_B1_FAC_3807403_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3807404_UP",
+      "from_node": "JGJ_B1_FAC_3807404_START",
+      "to_node": "JGJ_1F_FAC_3807404_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3807404_DOWN",
+      "from_node": "JGJ_1F_FAC_3807404_END",
+      "to_node": "JGJ_B1_FAC_3807404_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B1_FAC_3807404_START_HUB",
+      "from_node": "JGJ_B1_FAC_3807404_START",
+      "to_node": "JGJ_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B1_FAC_3807404_START",
+      "from_node": "JGJ_B1_HUB",
+      "to_node": "JGJ_B1_FAC_3807404_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_1F_FAC_3807404_END_HUB",
+      "from_node": "JGJ_1F_FAC_3807404_END",
+      "to_node": "JGJ_1F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_1F_FAC_3807404_END",
+      "from_node": "JGJ_1F_HUB",
+      "to_node": "JGJ_1F_FAC_3807404_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3807408_UP",
+      "from_node": "JGJ_B1_FAC_3807408_START",
+      "to_node": "JGJ_M_FAC_3807408_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3807408_DOWN",
+      "from_node": "JGJ_M_FAC_3807408_END",
+      "to_node": "JGJ_B1_FAC_3807408_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B1_FAC_3807408_START_HUB",
+      "from_node": "JGJ_B1_FAC_3807408_START",
+      "to_node": "JGJ_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B1_FAC_3807408_START",
+      "from_node": "JGJ_B1_HUB",
+      "to_node": "JGJ_B1_FAC_3807408_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_M_FAC_3807408_END_HUB",
+      "from_node": "JGJ_M_FAC_3807408_END",
+      "to_node": "JGJ_M_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_M_FAC_3807408_END",
+      "from_node": "JGJ_M_HUB",
+      "to_node": "JGJ_M_FAC_3807408_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3807407_UP",
+      "from_node": "JGJ_M_FAC_3807407_START",
+      "to_node": "JGJ_B1_FAC_3807407_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3807407_DOWN",
+      "from_node": "JGJ_B1_FAC_3807407_END",
+      "to_node": "JGJ_M_FAC_3807407_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_M_FAC_3807407_START_HUB",
+      "from_node": "JGJ_M_FAC_3807407_START",
+      "to_node": "JGJ_M_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_M_FAC_3807407_START",
+      "from_node": "JGJ_M_HUB",
+      "to_node": "JGJ_M_FAC_3807407_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B1_FAC_3807407_END_HUB",
+      "from_node": "JGJ_B1_FAC_3807407_END",
+      "to_node": "JGJ_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B1_FAC_3807407_END",
+      "from_node": "JGJ_B1_HUB",
+      "to_node": "JGJ_B1_FAC_3807407_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3807410_UP",
+      "from_node": "JGJ_B2_FAC_3807410_START",
+      "to_node": "JGJ_B1_FAC_3807410_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3807410_DOWN",
+      "from_node": "JGJ_B1_FAC_3807410_END",
+      "to_node": "JGJ_B2_FAC_3807410_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B2_FAC_3807410_START_HUB",
+      "from_node": "JGJ_B2_FAC_3807410_START",
+      "to_node": "JGJ_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B2_FAC_3807410_START",
+      "from_node": "JGJ_B2_HUB",
+      "to_node": "JGJ_B2_FAC_3807410_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B1_FAC_3807410_END_HUB",
+      "from_node": "JGJ_B1_FAC_3807410_END",
+      "to_node": "JGJ_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B1_FAC_3807410_END",
+      "from_node": "JGJ_B1_HUB",
+      "to_node": "JGJ_B1_FAC_3807410_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3807409_UP",
+      "from_node": "JGJ_B1_FAC_3807409_START",
+      "to_node": "JGJ_B2_FAC_3807409_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3807409_DOWN",
+      "from_node": "JGJ_B2_FAC_3807409_END",
+      "to_node": "JGJ_B1_FAC_3807409_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B1_FAC_3807409_START_HUB",
+      "from_node": "JGJ_B1_FAC_3807409_START",
+      "to_node": "JGJ_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B1_FAC_3807409_START",
+      "from_node": "JGJ_B1_HUB",
+      "to_node": "JGJ_B1_FAC_3807409_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B2_FAC_3807409_END_HUB",
+      "from_node": "JGJ_B2_FAC_3807409_END",
+      "to_node": "JGJ_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B2_FAC_3807409_END",
+      "from_node": "JGJ_B2_HUB",
+      "to_node": "JGJ_B2_FAC_3807409_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3807412_UP",
+      "from_node": "JGJ_B2_FAC_3807412_START",
+      "to_node": "JGJ_B1_FAC_3807412_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3807412_DOWN",
+      "from_node": "JGJ_B1_FAC_3807412_END",
+      "to_node": "JGJ_B2_FAC_3807412_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B2_FAC_3807412_START_HUB",
+      "from_node": "JGJ_B2_FAC_3807412_START",
+      "to_node": "JGJ_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B2_FAC_3807412_START",
+      "from_node": "JGJ_B2_HUB",
+      "to_node": "JGJ_B2_FAC_3807412_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B1_FAC_3807412_END_HUB",
+      "from_node": "JGJ_B1_FAC_3807412_END",
+      "to_node": "JGJ_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B1_FAC_3807412_END",
+      "from_node": "JGJ_B1_HUB",
+      "to_node": "JGJ_B1_FAC_3807412_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3807411_UP",
+      "from_node": "JGJ_B1_FAC_3807411_START",
+      "to_node": "JGJ_B2_FAC_3807411_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3807411_DOWN",
+      "from_node": "JGJ_B2_FAC_3807411_END",
+      "to_node": "JGJ_B1_FAC_3807411_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B1_FAC_3807411_START_HUB",
+      "from_node": "JGJ_B1_FAC_3807411_START",
+      "to_node": "JGJ_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B1_FAC_3807411_START",
+      "from_node": "JGJ_B1_HUB",
+      "to_node": "JGJ_B1_FAC_3807411_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B2_FAC_3807411_END_HUB",
+      "from_node": "JGJ_B2_FAC_3807411_END",
+      "to_node": "JGJ_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B2_FAC_3807411_END",
+      "from_node": "JGJ_B2_HUB",
+      "to_node": "JGJ_B2_FAC_3807411_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802223_UP",
+      "from_node": "JGJ_B1_FAC_3802223_START",
+      "to_node": "JGJ_1F_FAC_3802223_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802223_DOWN",
+      "from_node": "JGJ_1F_FAC_3802223_END",
+      "to_node": "JGJ_B1_FAC_3802223_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B1_FAC_3802223_START_HUB",
+      "from_node": "JGJ_B1_FAC_3802223_START",
+      "to_node": "JGJ_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B1_FAC_3802223_START",
+      "from_node": "JGJ_B1_HUB",
+      "to_node": "JGJ_B1_FAC_3802223_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_1F_FAC_3802223_END_HUB",
+      "from_node": "JGJ_1F_FAC_3802223_END",
+      "to_node": "JGJ_1F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_1F_FAC_3802223_END",
+      "from_node": "JGJ_1F_HUB",
+      "to_node": "JGJ_1F_FAC_3802223_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802264_UP",
+      "from_node": "JGJ_B2_FAC_3802264_START",
+      "to_node": "JGJ_B1_FAC_3802264_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802264_DOWN",
+      "from_node": "JGJ_B1_FAC_3802264_END",
+      "to_node": "JGJ_B2_FAC_3802264_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B2_FAC_3802264_START_HUB",
+      "from_node": "JGJ_B2_FAC_3802264_START",
+      "to_node": "JGJ_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B2_FAC_3802264_START",
+      "from_node": "JGJ_B2_HUB",
+      "to_node": "JGJ_B2_FAC_3802264_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B1_FAC_3802264_END_HUB",
+      "from_node": "JGJ_B1_FAC_3802264_END",
+      "to_node": "JGJ_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B1_FAC_3802264_END",
+      "from_node": "JGJ_B1_HUB",
+      "to_node": "JGJ_B1_FAC_3802264_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802263_UP",
+      "from_node": "JGJ_B1_FAC_3802263_START",
+      "to_node": "JGJ_B2_FAC_3802263_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802263_DOWN",
+      "from_node": "JGJ_B2_FAC_3802263_END",
+      "to_node": "JGJ_B1_FAC_3802263_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B1_FAC_3802263_START_HUB",
+      "from_node": "JGJ_B1_FAC_3802263_START",
+      "to_node": "JGJ_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B1_FAC_3802263_START",
+      "from_node": "JGJ_B1_HUB",
+      "to_node": "JGJ_B1_FAC_3802263_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B2_FAC_3802263_END_HUB",
+      "from_node": "JGJ_B2_FAC_3802263_END",
+      "to_node": "JGJ_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B2_FAC_3802263_END",
+      "from_node": "JGJ_B2_HUB",
+      "to_node": "JGJ_B2_FAC_3802263_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802261_UP",
+      "from_node": "JGJ_B2_FAC_3802261_START",
+      "to_node": "JGJ_M_FAC_3802261_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802261_DOWN",
+      "from_node": "JGJ_M_FAC_3802261_END",
+      "to_node": "JGJ_B2_FAC_3802261_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B2_FAC_3802261_START_HUB",
+      "from_node": "JGJ_B2_FAC_3802261_START",
+      "to_node": "JGJ_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B2_FAC_3802261_START",
+      "from_node": "JGJ_B2_HUB",
+      "to_node": "JGJ_B2_FAC_3802261_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_M_FAC_3802261_END_HUB",
+      "from_node": "JGJ_M_FAC_3802261_END",
+      "to_node": "JGJ_M_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_M_FAC_3802261_END",
+      "from_node": "JGJ_M_HUB",
+      "to_node": "JGJ_M_FAC_3802261_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802262_UP",
+      "from_node": "JGJ_M_FAC_3802262_START",
+      "to_node": "JGJ_B2_FAC_3802262_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802262_DOWN",
+      "from_node": "JGJ_B2_FAC_3802262_END",
+      "to_node": "JGJ_M_FAC_3802262_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_M_FAC_3802262_START_HUB",
+      "from_node": "JGJ_M_FAC_3802262_START",
+      "to_node": "JGJ_M_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_M_FAC_3802262_START",
+      "from_node": "JGJ_M_HUB",
+      "to_node": "JGJ_M_FAC_3802262_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B2_FAC_3802262_END_HUB",
+      "from_node": "JGJ_B2_FAC_3802262_END",
+      "to_node": "JGJ_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B2_FAC_3802262_END",
+      "from_node": "JGJ_B2_HUB",
+      "to_node": "JGJ_B2_FAC_3802262_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802268_UP",
+      "from_node": "JGJ_1F_FAC_3802268_START",
+      "to_node": "JGJ_M_FAC_3802268_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802268_DOWN",
+      "from_node": "JGJ_M_FAC_3802268_END",
+      "to_node": "JGJ_1F_FAC_3802268_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_1F_FAC_3802268_START_HUB",
+      "from_node": "JGJ_1F_FAC_3802268_START",
+      "to_node": "JGJ_1F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_1F_FAC_3802268_START",
+      "from_node": "JGJ_1F_HUB",
+      "to_node": "JGJ_1F_FAC_3802268_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_M_FAC_3802268_END_HUB",
+      "from_node": "JGJ_M_FAC_3802268_END",
+      "to_node": "JGJ_M_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_M_FAC_3802268_END",
+      "from_node": "JGJ_M_HUB",
+      "to_node": "JGJ_M_FAC_3802268_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802269_UP",
+      "from_node": "JGJ_B1_FAC_3802269_START",
+      "to_node": "JGJ_M_FAC_3802269_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802269_DOWN",
+      "from_node": "JGJ_M_FAC_3802269_END",
+      "to_node": "JGJ_B1_FAC_3802269_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B1_FAC_3802269_START_HUB",
+      "from_node": "JGJ_B1_FAC_3802269_START",
+      "to_node": "JGJ_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B1_FAC_3802269_START",
+      "from_node": "JGJ_B1_HUB",
+      "to_node": "JGJ_B1_FAC_3802269_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_M_FAC_3802269_END_HUB",
+      "from_node": "JGJ_M_FAC_3802269_END",
+      "to_node": "JGJ_M_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_M_FAC_3802269_END",
+      "from_node": "JGJ_M_HUB",
+      "to_node": "JGJ_M_FAC_3802269_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802267_UP",
+      "from_node": "JGJ_M_FAC_3802267_START",
+      "to_node": "JGJ_1F_FAC_3802267_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802267_DOWN",
+      "from_node": "JGJ_1F_FAC_3802267_END",
+      "to_node": "JGJ_M_FAC_3802267_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_M_FAC_3802267_START_HUB",
+      "from_node": "JGJ_M_FAC_3802267_START",
+      "to_node": "JGJ_M_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_M_FAC_3802267_START",
+      "from_node": "JGJ_M_HUB",
+      "to_node": "JGJ_M_FAC_3802267_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_1F_FAC_3802267_END_HUB",
+      "from_node": "JGJ_1F_FAC_3802267_END",
+      "to_node": "JGJ_1F_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_1F_FAC_3802267_END",
+      "from_node": "JGJ_1F_HUB",
+      "to_node": "JGJ_1F_FAC_3802267_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802265_UP",
+      "from_node": "JGJ_B3_FAC_3802265_START",
+      "to_node": "JGJ_B1_FAC_3802265_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802265_DOWN",
+      "from_node": "JGJ_B1_FAC_3802265_END",
+      "to_node": "JGJ_B3_FAC_3802265_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B3_FAC_3802265_START_HUB",
+      "from_node": "JGJ_B3_FAC_3802265_START",
+      "to_node": "JGJ_B3_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B3_FAC_3802265_START",
+      "from_node": "JGJ_B3_HUB",
+      "to_node": "JGJ_B3_FAC_3802265_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B1_FAC_3802265_END_HUB",
+      "from_node": "JGJ_B1_FAC_3802265_END",
+      "to_node": "JGJ_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B1_FAC_3802265_END",
+      "from_node": "JGJ_B1_HUB",
+      "to_node": "JGJ_B1_FAC_3802265_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802272_UP",
+      "from_node": "JGJ_B3_FAC_3802272_START",
+      "to_node": "JGJ_B2_FAC_3802272_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802272_DOWN",
+      "from_node": "JGJ_B2_FAC_3802272_END",
+      "to_node": "JGJ_B3_FAC_3802272_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B3_FAC_3802272_START_HUB",
+      "from_node": "JGJ_B3_FAC_3802272_START",
+      "to_node": "JGJ_B3_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B3_FAC_3802272_START",
+      "from_node": "JGJ_B3_HUB",
+      "to_node": "JGJ_B3_FAC_3802272_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B2_FAC_3802272_END_HUB",
+      "from_node": "JGJ_B2_FAC_3802272_END",
+      "to_node": "JGJ_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B2_FAC_3802272_END",
+      "from_node": "JGJ_B2_HUB",
+      "to_node": "JGJ_B2_FAC_3802272_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802273_UP",
+      "from_node": "JGJ_B3_FAC_3802273_START",
+      "to_node": "JGJ_B2_FAC_3802273_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802273_DOWN",
+      "from_node": "JGJ_B2_FAC_3802273_END",
+      "to_node": "JGJ_B3_FAC_3802273_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B3_FAC_3802273_START_HUB",
+      "from_node": "JGJ_B3_FAC_3802273_START",
+      "to_node": "JGJ_B3_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B3_FAC_3802273_START",
+      "from_node": "JGJ_B3_HUB",
+      "to_node": "JGJ_B3_FAC_3802273_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B2_FAC_3802273_END_HUB",
+      "from_node": "JGJ_B2_FAC_3802273_END",
+      "to_node": "JGJ_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B2_FAC_3802273_END",
+      "from_node": "JGJ_B2_HUB",
+      "to_node": "JGJ_B2_FAC_3802273_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802274_UP",
+      "from_node": "JGJ_B3_FAC_3802274_START",
+      "to_node": "JGJ_B2_FAC_3802274_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802274_DOWN",
+      "from_node": "JGJ_B2_FAC_3802274_END",
+      "to_node": "JGJ_B3_FAC_3802274_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B3_FAC_3802274_START_HUB",
+      "from_node": "JGJ_B3_FAC_3802274_START",
+      "to_node": "JGJ_B3_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B3_FAC_3802274_START",
+      "from_node": "JGJ_B3_HUB",
+      "to_node": "JGJ_B3_FAC_3802274_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B2_FAC_3802274_END_HUB",
+      "from_node": "JGJ_B2_FAC_3802274_END",
+      "to_node": "JGJ_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B2_FAC_3802274_END",
+      "from_node": "JGJ_B2_HUB",
+      "to_node": "JGJ_B2_FAC_3802274_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802275_UP",
+      "from_node": "JGJ_B2_FAC_3802275_START",
+      "to_node": "JGJ_B3_FAC_3802275_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802275_DOWN",
+      "from_node": "JGJ_B3_FAC_3802275_END",
+      "to_node": "JGJ_B2_FAC_3802275_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B2_FAC_3802275_START_HUB",
+      "from_node": "JGJ_B2_FAC_3802275_START",
+      "to_node": "JGJ_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B2_FAC_3802275_START",
+      "from_node": "JGJ_B2_HUB",
+      "to_node": "JGJ_B2_FAC_3802275_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B3_FAC_3802275_END_HUB",
+      "from_node": "JGJ_B3_FAC_3802275_END",
+      "to_node": "JGJ_B3_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B3_FAC_3802275_END",
+      "from_node": "JGJ_B3_HUB",
+      "to_node": "JGJ_B3_FAC_3802275_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802277_UP",
+      "from_node": "JGJ_B2_FAC_3802277_START",
+      "to_node": "JGJ_B3_FAC_3802277_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802277_DOWN",
+      "from_node": "JGJ_B3_FAC_3802277_END",
+      "to_node": "JGJ_B2_FAC_3802277_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B2_FAC_3802277_START_HUB",
+      "from_node": "JGJ_B2_FAC_3802277_START",
+      "to_node": "JGJ_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B2_FAC_3802277_START",
+      "from_node": "JGJ_B2_HUB",
+      "to_node": "JGJ_B2_FAC_3802277_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B3_FAC_3802277_END_HUB",
+      "from_node": "JGJ_B3_FAC_3802277_END",
+      "to_node": "JGJ_B3_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B3_FAC_3802277_END",
+      "from_node": "JGJ_B3_HUB",
+      "to_node": "JGJ_B3_FAC_3802277_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802270_UP",
+      "from_node": "JGJ_B2_FAC_3802270_START",
+      "to_node": "JGJ_B1_FAC_3802270_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802270_DOWN",
+      "from_node": "JGJ_B1_FAC_3802270_END",
+      "to_node": "JGJ_B2_FAC_3802270_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B2_FAC_3802270_START_HUB",
+      "from_node": "JGJ_B2_FAC_3802270_START",
+      "to_node": "JGJ_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B2_FAC_3802270_START",
+      "from_node": "JGJ_B2_HUB",
+      "to_node": "JGJ_B2_FAC_3802270_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B1_FAC_3802270_END_HUB",
+      "from_node": "JGJ_B1_FAC_3802270_END",
+      "to_node": "JGJ_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B1_FAC_3802270_END",
+      "from_node": "JGJ_B1_HUB",
+      "to_node": "JGJ_B1_FAC_3802270_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802271_UP",
+      "from_node": "JGJ_B1_FAC_3802271_START",
+      "to_node": "JGJ_B2_FAC_3802271_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802271_DOWN",
+      "from_node": "JGJ_B2_FAC_3802271_END",
+      "to_node": "JGJ_B1_FAC_3802271_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B1_FAC_3802271_START_HUB",
+      "from_node": "JGJ_B1_FAC_3802271_START",
+      "to_node": "JGJ_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B1_FAC_3802271_START",
+      "from_node": "JGJ_B1_HUB",
+      "to_node": "JGJ_B1_FAC_3802271_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B2_FAC_3802271_END_HUB",
+      "from_node": "JGJ_B2_FAC_3802271_END",
+      "to_node": "JGJ_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B2_FAC_3802271_END",
+      "from_node": "JGJ_B2_HUB",
+      "to_node": "JGJ_B2_FAC_3802271_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802266_UP",
+      "from_node": "JGJ_B1_FAC_3802266_START",
+      "to_node": "JGJ_B3_FAC_3802266_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802266_DOWN",
+      "from_node": "JGJ_B3_FAC_3802266_END",
+      "to_node": "JGJ_B1_FAC_3802266_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B1_FAC_3802266_START_HUB",
+      "from_node": "JGJ_B1_FAC_3802266_START",
+      "to_node": "JGJ_B1_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B1_FAC_3802266_START",
+      "from_node": "JGJ_B1_HUB",
+      "to_node": "JGJ_B1_FAC_3802266_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B3_FAC_3802266_END_HUB",
+      "from_node": "JGJ_B3_FAC_3802266_END",
+      "to_node": "JGJ_B3_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B3_FAC_3802266_END",
+      "from_node": "JGJ_B3_HUB",
+      "to_node": "JGJ_B3_FAC_3802266_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802276_UP",
+      "from_node": "JGJ_B2_FAC_3802276_START",
+      "to_node": "JGJ_B3_FAC_3802276_END",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "EDGE_JGJ_3802276_DOWN",
+      "from_node": "JGJ_B3_FAC_3802276_END",
+      "to_node": "JGJ_B2_FAC_3802276_START",
+      "transport_type": "ESCALATOR",
+      "wheelchair_accessible": false,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B2_FAC_3802276_START_HUB",
+      "from_node": "JGJ_B2_FAC_3802276_START",
+      "to_node": "JGJ_B2_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B2_FAC_3802276_START",
+      "from_node": "JGJ_B2_HUB",
+      "to_node": "JGJ_B2_FAC_3802276_START",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_JGJ_B3_FAC_3802276_END_HUB",
+      "from_node": "JGJ_B3_FAC_3802276_END",
+      "to_node": "JGJ_B3_HUB",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    },
+    {
+      "id": "WALK_HUB_JGJ_B3_FAC_3802276_END",
+      "from_node": "JGJ_B3_HUB",
+      "to_node": "JGJ_B3_FAC_3802276_END",
+      "transport_type": "WALK",
+      "wheelchair_accessible": true,
+      "status": "운행중"
+    }
+  ]
+}
