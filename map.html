@@ -37,7 +37,7 @@
     }
 
     /* =========================================================
-       좌측 사이드바
+       좌측 사이드바 (전체 스크롤 가능 구조)
     ========================================================== */
     .sidebar {
       width: 420px;
@@ -50,18 +50,17 @@
       flex-direction: column;
     }
 
-    /* 상단 헤더 */
     .sidebar-header {
-      padding: 20px;
+      padding: 16px 20px;
       background: #ffffff;
       border-bottom: 1px solid #e2e8f0;
+      flex-shrink: 0;
     }
 
     .app-title-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
     }
 
     .app-title {
@@ -89,6 +88,16 @@
       background: #f39eba;
       color: #ffffff;
       border-color: #f39eba;
+    }
+
+    .sidebar-scroll-content {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 16px;
+      background: #f8fafc;
     }
 
     /* 입력 필드 */
@@ -219,9 +228,10 @@
 
     /* 경로 선호도 UI */
     .pref-section {
-      background: #f8fafc;
-      border-bottom: 1px solid #e2e8f0;
-      padding: 12px 16px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px 14px;
     }
 
     .pref-question {
@@ -271,17 +281,6 @@
 
     .chip.active .radio-dot {
       color: #ffffff;
-    }
-
-    /* 경로 상세 컨테이너 */
-    .route-detail-container {
-      flex: 1;
-      overflow-y: auto;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      background: #f8fafc;
     }
 
     .status-card {
@@ -441,18 +440,82 @@
     .step-title { font-size: 15px; font-weight: 800; color: #0f172a; }
     .step-desc { font-size: 14px; color: #475569; margin-top: 2px; font-weight: 500; line-height: 1.5; }
 
-    .station-list {
-      margin-top: 10px;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      padding: 12px;
-      font-size: 14px;
-      color: #000000;
-      line-height: 1.7;
+    /* 토글 경유 정류장 스타일 (버튼 글자색: 검정색) */
+    .station-toggle-wrapper {
+      margin-top: 8px;
     }
 
-    .station-title { font-weight: 800; color: #475569; font-size: 12px; margin-bottom: 6px; }
+    .btn-toggle-stations {
+      background: #fdf2f4;
+      border: 1px solid #f8ccdb;
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #0f172a; /* 버튼 텍스트 검정색 */
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-toggle-stations:hover {
+      background: #f39eba;
+      color: #ffffff;
+      border-color: #f39eba;
+    }
+
+    .station-list {
+      display: none;
+      margin-top: 8px;
+      background: #fdf2f4;
+      border: 1px solid #f8ccdb;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 13.5px;
+      color: #1e293b;
+    }
+
+    .station-list.show {
+      display: block;
+    }
+
+    /* 전체 경유 목록 제목 글자색: 검정색 */
+    .station-title { font-weight: 800; color: #0f172a; font-size: 12px; margin-bottom: 10px; }
+
+    /* 핑크 색상 세로형 정류장 목록 스타일 */
+    .vertical-station-container {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding-left: 4px;
+    }
+
+    .vertical-station-item {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1e293b;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* 핑크색 동그라미 */
+    .vertical-station-item i {
+      font-size: 10px;
+      color: #f39eba;
+    }
+
+    /* 핑크색 연결선 */
+    .vertical-station-line {
+      font-size: 11px;
+      color: #f8ccdb;
+      padding-left: 3px;
+      line-height: 1;
+      margin: 2px 0;
+      font-weight: bold;
+    }
 
     .timeline-dot.accessibility { background: #ede9fe; color: #6d28d9; }
     .accessibility-guide { margin-top: 10px; padding: 12px; background: #faf5ff; border: 1px solid #ddd6fe; border-radius: 9px; }
@@ -466,6 +529,51 @@
     .facility-status.unknown { background: #fef3c7; color: #92400e; }
     .facility-status.unavailable { background: #fee2e2; color: #b91c1c; }
     .internal-path-warning { margin-top: 8px; padding: 8px 10px; border-radius: 7px; background: #fff7ed; color: #9a3412; font-size: 12px; font-weight: 700; line-height: 1.5; }
+
+    /* 실시간 저상버스 안내 전용 UI */
+    .bus-accessibility-guide {
+      margin-top: 10px;
+      padding: 12px;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 9px;
+    }
+
+    .bus-accessibility-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: #15803d;
+      margin-bottom: 8px;
+    }
+
+    .bus-accessibility-row {
+      font-size: 12.5px;
+      color: #334155;
+      line-height: 1.55;
+    }
+
+    .bus-accessibility-row strong { color: #0f172a; }
+
+    .bus-accessibility-status {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .bus-accessibility-status.unknown {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .bus-accessibility-status.unavailable {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
 
     #map { flex: 1; height: 100%; }
 
@@ -530,7 +638,6 @@
       line-height: 1.4;
     }
 
-    /* 회원가입 폼 요소 */
     .form-group {
       display: flex;
       flex-direction: column;
@@ -572,7 +679,6 @@
       color: #ffffff;
     }
 
-    /* 체크박스 그룹 */
     .checkbox-group {
       display: flex;
       flex-direction: column;
@@ -631,6 +737,10 @@
             ⚙️ 이동 조건 변경
           </button>
         </div>
+      </div>
+
+      <!-- 통합 스크롤 영역 -->
+      <div class="sidebar-scroll-content">
 
         <div class="search-box">
           <div class="inputs-wrapper">
@@ -656,31 +766,28 @@
             <span id="search-button-text">맞춤 경로 탐색</span>
           </button>
         </div>
-      </div>
 
-      <div class="pref-section">
-        <div class="pref-question">
-          <i class="fa-solid fa-circle-question" style="color: #f39eba;"></i>
-          어떤 경로를 선호하시나요?
+        <div class="pref-section">
+          <div class="pref-question">
+            <i class="fa-solid fa-circle-question" style="color: #f39eba;"></i>
+            어떤 경로를 선호하시나요?
+          </div>
+
+          <div class="type-filter">
+            <div class="chip active" data-pref="balanced" onclick="selectPreference('balanced', this)">
+              <span class="radio-dot">●</span> 추천
+            </div>
+            <div class="chip" data-pref="time" onclick="selectPreference('time', this)">
+              <span class="radio-dot">○</span> 최단 시간
+            </div>
+            <div class="chip" data-pref="walk" onclick="selectPreference('walk', this)">
+              <span class="radio-dot">○</span> 최소 도보
+            </div>
+            <div class="chip" data-pref="transfer" onclick="selectPreference('transfer', this)">
+              <span class="radio-dot">○</span> 최소 환승
+            </div>
+          </div>
         </div>
-
-        <div class="type-filter">
-          <div class="chip active" data-pref="balanced" onclick="selectPreference('balanced', this)">
-            <span class="radio-dot">●</span> 추천
-          </div>
-          <div class="chip" data-pref="time" onclick="selectPreference('time', this)">
-            <span class="radio-dot">○</span> 최단 시간
-          </div>
-          <div class="chip" data-pref="walk" onclick="selectPreference('walk', this)">
-            <span class="radio-dot">○</span> 최소 도보
-          </div>
-          <div class="chip" data-pref="transfer" onclick="selectPreference('transfer', this)">
-            <span class="radio-dot">○</span> 최소 환승
-          </div>
-        </div>
-      </div>
-
-      <div class="route-detail-container">
 
         <div id="status-card" class="status-card"></div>
 
@@ -735,9 +842,7 @@
     <div id="map"></div>
   </div>
 
-  <!-- =========================================================
-       1단계: 회원가입 모달 (Signup Overlay)
-  ========================================================== -->
+  <!-- 1단계 모달 -->
   <div class="modal-overlay" id="signup-modal">
     <div class="modal-card">
       <div class="modal-header">
@@ -756,15 +861,13 @@
     </div>
   </div>
 
-  <!-- =========================================================
-       2단계: 이동 프로필 설정 모달 (Profile Setup Modal)
-  ========================================================== -->
+  <!-- 2단계 모달 -->
   <div class="modal-overlay" id="profile-modal" style="display: none;">
     <div class="modal-card">
       <div class="modal-header">
         <span class="modal-badge">Step 2/2</span>
         <div class="modal-title">이동에 필요한 조건 선택</div>
-        <div class="modal-desc">개별 이동 제약 조건을 선택하시면 맞춤형 경로를 추천해 드립니다. (다중 선택 가능)</div>
+        <div class="modal-desc">개별 이동 제약 조건을 선택하시면 맞춤형 경로를 추천해 드립니다.</div>
       </div>
 
       <div class="checkbox-group">
@@ -784,6 +887,10 @@
           <input type="checkbox" id="cond-slope" value="avoid_steep_slope">
           <span> 급경사 피하기</span>
         </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="cond-low-floor-bus" value="require_low_floor_bus">
+          <span> 저상버스 필요</span>
+        </label>
       </div>
 
       <button class="btn-action" onclick="completeOnboarding()">설정 완료하고 길찾기 시작</button>
@@ -793,7 +900,7 @@
 
   <script>
     /* =========================================================
-       1. 설정
+       1. 설정 및 변수
     ========================================================== */
     const API_BASE_URL = 'http://127.0.0.1:8000';
 
@@ -810,7 +917,7 @@
 
 
     /* =========================================================
-       2. 초기화
+       2. 초기화 및 지도
     ========================================================== */
     window.addEventListener('DOMContentLoaded', function () {
       if (window.kakao && window.kakao.maps) {
@@ -831,9 +938,8 @@
 
 
     /* =========================================================
-       3. 회원가입 및 온보딩 2단계 제어
+       3. 온보딩
     ========================================================== */
-    // Step 1 ➔ Step 2 이동
     function goToStep2() {
       const email = document.getElementById('signup-email').value.trim();
       if (!email) {
@@ -844,12 +950,10 @@
       document.getElementById('profile-modal').style.display = 'flex';
     }
 
-    // 마이페이지 조건 변경 버튼 클릭 시
     function openProfileModal() {
       document.getElementById('profile-modal').style.display = 'flex';
     }
 
-    // 온보딩 최종 완료
     function completeOnboarding() {
       document.getElementById('profile-modal').style.display = 'none';
 
@@ -889,9 +993,20 @@
       }
     }
 
+    function getBackendPreference() {
+      const preferenceMap = {
+        balanced: 'BALANCED',
+        time: 'FASTEST',
+        walk: 'MIN_WALKING',
+        transfer: 'MIN_TRANSFER'
+      };
+
+      return preferenceMap[currentPreference] || 'BALANCED';
+    }
+
 
     /* =========================================================
-       5. Enter 검색 & 스왑
+       5. 검색 핸들러 & 스왑
     ========================================================== */
     document.getElementById('start-input').addEventListener('keydown', function (event) {
       if (event.key === 'Enter') searchRoute();
@@ -910,10 +1025,6 @@
       searchRoute();
     }
 
-
-    /* =========================================================
-       6. UI 상태 제어
-    ========================================================== */
     function setLoading(isLoading) {
       const button = document.getElementById('search-button');
       const text = document.getElementById('search-button-text');
@@ -936,7 +1047,7 @@
 
 
     /* =========================================================
-       7. FastAPI 추천 API 호출
+       6. FastAPI 추천 API 실제 호출 (모의 데이터 없이 순수 백엔드 연동)
     ========================================================== */
     async function searchRoute() {
       const startKeyword = document.getElementById('start-input').value.trim();
@@ -947,13 +1058,17 @@
         return;
       }
 
-      const selectedConditions = [];
-      if (document.getElementById('cond-stairs').checked) selectedConditions.push('no_stairs');
-      if (document.getElementById('cond-elevator').checked) selectedConditions.push('elevator_required');
-      if (document.getElementById('cond-escalator').checked) selectedConditions.push('no_escalator');
-      if (document.getElementById('cond-slope').checked) selectedConditions.push('avoid_steep_slope');
+      const mobilityConstraints = {
+        avoid_stairs: document.getElementById('cond-stairs').checked,
+        require_elevator: document.getElementById('cond-elevator').checked,
+        avoid_escalator: document.getElementById('cond-escalator').checked,
+        avoid_steep_slope: document.getElementById('cond-slope').checked,
+        require_low_floor_bus: document.getElementById('cond-low-floor-bus').checked
+      };
 
-      document.getElementById('applied-cond-summary').innerText = `조건 ${selectedConditions.length}개 적용 중`;
+      const selectedConditionCount = Object.values(mobilityConstraints).filter(Boolean).length;
+      document.getElementById('applied-cond-summary').innerText =
+        `조건 ${selectedConditionCount}개 적용 중`;
 
       hideStatus();
       setLoading(true);
@@ -965,9 +1080,8 @@
           body: JSON.stringify({
             origin_name: startKeyword,
             destination_name: endKeyword,
-            user_type: 'WHEELCHAIR',
-            preference: currentPreference,
-            conditions: selectedConditions
+            mobility_constraints: mobilityConstraints,
+            route_preference: getBackendPreference()
           })
         });
 
@@ -1019,7 +1133,7 @@
 
 
     /* =========================================================
-       8. 마커 및 화면 렌더링 함수들
+       7. 마커 및 화면 렌더링 함수들
     ========================================================== */
     function updateMarkers() {
       if (startMarker) startMarker.setMap(null);
@@ -1058,6 +1172,108 @@
       document.getElementById('ai-reason').innerText = reasonText;
 
       renderBackendTimeline(route);
+    }
+
+    function getBusAccessibilityForStep(route, stepId) {
+      const accessibility = route.accessibility || {};
+      const busAccessibility = Array.isArray(accessibility.bus_accessibility)
+        ? accessibility.bus_accessibility
+        : [];
+
+      return busAccessibility.find(item => Number(item.step_id) === Number(stepId)) || null;
+    }
+
+    /* 실시간 저상버스 안내 렌더링 (차량번호 숨김 반영) */
+    function renderBusAccessibilityGuide(route, step) {
+      const result = getBusAccessibilityForStep(route, step.step_id);
+      if (!result) return '';
+
+      const routes = Array.isArray(result.routes) ? result.routes : [];
+
+      if (routes.length === 0) {
+        return `
+          <div class="bus-accessibility-guide">
+            <div class="bus-accessibility-title">♿ 실시간 저상버스 안내</div>
+            <div class="bus-accessibility-row">실시간 저상버스 정보를 확인하지 못했습니다.</div>
+            <span class="bus-accessibility-status unknown">정보 미확인</span>
+          </div>
+        `;
+      }
+
+      const rows = routes.map(item => {
+        const realtime = item.realtime || {};
+        const status = String(realtime.status || '').toUpperCase();
+        const nextBus = realtime.next_low_floor_bus || null;
+        const busNumber = item.bus_number || '-';
+
+        if (status === 'AVAILABLE' && realtime.low_floor_bus_available === true) {
+          const details = [];
+
+          if (nextBus?.arrival_minutes !== null && nextBus?.arrival_minutes !== undefined) {
+            details.push(`약 ${nextBus.arrival_minutes}분 후 도착`);
+          }
+
+          if (nextBus?.remaining_stops !== null && nextBus?.remaining_stops !== undefined) {
+            details.push(`${nextBus.remaining_stops}개 정류장 전`);
+          }
+
+          return `
+            <div class="bus-accessibility-row">
+              <strong>${escapeHtml(busNumber)}번 저상버스</strong>
+              ${details.length ? ` · ${escapeHtml(details.join(' · '))}` : ''}
+            </div>
+          `;
+        }
+
+        if (status === 'NO_LOW_FLOOR_BUS') {
+          return `
+            <div class="bus-accessibility-row">
+              <strong>${escapeHtml(busNumber)}번</strong> · 현재 도착 예정 차량 중 저상버스 없음
+            </div>
+          `;
+        }
+
+        return `
+          <div class="bus-accessibility-row">
+            <strong>${escapeHtml(busNumber)}번</strong> · 실시간 저상버스 정보 미확인
+          </div>
+        `;
+      }).join('');
+
+      const resultStatus = String(result.status || '').toUpperCase();
+      let badgeText = '정보 미확인';
+      let badgeClass = 'unknown';
+
+      if (resultStatus === 'LOW_FLOOR_AVAILABLE') {
+        badgeText = '저상버스 이용 가능';
+        badgeClass = '';
+      } else if (resultStatus === 'LOW_FLOOR_NOT_AVAILABLE') {
+        badgeText = '저상버스 없음';
+        badgeClass = 'unavailable';
+      }
+
+      return `
+        <div class="bus-accessibility-guide">
+          <div class="bus-accessibility-title">♿ 실시간 저상버스 안내</div>
+          ${rows}
+          <span class="bus-accessibility-status ${badgeClass}">${badgeText}</span>
+        </div>
+      `;
+    }
+
+    /* 정류장 토글 버튼 텍스트 조절 */
+    function toggleStations(stepIndex, count) {
+      const listEl = document.getElementById(`station-list-${stepIndex}`);
+      const btnEl = document.getElementById(`station-btn-${stepIndex}`);
+      if (!listEl) return;
+
+      if (listEl.classList.contains('show')) {
+        listEl.classList.remove('show');
+        btnEl.innerHTML = `▼ 경유 정류장/역 (${count}개) 보기`;
+      } else {
+        listEl.classList.add('show');
+        btnEl.innerHTML = `▲ 경유 목록 접기`;
+      }
     }
 
     function renderBackendTimeline(route) {
@@ -1120,15 +1336,38 @@
 
         const description = descriptionParts.join(' · ');
 
+        /* 핑크색 세로선 경유 목록 */
         let stationsHtml = '';
         if (stops.length > 0) {
+          const verticalStopsHtml = stops.map((stop, idx) => {
+            const isLast = idx === stops.length - 1;
+            return `
+              <div class="vertical-station-item">
+                <i class="fa-solid fa-circle"></i>
+                <span>${escapeHtml(String(stop))}</span>
+              </div>
+              ${!isLast ? `<div class="vertical-station-line">│</div>` : ''}
+            `;
+          }).join('');
+
           stationsHtml = `
-            <div class="station-list">
-              <div class="station-title">🚏 경유 정류장/역 (${stops.length}개)</div>
-              <div>${stops.map(stop => escapeHtml(String(stop))).join(' ➔ ')}</div>
+            <div class="station-toggle-wrapper">
+              <button class="btn-toggle-stations" id="station-btn-${stepIndex}" onclick="toggleStations(${stepIndex}, ${stops.length})">
+                ▼ 경유 정류장/역 (${stops.length}개) 보기
+              </button>
+              <div class="station-list" id="station-list-${stepIndex}">
+                <div class="station-title">🚏 전체 경유 목록</div>
+                <div class="vertical-station-container">
+                  ${verticalStopsHtml}
+                </div>
+              </div>
             </div>
           `;
         }
+
+        const busAccessibilityHtml = stepType === 'BUS'
+          ? renderBusAccessibilityGuide(route, step)
+          : '';
 
         timelineHtml += `
           <div class="timeline-item">
@@ -1136,6 +1375,7 @@
             <div class="step-header"><span class="step-title">${escapeHtml(title)}</span></div>
             <div class="step-desc">${escapeHtml(description)}</div>
             ${stationsHtml}
+            ${busAccessibilityHtml}
           </div>
         `;
 
@@ -1299,42 +1539,111 @@
       `;
     }
 
+    /* 노선별 고유 색상 매핑 함수 */
+    function getStepColor(step) {
+      if (!step) return '#f39eba';
+      const stepType = String(step.step_type || '').toUpperCase();
+
+      if (stepType === 'WALKING' || stepType === 'WALK') return '#f39eba';
+
+      const vehicles = Array.isArray(step.vehicles) ? step.vehicles : [];
+      const vehicleName = vehicles.map(v => String(v.name || '')).join(' ');
+
+      if (stepType === 'SUBWAY') {
+        if (vehicleName.includes('1호선')) return '#0052A4';
+        if (vehicleName.includes('2호선')) return '#00A84D';
+        if (vehicleName.includes('3호선')) return '#EF7C1C';
+        if (vehicleName.includes('4호선')) return '#00A5DE';
+        if (vehicleName.includes('5호선')) return '#996CAC';
+        if (vehicleName.includes('6호선')) return '#CD7C2F';
+        if (vehicleName.includes('7호선')) return '#747F00';
+        if (vehicleName.includes('8호선')) return '#EA545D';
+        if (vehicleName.includes('9호선')) return '#BDB092';
+        if (vehicleName.includes('신분당')) return '#D4003B';
+        if (vehicleName.includes('수인분당') || vehicleName.includes('분당')) return '#EAE12F';
+        if (vehicleName.includes('경의중앙')) return '#77C4A3';
+        if (vehicleName.includes('공항')) return '#0090D2';
+        if (vehicleName.includes('경춘')) return '#178C72';
+        return '#0052A4';
+      }
+
+      if (stepType === 'BUS') {
+        if (vehicleName.includes('직행') || vehicleName.includes('광역')) return '#E61C24';
+        if (vehicleName.includes('간선')) return '#015294';
+        if (vehicleName.includes('지선')) return '#53B332';
+        if (vehicleName.includes('마을')) return '#53B332';
+        return '#33A852';
+      }
+
+      return '#f39eba';
+    }
+
+    /* 지도 선 그리기 */
     function drawBackendRoute(route) {
       if (!map) return;
       clearRouteMap();
 
-      const pathData = Array.isArray(route.path) ? route.path : [];
-      if (pathData.length === 0) {
-        fitMapToEndpoints();
-        return;
-      }
+      const steps = Array.isArray(route.steps) ? route.steps : [];
+      const bounds = new kakao.maps.LatLngBounds();
+      let hasPoints = false;
 
-      const kakaoPath = pathData
-        .filter(point => Array.isArray(point) && point.length >= 2)
-        .map(point => new kakao.maps.LatLng(Number(point[1]), Number(point[0])));
+      steps.forEach(step => {
+        const pathData = Array.isArray(step.path) ? step.path : [];
+        if (pathData.length === 0) return;
 
-      if (kakaoPath.length === 0) {
-        fitMapToEndpoints();
-        return;
-      }
+        const kakaoPath = pathData
+          .filter(point => Array.isArray(point) && point.length >= 2)
+          .map(point => new kakao.maps.LatLng(Number(point[1]), Number(point[0])));
 
-      const polyline = new kakao.maps.Polyline({
-        path: kakaoPath,
-        strokeWeight: 7,
-        strokeColor: '#f39eba',
-        strokeOpacity: 0.9,
-        strokeStyle: 'solid'
+        if (kakaoPath.length === 0) return;
+
+        kakaoPath.forEach(point => bounds.extend(point));
+        hasPoints = true;
+
+        const stepType = String(step.step_type || '').toUpperCase();
+        const isWalk = stepType === 'WALKING' || stepType === 'WALK';
+        const color = getStepColor(step);
+
+        const polyline = new kakao.maps.Polyline({
+          path: kakaoPath,
+          strokeWeight: isWalk ? 6 : 8,
+          strokeColor: color,
+          strokeOpacity: 0.9,
+          strokeStyle: isWalk ? 'dash' : 'solid'
+        });
+
+        polyline.setMap(map);
+        currentPolylines.push(polyline);
       });
 
-      polyline.setMap(map);
-      currentPolylines.push(polyline);
+      if (!hasPoints) {
+        const globalPath = Array.isArray(route.path) ? route.path : [];
+        if (globalPath.length > 0) {
+          const kakaoPath = globalPath
+            .filter(point => Array.isArray(point) && point.length >= 2)
+            .map(point => new kakao.maps.LatLng(Number(point[1]), Number(point[0])));
 
-      const bounds = new kakao.maps.LatLngBounds();
-      kakaoPath.forEach(point => bounds.extend(point));
+          const polyline = new kakao.maps.Polyline({
+            path: kakaoPath,
+            strokeWeight: 7,
+            strokeColor: '#f39eba',
+            strokeOpacity: 0.9,
+            strokeStyle: 'solid'
+          });
+
+          polyline.setMap(map);
+          currentPolylines.push(polyline);
+          kakaoPath.forEach(point => bounds.extend(point));
+          hasPoints = true;
+        }
+      }
+
       if (startPoint) bounds.extend(startPoint);
       if (endPoint) bounds.extend(endPoint);
 
-      map.setBounds(bounds);
+      if (hasPoints || startPoint || endPoint) {
+        map.setBounds(bounds);
+      }
     }
 
     function clearRouteMap() {
