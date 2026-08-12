@@ -37,6 +37,14 @@ from app.services.facility_status_service import (
     summarize_route_facility_status,
 )
 
+from app.services.bus_matching_service import (
+    match_bus_step_identifiers,
+)
+
+from app.services.bus_arrival_service import (
+    get_low_floor_bus_status,
+)
+
 
 router = APIRouter(
     prefix="/routes",
@@ -217,8 +225,12 @@ async def get_routes_by_places(
             destination.model_dump()
         ),
 
-        "user_type": (
-            request.user_type
+        "mobility_constraints": (
+            request.mobility_constraints.model_dump()
+        ),
+
+        "route_preference": (
+            request.route_preference
         ),
 
         **simplified_data,
@@ -247,12 +259,12 @@ async def get_recommended_route(
     3. 후보 경로 단순화
     4. station_movements 추출
     5. 역 내부 이동 그래프 탐색
-    6. 사용자 유형 제약 적용
+    6. 이동 조건 제약 적용
     7. 실제 EV / ES 실시간 상태 조회
     8. 고장 시설 발견 시 해당 edge 차단
     9. 역 내부 우회 경로 재탐색
     10. Hard Barrier 검사
-    11. 사용자별 불편 점수 계산
+    11. 경로 선호도 기반 점수 계산
     12. 가장 적합한 경로 추천
     """
 
@@ -371,11 +383,11 @@ async def get_recommended_route(
     #
     # station_movements
     # → 역 내부 그래프
-    # → 사용자 유형 제약
+    # → 이동 조건 제약
     # → 실시간 EV / ES
     # → 고장 시설 우회
     # → Hard Barrier
-    # → Soft Score
+    # → 경로 선호도 점수
     # → 최종 추천
     #
     # 순으로 처리됩니다.
@@ -383,9 +395,14 @@ async def get_recommended_route(
 
     try:
         recommendation_result = (
-            select_best_candidate(
+            await select_best_candidate(
                 routes=routes,
-                user_type=request.user_type,
+                mobility_constraints=(
+                    request.mobility_constraints.model_dump()
+                ),
+                route_preference=(
+                    request.route_preference
+                ),
             )
         )
 
@@ -438,18 +455,63 @@ async def get_recommended_route(
 
 @router.post("/debug/path")
 async def debug_station_path(
-    movement: dict[str, Any],
+    payload: dict[str, Any],
 ) -> dict[str, Any]:
     """
-    station_movement 하나의
-    기본 역 내부 경로를 테스트합니다.
+    station_movement 하나의 기본 역 내부 경로를 테스트합니다.
+
+    payload 예시:
+    {
+        "movement": {...},
+        "mobility_constraints": {
+            "avoid_stairs": true,
+            "require_elevator": true,
+            "avoid_escalator": false,
+            "avoid_steep_slope": false
+        }
+    }
 
     실시간 상태는 반영하지 않습니다.
     """
 
+    movement = payload.get(
+        "movement"
+    )
+
+    mobility_constraints = payload.get(
+        "mobility_constraints",
+        {},
+    )
+
+    if not isinstance(
+        movement,
+        dict,
+    ):
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "movement는 객체(dict) 형태여야 합니다."
+            ),
+        )
+
+    if not isinstance(
+        mobility_constraints,
+        dict,
+    ):
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "mobility_constraints는 "
+                "객체(dict) 형태여야 합니다."
+            ),
+        )
+
     return (
         analyze_station_movement(
-            movement
+            movement=movement,
+            mobility_constraints=(
+                mobility_constraints
+            ),
         )
     )
 
@@ -523,31 +585,22 @@ async def debug_path_with_blocked_facilities(
 ) -> dict[str, Any]:
     """
     특정 EV / ES를 강제로 차단하고
-    사용자 유형 제약을 반영해 BFS를 수행합니다.
+    이동 조건을 반영해 BFS를 수행합니다.
     """
 
-    movement = (
-        payload.get(
-            "movement"
-        )
+    movement = payload.get(
+        "movement"
     )
 
-    blocked_edge_ids = (
-        payload.get(
-            "blocked_edge_ids",
-            [],
-        )
+    blocked_edge_ids = payload.get(
+        "blocked_edge_ids",
+        [],
     )
 
-    user_type = (
-        payload.get(
-            "user_type"
-        )
+    mobility_constraints = payload.get(
+        "mobility_constraints",
+        {},
     )
-
-    # --------------------------------------------------------------------------
-    # 입력 검증
-    # --------------------------------------------------------------------------
 
     if not isinstance(
         movement,
@@ -556,8 +609,7 @@ async def debug_path_with_blocked_facilities(
         raise HTTPException(
             status_code=400,
             detail=(
-                "movement는 "
-                "객체(dict) 형태여야 합니다."
+                "movement는 객체(dict) 형태여야 합니다."
             ),
         )
 
@@ -568,8 +620,19 @@ async def debug_path_with_blocked_facilities(
         raise HTTPException(
             status_code=400,
             detail=(
-                "blocked_edge_ids는 "
-                "list 형태여야 합니다."
+                "blocked_edge_ids는 list 형태여야 합니다."
+            ),
+        )
+
+    if not isinstance(
+        mobility_constraints,
+        dict,
+    ):
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "mobility_constraints는 "
+                "객체(dict) 형태여야 합니다."
             ),
         )
 
@@ -583,10 +646,6 @@ async def debug_path_with_blocked_facilities(
             edge_id
         ).strip()
     }
-
-    # --------------------------------------------------------------------------
-    # 시작 / 종료 노드 결정
-    # --------------------------------------------------------------------------
 
     resolved = (
         resolve_movement_nodes(
@@ -607,21 +666,17 @@ async def debug_path_with_blocked_facilities(
                     "ERROR",
                 )
             ),
-
-            "user_type": (
-                user_type
+            "mobility_constraints": (
+                mobility_constraints
             ),
-
             "movement": (
                 movement
             ),
-
             "blocked_edge_ids": (
                 sorted(
                     blocked_set
                 )
             ),
-
             "node_resolution": (
                 resolved
             ),
@@ -645,43 +700,27 @@ async def debug_path_with_blocked_facilities(
         ]
     )
 
-    # --------------------------------------------------------------------------
-    # BFS
-    # --------------------------------------------------------------------------
-
     internal_path = (
         find_shortest_internal_path(
             station_name=station_name,
-
             start_node_id=str(
                 start_node[
                     "id"
                 ]
             ),
-
             end_node_id=str(
                 end_node[
                     "id"
                 ]
             ),
-
             blocked_edge_ids=(
                 blocked_set
             ),
-
-            user_type=(
-                str(
-                    user_type
-                )
-                if user_type
-                else None
+            mobility_constraints=(
+                mobility_constraints
             ),
         )
     )
-
-    # --------------------------------------------------------------------------
-    # EV / ES 추출
-    # --------------------------------------------------------------------------
 
     required_facilities = (
         extract_required_facilities(
@@ -695,53 +734,43 @@ async def debug_path_with_blocked_facilities(
                 "status"
             )
         ),
-
-        "user_type": (
-            user_type
+        "mobility_constraints": (
+            mobility_constraints
         ),
-
         "movement": (
             movement
         ),
-
         "blocked_edge_ids": (
             sorted(
                 blocked_set
             )
         ),
-
         "node_resolution": (
             resolved
         ),
-
         "start_node": (
             start_node
         ),
-
         "end_node": (
             end_node
         ),
-
         "node_path": (
             internal_path.get(
                 "node_path",
                 [],
             )
         ),
-
         "edge_count": (
             internal_path.get(
                 "edge_count",
                 0,
             )
         ),
-
         "required_facility_count": (
             len(
                 required_facilities
             )
         ),
-
         "required_facilities": (
             required_facilities
         ),
@@ -749,7 +778,7 @@ async def debug_path_with_blocked_facilities(
 
 
 # ==============================================================================
-# 7. 사용자 유형 + 실시간 EV/ES 기반 내부 경로 디버그
+# 7. 이동 조건 + 실시간 EV/ES 기반 내부 경로 디버그
 # ==============================================================================
 
 @router.post(
@@ -759,23 +788,20 @@ async def debug_realtime_safe_path(
     payload: dict[str, Any],
 ) -> dict[str, Any]:
     """
-    사용자 유형과 실제 EV / ES 운행 상태를 반영하여
+    이동 조건과 실제 EV / ES 운행 상태를 반영하여
     역 내부 안전 경로를 계산합니다.
 
     운행 불가 시설이 발견되면 해당 edge를 차단하고
     자동으로 BFS를 다시 수행합니다.
     """
 
-    movement = (
-        payload.get(
-            "movement"
-        )
+    movement = payload.get(
+        "movement"
     )
 
-    user_type = (
-        payload.get(
-            "user_type"
-        )
+    mobility_constraints = payload.get(
+        "mobility_constraints",
+        {},
     )
 
     if not isinstance(
@@ -785,7 +811,18 @@ async def debug_realtime_safe_path(
         raise HTTPException(
             status_code=400,
             detail=(
-                "movement는 "
+                "movement는 객체(dict) 형태여야 합니다."
+            ),
+        )
+
+    if not isinstance(
+        mobility_constraints,
+        dict,
+    ):
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "mobility_constraints는 "
                 "객체(dict) 형태여야 합니다."
             ),
         )
@@ -794,13 +831,8 @@ async def debug_realtime_safe_path(
         result = (
             find_realtime_safe_internal_path(
                 movement=movement,
-
-                user_type=(
-                    str(
-                        user_type
-                    )
-                    if user_type
-                    else None
+                mobility_constraints=(
+                    mobility_constraints
                 ),
             )
         )
@@ -830,5 +862,95 @@ async def debug_realtime_safe_path(
                 f"오류가 발생했습니다: {error}"
             ),
         ) from error
+
+    return result
+
+# ==============================================================================
+# 버스 GBIS 식별자 매칭 디버그
+# ==============================================================================
+
+@router.post(
+    "/debug/bus-identifiers"
+)
+async def debug_bus_identifiers(
+    payload: dict[str, Any],
+) -> dict[str, Any]:
+    """
+    카카오 BUS step을 이용하여
+
+    - 버스번호 -> GBIS routeId
+    - 승차 정류장 -> GBIS stationId
+
+    매칭 결과를 확인합니다.
+    """
+
+    step = payload.get("step")
+
+    if not isinstance(step, dict):
+        raise HTTPException(
+            status_code=400,
+            detail="step은 객체(dict) 형태여야 합니다.",
+        )
+
+    step_type = str(
+        step.get("step_type", "")
+    ).upper()
+
+    if step_type != "BUS":
+        raise HTTPException(
+            status_code=400,
+            detail="BUS step만 테스트할 수 있습니다.",
+        )
+
+    try:
+        result = match_bus_step_identifiers(
+            step
+        )
+
+    except FileNotFoundError as error:
+        raise HTTPException(
+            status_code=500,
+            detail=str(error),
+        ) from error
+
+    except ValueError as error:
+        raise HTTPException(
+            status_code=400,
+            detail=str(error),
+        ) from error
+
+    except Exception as error:
+        raise HTTPException(
+            status_code=500,
+            detail=(
+                "버스 식별자 매칭 중 "
+                f"오류가 발생했습니다: {error}"
+            ),
+        ) from error
+
+    return result
+
+# ==============================================================================
+# 실시간 저상버스 도착정보 디버그
+# ==============================================================================
+
+@router.get(
+    "/debug/bus-arrival"
+)
+async def debug_bus_arrival(
+    station_id: str,
+    route_id: str,
+    bus_number: str | None = None,
+):
+    """
+    GBIS stationId와 routeId를 이용해
+    해당 노선의 실시간 저상버스 도착정보를 확인합니다.
+    """
+
+    result = await get_low_floor_bus_status(
+        station_id=station_id,
+        route_id=route_id,
+        bus_number=bus_number,
+    )
 
     return result

@@ -44,94 +44,46 @@ TRAIN_PLATFORM_FLOORS: dict[
 ] = {
     ("정자역", "수인분당선"): "B2",
     ("정자역", "신분당선"): "B3",
-
-    ("판교역", "경강선"): "B4",
-    ("판교역", "신분당선"): "B3",
-
-    ("이매역", "경강선"): "B3",
-    ("이매역", "수인분당선"): "B2",
-
-    ("서현역", "수인분당선"): "B2",
-    ("수내역", "수인분당선"): "B2",
-    ("야탑역", "수인분당선"): "B2",
 }
 
 
 # ==============================================================================
-# 2-1. 승강장 방향 표기 보정
+# 3. 이동 조건 정규화
 # ==============================================================================
 
-PLATFORM_DIRECTION_ALIASES: dict[
-    tuple[str, str, str],
-    list[str],
-] = {
-    ("판교역", "경강선", "성남역"): [
-        "이매역",
-        "이매",
-    ],
-    ("판교역", "경강선", "이매역"): [
-        "이매역",
-        "이매",
-    ],
-
-    ("야탑역", "수인분당선", "모란역"): [
-        "왕십리",
-        "청량리",
-        "상선",
-    ],
-
-    ("야탑역", "수인분당선", "이매역"): [
-        "죽전",
-        "고색",
-        "인천",
-        "하선",
-    ],
+DEFAULT_MOBILITY_CONSTRAINTS: dict[str, bool] = {
+    "avoid_stairs": False,
+    "require_elevator": False,
+    "avoid_escalator": False,
+    "avoid_steep_slope": False,
+    "require_low_floor_bus": False,
 }
 
 
-# ==============================================================================
-# 3. 사용자 유형 정규화
-# ==============================================================================
+def normalize_mobility_constraints(
+    mobility_constraints: dict[str, Any] | None,
+) -> dict[str, bool]:
+    """2차 프로토타입 이동 조건을 내부 비교용 dict로 정규화합니다."""
+    normalized = dict(DEFAULT_MOBILITY_CONSTRAINTS)
+    if not isinstance(mobility_constraints, dict):
+        return normalized
+    for key in normalized:
+        normalized[key] = bool(mobility_constraints.get(key, False))
+    return normalized
 
-def normalize_user_type(
-    user_type: str | None,
-) -> str:
-    """
-    사용자 유형을 내부 비교용 형태로 정규화합니다.
-    """
 
-    if not user_type:
+def _normalize_floor_value(value: Any) -> str:
+    if value is None:
         return ""
-
-    return (
-        str(user_type)
-        .strip()
-        .upper()
-    )
+    return str(value).strip().upper().replace(" ", "")
 
 
-def is_wheelchair_user(
-    user_type: str | None,
-) -> bool:
-    """
-    휠체어 사용자 유형인지 확인합니다.
-
-    현재 여러 표기를 허용합니다.
-    """
-
-    normalized = (
-        normalize_user_type(
-            user_type
-        )
-    )
-
-    return normalized in {
-        "WHEELCHAIR",
-        "WHEELCHAIR_USER",
-        "휠체어",
-        "휠체어사용자",
-    }
-
+def _edge_changes_floor(edge: dict[str, Any]) -> bool:
+    from_floor = _normalize_floor_value(edge.get("from_floor"))
+    to_floor = _normalize_floor_value(edge.get("to_floor"))
+    if not from_floor or not to_floor:
+        return False
+    return from_floor != to_floor
 
 # ==============================================================================
 # 4. 전체 그래프 로드
@@ -501,61 +453,6 @@ def normalize_direction_keyword(
     )
 
 
-def get_platform_direction_keywords(
-    station_name: str,
-    line_name: str,
-    direction_station: str | None,
-) -> list[str]:
-    """
-    플랫폼 검색에 사용할 방향 키워드 목록을 반환합니다.
-    """
-
-    keywords: list[str] = []
-
-    direct_keyword = (
-        normalize_direction_keyword(
-            direction_station
-        )
-    )
-
-    if direct_keyword:
-        keywords.append(
-            direct_keyword
-        )
-
-    if direction_station:
-
-        alias_values = (
-            PLATFORM_DIRECTION_ALIASES.get(
-                (
-                    str(station_name).strip(),
-                    str(line_name).strip(),
-                    str(direction_station).strip(),
-                ),
-                [],
-            )
-        )
-
-        for alias in alias_values:
-
-            normalized_alias = (
-                normalize_direction_keyword(
-                    alias
-                )
-            )
-
-            if (
-                normalized_alias
-                and normalized_alias
-                not in keywords
-            ):
-                keywords.append(
-                    normalized_alias
-                )
-
-    return keywords
-
-
 def get_platform_search_text(
     node: dict[str, Any],
 ) -> str:
@@ -652,9 +549,12 @@ def find_platform_node(
     역 + 노선 + 진행 방향을 이용하여
     실제 열차 승강장 PLATFORM을 찾습니다.
 
-    카카오/토폴로지의 인접역 방향과
-    역사 시설 데이터의 대표 행선 방향 표기가 다를 수 있어
-    별칭 키워드를 함께 사용합니다.
+    선택 순서:
+
+    1. 역/노선 PLATFORM 조회
+    2. 실제 열차 승강장 층 필터링
+    3. 방향 역 이름으로 후보 검색
+    4. 동일 방향 후보가 여러 개면 EV 연결 노드 우선
     """
 
     platform_nodes = (
@@ -666,6 +566,10 @@ def find_platform_node(
 
     if not platform_nodes:
         return None
+
+    # --------------------------------------------------------------------------
+    # 실제 열차 승강장 층 필터링
+    # --------------------------------------------------------------------------
 
     train_platform_floor = (
         TRAIN_PLATFORM_FLOORS.get(
@@ -695,6 +599,10 @@ def find_platform_node(
                 floor_matching_nodes
             )
 
+    # --------------------------------------------------------------------------
+    # 방향 정보가 없는 경우
+    # --------------------------------------------------------------------------
+
     if not direction_station:
 
         for node in platform_nodes:
@@ -714,13 +622,9 @@ def find_platform_node(
 
         return platform_nodes[0]
 
-    direction_keywords = (
-        get_platform_direction_keywords(
-            station_name=station_name,
-            line_name=line_name,
-            direction_station=(
-                direction_station
-            ),
+    direction_keyword = (
+        normalize_direction_keyword(
+            direction_station
         )
     )
 
@@ -728,43 +632,30 @@ def find_platform_node(
         dict[str, Any]
     ] = []
 
-    for keyword in direction_keywords:
+    for node in platform_nodes:
 
-        keyword_matches: list[
-            dict[str, Any]
-        ] = []
-
-        for node in platform_nodes:
-
-            search_text = (
-                get_platform_search_text(
-                    node
-                )
+        search_text = (
+            get_platform_search_text(
+                node
             )
+        )
 
-            normalized_search_text = (
-                normalize_direction_keyword(
-                    search_text
-                )
+        if (
+            direction_keyword
+            and direction_keyword
+            in search_text
+        ):
+            matching_nodes.append(
+                node
             )
-
-            if (
-                keyword
-                and keyword
-                in normalized_search_text
-            ):
-                keyword_matches.append(
-                    node
-                )
-
-        if keyword_matches:
-            matching_nodes = (
-                keyword_matches
-            )
-            break
 
     if not matching_nodes:
         return None
+
+    # --------------------------------------------------------------------------
+    # 같은 방향 후보가 여러 개인 경우
+    # EV 연결 승강장 우선
+    # --------------------------------------------------------------------------
 
     for node in matching_nodes:
 
@@ -1345,49 +1236,45 @@ def resolve_movement_nodes(
 
 
 # ==============================================================================
-# 15. 사용자 유형별 edge 사용 가능 여부
+# 15. 이동 조건별 edge 사용 가능 여부
 # ==============================================================================
 
-def is_edge_allowed_for_user(
+def is_edge_allowed_for_constraints(
     edge: dict[str, Any],
-    user_type: str | None,
+    mobility_constraints: dict[str, Any] | None,
 ) -> bool:
     """
-    사용자 유형에 따라
-    해당 edge를 사용할 수 있는지 판단합니다.
+    사용자가 선택한 이동 조건에 따라 edge 사용 가능 여부를 판단합니다.
 
-    현재 정책:
+    - avoid_stairs=True: 계단 edge 제외
+    - avoid_escalator=True: 에스컬레이터/무빙워크 edge 제외
+    - require_elevator=True: 층간 이동은 엘리베이터만 허용
+    - avoid_steep_slope=True: 명시적으로 급경사인 edge 제외
 
-    WHEELCHAIR
-        wheelchair_accessible=False
-        → 사용 불가
-
-    ELDERLY / 일반 사용자
-        → 현재는 hard filter 없음
+    같은 층 WALKING edge는 require_elevator=True여도 허용합니다.
     """
+    constraints = normalize_mobility_constraints(mobility_constraints)
+    transport_type = str(edge.get("transport_type", "")).strip().upper()
 
-    # --------------------------------------------------------------------------
-    # 휠체어 사용자
-    # --------------------------------------------------------------------------
+    if constraints["avoid_stairs"] and transport_type in {"STAIR", "STAIRS"}:
+        return False
 
-    if is_wheelchair_user(
-        user_type
+    if constraints["avoid_escalator"] and transport_type in {
+        "ESCALATOR", "MOVING_WALK", "MOVINGWALK"
+    }:
+        return False
+
+    if (
+        constraints["require_elevator"]
+        and _edge_changes_floor(edge)
+        and transport_type != "ELEVATOR"
     ):
+        return False
 
-        wheelchair_accessible = (
-            edge.get(
-                "wheelchair_accessible"
-            )
-        )
-
-        if (
-            wheelchair_accessible
-            is False
-        ):
-            return False
+    if constraints["avoid_steep_slope"] and edge.get("has_steep_slope") is True:
+        return False
 
     return True
-
 
 # ==============================================================================
 # 16. BFS 인접 목록
@@ -1396,158 +1283,45 @@ def is_edge_allowed_for_user(
 def build_adjacency_list(
     station_name: str,
     blocked_edge_ids: set[str] | None = None,
-    user_type: str | None = None,
-) -> dict[
-    str,
-    list[dict[str, Any]],
-]:
-    """
-    BFS용 인접 목록을 만듭니다.
-
-    제외 조건:
-
-    1. blocked_edge_ids
-       → 고장 또는 강제 차단 시설
-
-    2. user_type 제약
-       → 예: 휠체어 사용자는
-          wheelchair_accessible=False edge 제외
-    """
-
-    edges = get_station_edges(
-        station_name
-    )
-
-    blocked_edge_ids = (
-        blocked_edge_ids
-        or set()
-    )
-
-    adjacency: dict[
-        str,
-        list[dict[str, Any]],
-    ] = {}
+    mobility_constraints: dict[str, Any] | None = None,
+) -> dict[str, list[dict[str, Any]]]:
+    """이동 조건과 고장 시설 차단 목록을 반영한 BFS 인접 목록을 만듭니다."""
+    edges = get_station_edges(station_name)
+    blocked_edge_ids = blocked_edge_ids or set()
+    adjacency: dict[str, list[dict[str, Any]]] = {}
 
     for edge in edges:
-
-        edge_id = str(
-            edge.get(
-                "id",
-                "",
-            )
-        ).strip()
-
-        # ----------------------------------------------------------------------
-        # 고장/강제 차단 시설 제외
-        # ----------------------------------------------------------------------
-
-        if (
-            edge_id
-            and edge_id
-            in blocked_edge_ids
-        ):
+        edge_id = str(edge.get("id", "")).strip()
+        if edge_id and edge_id in blocked_edge_ids:
+            continue
+        if not is_edge_allowed_for_constraints(edge, mobility_constraints):
             continue
 
-        # ----------------------------------------------------------------------
-        # 사용자 유형 제약
-        # ----------------------------------------------------------------------
-
-        if not is_edge_allowed_for_user(
-            edge=edge,
-            user_type=user_type,
-        ):
+        from_node = edge.get("from_node")
+        to_node = edge.get("to_node")
+        if not from_node or not to_node:
             continue
+        from_node = str(from_node)
+        to_node = str(to_node)
 
-        from_node = (
-            edge.get(
-                "from_node"
-            )
-        )
+        adjacency.setdefault(from_node, []).append({
+            "next_node": to_node,
+            "edge": edge,
+            "traversal_from_node": from_node,
+            "traversal_to_node": to_node,
+            "reverse_traversal": False,
+        })
 
-        to_node = (
-            edge.get(
-                "to_node"
-            )
-        )
-
-        if (
-            not from_node
-            or not to_node
-        ):
-            continue
-
-        from_node = str(
-            from_node
-        )
-
-        to_node = str(
-            to_node
-        )
-
-        # ----------------------------------------------------------------------
-        # 원래 방향
-        # ----------------------------------------------------------------------
-
-        adjacency.setdefault(
-            from_node,
-            [],
-        )
-
-        adjacency[
-            from_node
-        ].append(
-            {
-                "next_node": (
-                    to_node
-                ),
+        if edge.get("is_bidirectional") is True:
+            adjacency.setdefault(to_node, []).append({
+                "next_node": from_node,
                 "edge": edge,
-                "traversal_from_node": (
-                    from_node
-                ),
-                "traversal_to_node": (
-                    to_node
-                ),
-                "reverse_traversal": (
-                    False
-                ),
-            }
-        )
-
-        # ----------------------------------------------------------------------
-        # 양방향 시설
-        # ----------------------------------------------------------------------
-
-        if edge.get(
-            "is_bidirectional"
-        ) is True:
-
-            adjacency.setdefault(
-                to_node,
-                [],
-            )
-
-            adjacency[
-                to_node
-            ].append(
-                {
-                    "next_node": (
-                        from_node
-                    ),
-                    "edge": edge,
-                    "traversal_from_node": (
-                        to_node
-                    ),
-                    "traversal_to_node": (
-                        from_node
-                    ),
-                    "reverse_traversal": (
-                        True
-                    ),
-                }
-            )
+                "traversal_from_node": to_node,
+                "traversal_to_node": from_node,
+                "reverse_traversal": True,
+            })
 
     return adjacency
-
 
 # ==============================================================================
 # 17. BFS 최단 경로
@@ -1558,192 +1332,72 @@ def find_shortest_internal_path(
     start_node_id: str,
     end_node_id: str,
     blocked_edge_ids: set[str] | None = None,
-    user_type: str | None = None,
+    mobility_constraints: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """
-    BFS로 역 내부 최단 경로를 찾습니다.
+    """BFS로 이동 조건과 고장 시설 차단을 반영한 역 내부 최단 경로를 찾습니다."""
+    constraints = normalize_mobility_constraints(mobility_constraints)
 
-    사용자 유형 제약과
-    고장 시설 차단 목록을 동시에 반영합니다.
-    """
-
-    if (
-        start_node_id
-        == end_node_id
-    ):
+    if start_node_id == end_node_id:
         return {
             "status": "SUCCESS",
             "station_name": station_name,
-            "user_type": user_type,
-            "node_path": [
-                start_node_id
-            ],
+            "mobility_constraints": constraints,
+            "node_path": [start_node_id],
             "edge_path": [],
             "traversal_path": [],
             "edge_count": 0,
         }
 
-    adjacency = (
-        build_adjacency_list(
-            station_name=station_name,
-            blocked_edge_ids=(
-                blocked_edge_ids
-            ),
-            user_type=(
-                user_type
-            ),
-        )
+    adjacency = build_adjacency_list(
+        station_name=station_name,
+        blocked_edge_ids=blocked_edge_ids,
+        mobility_constraints=constraints,
     )
 
-    queue = deque(
-        [
-            (
-                start_node_id,
-                [
-                    start_node_id
-                ],
-                [],
-                [],
-            )
-        ]
-    )
-
-    visited = {
-        start_node_id
-    }
+    queue = deque([(start_node_id, [start_node_id], [], [])])
+    visited = {start_node_id}
 
     while queue:
-
-        (
-            current_node,
-            node_path,
-            edge_path,
-            traversal_path,
-        ) = queue.popleft()
-
-        for connection in (
-            adjacency.get(
-                current_node,
-                [],
-            )
-        ):
-
-            next_node = (
-                connection[
-                    "next_node"
-                ]
-            )
-
+        current_node, node_path, edge_path, traversal_path = queue.popleft()
+        for connection in adjacency.get(current_node, []):
+            next_node = connection["next_node"]
             if next_node in visited:
                 continue
+            edge = connection["edge"]
+            next_node_path = node_path + [next_node]
+            next_edge_path = edge_path + [edge]
+            next_traversal_path = traversal_path + [{
+                "edge": edge,
+                "traversal_from_node": connection["traversal_from_node"],
+                "traversal_to_node": connection["traversal_to_node"],
+                "reverse_traversal": connection["reverse_traversal"],
+            }]
 
-            edge = (
-                connection[
-                    "edge"
-                ]
-            )
-
-            next_node_path = (
-                node_path
-                + [
-                    next_node
-                ]
-            )
-
-            next_edge_path = (
-                edge_path
-                + [
-                    edge
-                ]
-            )
-
-            next_traversal_path = (
-                traversal_path
-                + [
-                    {
-                        "edge": (
-                            edge
-                        ),
-                        "traversal_from_node": (
-                            connection[
-                                "traversal_from_node"
-                            ]
-                        ),
-                        "traversal_to_node": (
-                            connection[
-                                "traversal_to_node"
-                            ]
-                        ),
-                        "reverse_traversal": (
-                            connection[
-                                "reverse_traversal"
-                            ]
-                        ),
-                    }
-                ]
-            )
-
-            if (
-                next_node
-                == end_node_id
-            ):
+            if next_node == end_node_id:
                 return {
                     "status": "SUCCESS",
-                    "station_name": (
-                        station_name
-                    ),
-                    "user_type": (
-                        user_type
-                    ),
-                    "node_path": (
-                        next_node_path
-                    ),
-                    "edge_path": (
-                        next_edge_path
-                    ),
-                    "traversal_path": (
-                        next_traversal_path
-                    ),
-                    "edge_count": len(
-                        next_edge_path
-                    ),
+                    "station_name": station_name,
+                    "mobility_constraints": constraints,
+                    "node_path": next_node_path,
+                    "edge_path": next_edge_path,
+                    "traversal_path": next_traversal_path,
+                    "edge_count": len(next_edge_path),
                 }
 
-            visited.add(
-                next_node
-            )
-
-            queue.append(
-                (
-                    next_node,
-                    next_node_path,
-                    next_edge_path,
-                    next_traversal_path,
-                )
-            )
+            visited.add(next_node)
+            queue.append((next_node, next_node_path, next_edge_path, next_traversal_path))
 
     return {
-        "status": (
-            "PATH_NOT_FOUND"
-        ),
-        "station_name": (
-            station_name
-        ),
-        "user_type": (
-            user_type
-        ),
-        "start_node_id": (
-            start_node_id
-        ),
-        "end_node_id": (
-            end_node_id
-        ),
+        "status": "PATH_NOT_FOUND",
+        "station_name": station_name,
+        "mobility_constraints": constraints,
+        "start_node_id": start_node_id,
+        "end_node_id": end_node_id,
         "node_path": [],
         "edge_path": [],
         "traversal_path": [],
         "edge_count": 0,
     }
-
 
 # ==============================================================================
 # 18. 기본 movement 내부 경로
@@ -1751,96 +1405,39 @@ def find_shortest_internal_path(
 
 def find_movement_internal_path(
     movement: dict[str, Any],
-    user_type: str | None = None,
+    mobility_constraints: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """
-    실시간 상태를 반영하지 않은
-    기본 역 내부 경로를 계산합니다.
+    """실시간 상태 전의 기본 역 내부 경로를 이동 조건을 반영해 계산합니다."""
+    constraints = normalize_mobility_constraints(mobility_constraints)
+    resolved = resolve_movement_nodes(movement)
 
-    사용자 유형 제약은 반영할 수 있습니다.
-    """
-
-    resolved = (
-        resolve_movement_nodes(
-            movement
-        )
-    )
-
-    if (
-        resolved.get(
-            "status"
-        )
-        != "SUCCESS"
-    ):
+    if resolved.get("status") != "SUCCESS":
         return {
-            "status": resolved.get(
-                "status",
-                "ERROR",
-            ),
+            "status": resolved.get("status", "ERROR"),
             "movement": movement,
-            "user_type": user_type,
-            "node_resolution": (
-                resolved
-            ),
+            "mobility_constraints": constraints,
+            "node_resolution": resolved,
             "node_path": [],
             "edge_path": [],
             "traversal_path": [],
             "edge_count": 0,
         }
 
-    station_name = str(
-        resolved[
-            "station_name"
-        ]
+    station_name = str(resolved["station_name"])
+    start_node = resolved["start_node"]
+    end_node = resolved["end_node"]
+
+    result = find_shortest_internal_path(
+        station_name=station_name,
+        start_node_id=str(start_node["id"]),
+        end_node_id=str(end_node["id"]),
+        mobility_constraints=constraints,
     )
-
-    start_node = (
-        resolved[
-            "start_node"
-        ]
-    )
-
-    end_node = (
-        resolved[
-            "end_node"
-        ]
-    )
-
-    result = (
-        find_shortest_internal_path(
-            station_name=station_name,
-            start_node_id=str(
-                start_node[
-                    "id"
-                ]
-            ),
-            end_node_id=str(
-                end_node[
-                    "id"
-                ]
-            ),
-            user_type=user_type,
-        )
-    )
-
-    result[
-        "movement"
-    ] = movement
-
-    result[
-        "node_resolution"
-    ] = resolved
-
-    result[
-        "start_node"
-    ] = start_node
-
-    result[
-        "end_node"
-    ] = end_node
-
+    result["movement"] = movement
+    result["node_resolution"] = resolved
+    result["start_node"] = start_node
+    result["end_node"] = end_node
     return result
-
 
 # ==============================================================================
 # 19. 실제 이용 EV / ES 추출
@@ -2093,44 +1690,22 @@ def extract_required_facilities(
 
 def find_realtime_safe_internal_path(
     movement: dict[str, Any],
-    user_type: str | None = None,
+    mobility_constraints: dict[str, Any] | None = None,
     max_retry: int = 10,
 ) -> dict[str, Any]:
     """
-    사용자 유형 및 실시간 EV/ES 상태를 모두 반영하여
-    현재 이용 가능한 역 내부 동선을 찾습니다.
-
-    처리 과정:
-
-    1. 사용자 유형 제약을 반영한 BFS
-    2. 필요한 EV/ES 추출
-    3. 실시간 상태 확인
-    4. UNAVAILABLE 시설 차단
-    5. 다시 BFS
+    이동 조건 + 실시간 EV/ES 상태를 반영해 현재 이용 가능한 내부 동선을 찾습니다.
+    고장 시설은 해당 edge만 차단하고 BFS를 다시 수행합니다.
     """
+    constraints = normalize_mobility_constraints(mobility_constraints)
+    resolved = resolve_movement_nodes(movement)
 
-    resolved = (
-        resolve_movement_nodes(
-            movement
-        )
-    )
-
-    if (
-        resolved.get(
-            "status"
-        )
-        != "SUCCESS"
-    ):
+    if resolved.get("status") != "SUCCESS":
         return {
-            "status": resolved.get(
-                "status",
-                "ERROR",
-            ),
+            "status": resolved.get("status", "ERROR"),
             "movement": movement,
-            "user_type": user_type,
-            "node_resolution": (
-                resolved
-            ),
+            "mobility_constraints": constraints,
+            "node_resolution": resolved,
             "start_node": None,
             "end_node": None,
             "node_path": [],
@@ -2143,372 +1718,115 @@ def find_realtime_safe_internal_path(
             "attempt_count": 0,
         }
 
-    station_name = str(
-        resolved[
-            "station_name"
-        ]
-    )
+    station_name = str(resolved["station_name"])
+    start_node = resolved["start_node"]
+    end_node = resolved["end_node"]
+    blocked_edge_ids: set[str] = set()
 
-    start_node = (
-        resolved[
-            "start_node"
-        ]
-    )
-
-    end_node = (
-        resolved[
-            "end_node"
-        ]
-    )
-
-    blocked_edge_ids: set[
-        str
-    ] = set()
-
-    for attempt in range(
-        1,
-        max_retry + 1,
-    ):
-
-        internal_path = (
-            find_shortest_internal_path(
-                station_name=station_name,
-                start_node_id=str(
-                    start_node[
-                        "id"
-                    ]
-                ),
-                end_node_id=str(
-                    end_node[
-                        "id"
-                    ]
-                ),
-                blocked_edge_ids=(
-                    blocked_edge_ids
-                ),
-                user_type=(
-                    user_type
-                ),
-            )
+    for attempt in range(1, max_retry + 1):
+        internal_path = find_shortest_internal_path(
+            station_name=station_name,
+            start_node_id=str(start_node["id"]),
+            end_node_id=str(end_node["id"]),
+            blocked_edge_ids=blocked_edge_ids,
+            mobility_constraints=constraints,
         )
 
-        # ----------------------------------------------------------------------
-        # 사용자 제약 또는 고장 시설 때문에 경로가 없음
-        # ----------------------------------------------------------------------
-
-        if (
-            internal_path.get(
-                "status"
-            )
-            != "SUCCESS"
-        ):
+        if internal_path.get("status") != "SUCCESS":
             return {
-                "status": (
-                    "REALTIME_PATH_NOT_FOUND"
-                ),
-
+                "status": "REALTIME_PATH_NOT_FOUND",
                 "movement": movement,
-
-                "user_type": (
-                    user_type
-                ),
-
-                "node_resolution": (
-                    resolved
-                ),
-
-                "start_node": (
-                    start_node
-                ),
-
-                "end_node": (
-                    end_node
-                ),
-
+                "mobility_constraints": constraints,
+                "node_resolution": resolved,
+                "start_node": start_node,
+                "end_node": end_node,
                 "node_path": [],
-
                 "edge_path": [],
-
                 "traversal_path": [],
-
                 "edge_count": 0,
-
                 "required_facilities": [],
-
                 "required_facility_count": 0,
-
-                "blocked_edge_ids": (
-                    sorted(
-                        blocked_edge_ids
-                    )
-                ),
-
-                "attempt_count": (
-                    attempt
-                ),
+                "blocked_edge_ids": sorted(blocked_edge_ids),
+                "attempt_count": attempt,
             }
 
-        required_facilities = (
-            extract_required_facilities(
-                internal_path
-            )
-        )
+        required_facilities = extract_required_facilities(internal_path)
+        facilities_with_status = attach_realtime_status_to_facilities(required_facilities)
 
-        facilities_with_status = (
-            attach_realtime_status_to_facilities(
-                required_facilities
-            )
-        )
-
-        unavailable_edge_ids: set[
-            str
-        ] = set()
-
-        for facility in (
-            facilities_with_status
-        ):
-
-            realtime = (
-                facility.get(
-                    "realtime",
-                    {},
-                )
-            )
-
-            if not isinstance(
-                realtime,
-                dict,
-            ):
+        unavailable_edge_ids: set[str] = set()
+        for facility in facilities_with_status:
+            realtime = facility.get("realtime", {})
+            if not isinstance(realtime, dict):
                 continue
-
-            realtime_status = str(
-                realtime.get(
-                    "realtime_status",
-                    "UNKNOWN",
-                )
-            ).upper()
-
-            edge_id = (
-                facility.get(
-                    "edge_id"
-                )
-            )
-
-            if (
-                realtime_status
-                == "UNAVAILABLE"
-                and edge_id
-            ):
-                unavailable_edge_ids.add(
-                    str(
-                        edge_id
-                    )
-                )
-
-        # ----------------------------------------------------------------------
-        # 현재 경로에 고장 시설 없음
-        # ----------------------------------------------------------------------
+            realtime_status = str(realtime.get("realtime_status", "UNKNOWN")).upper()
+            edge_id = facility.get("edge_id")
+            if realtime_status == "UNAVAILABLE" and edge_id:
+                unavailable_edge_ids.add(str(edge_id))
 
         if not unavailable_edge_ids:
-
             unknown_count = sum(
                 1
-                for facility
-                in facilities_with_status
+                for facility in facilities_with_status
                 if str(
-                    facility.get(
-                        "realtime",
-                        {},
-                    ).get(
-                        "realtime_status",
-                        "UNKNOWN",
-                    )
-                ).upper()
-                == "UNKNOWN"
+                    facility.get("realtime", {}).get("realtime_status", "UNKNOWN")
+                ).upper() == "UNKNOWN"
             )
-
             return {
                 "status": "SUCCESS",
-
-                "movement": (
-                    movement
-                ),
-
-                "user_type": (
-                    user_type
-                ),
-
-                "node_resolution": (
-                    resolved
-                ),
-
-                "start_node": (
-                    start_node
-                ),
-
-                "end_node": (
-                    end_node
-                ),
-
-                "node_path": (
-                    internal_path.get(
-                        "node_path",
-                        [],
-                    )
-                ),
-
-                "edge_path": (
-                    internal_path.get(
-                        "edge_path",
-                        [],
-                    )
-                ),
-
-                "traversal_path": (
-                    internal_path.get(
-                        "traversal_path",
-                        [],
-                    )
-                ),
-
-                "edge_count": (
-                    internal_path.get(
-                        "edge_count",
-                        0,
-                    )
-                ),
-
-                "required_facilities": (
-                    facilities_with_status
-                ),
-
-                "required_facility_count": (
-                    len(
-                        facilities_with_status
-                    )
-                ),
-
-                "blocked_edge_ids": (
-                    sorted(
-                        blocked_edge_ids
-                    )
-                ),
-
-                "attempt_count": (
-                    attempt
-                ),
-
-                "has_unknown_facility_status": (
-                    unknown_count > 0
-                ),
-
-                "unknown_facility_count": (
-                    unknown_count
-                ),
+                "movement": movement,
+                "mobility_constraints": constraints,
+                "node_resolution": resolved,
+                "start_node": start_node,
+                "end_node": end_node,
+                "node_path": internal_path.get("node_path", []),
+                "edge_path": internal_path.get("edge_path", []),
+                "traversal_path": internal_path.get("traversal_path", []),
+                "edge_count": internal_path.get("edge_count", 0),
+                "required_facilities": facilities_with_status,
+                "required_facility_count": len(facilities_with_status),
+                "blocked_edge_ids": sorted(blocked_edge_ids),
+                "attempt_count": attempt,
+                "has_unknown_facility_status": unknown_count > 0,
+                "unknown_facility_count": unknown_count,
             }
 
-        newly_blocked = (
-            unavailable_edge_ids
-            - blocked_edge_ids
-        )
-
+        newly_blocked = unavailable_edge_ids - blocked_edge_ids
         if not newly_blocked:
             return {
-                "status": (
-                    "REALTIME_PATH_NOT_FOUND"
-                ),
-                "movement": (
-                    movement
-                ),
-                "user_type": (
-                    user_type
-                ),
-                "node_resolution": (
-                    resolved
-                ),
-                "start_node": (
-                    start_node
-                ),
-                "end_node": (
-                    end_node
-                ),
-                "node_path": (
-                    internal_path.get(
-                        "node_path",
-                        [],
-                    )
-                ),
-                "edge_path": (
-                    internal_path.get(
-                        "edge_path",
-                        [],
-                    )
-                ),
-                "traversal_path": (
-                    internal_path.get(
-                        "traversal_path",
-                        [],
-                    )
-                ),
-                "edge_count": (
-                    internal_path.get(
-                        "edge_count",
-                        0,
-                    )
-                ),
-                "required_facilities": (
-                    facilities_with_status
-                ),
-                "required_facility_count": (
-                    len(
-                        facilities_with_status
-                    )
-                ),
-                "blocked_edge_ids": (
-                    sorted(
-                        blocked_edge_ids
-                    )
-                ),
-                "attempt_count": (
-                    attempt
-                ),
+                "status": "REALTIME_PATH_NOT_FOUND",
+                "movement": movement,
+                "mobility_constraints": constraints,
+                "node_resolution": resolved,
+                "start_node": start_node,
+                "end_node": end_node,
+                "node_path": internal_path.get("node_path", []),
+                "edge_path": internal_path.get("edge_path", []),
+                "traversal_path": internal_path.get("traversal_path", []),
+                "edge_count": internal_path.get("edge_count", 0),
+                "required_facilities": facilities_with_status,
+                "required_facility_count": len(facilities_with_status),
+                "blocked_edge_ids": sorted(blocked_edge_ids),
+                "attempt_count": attempt,
             }
 
-        blocked_edge_ids.update(
-            newly_blocked
-        )
+        blocked_edge_ids.update(newly_blocked)
 
     return {
-        "status": (
-            "MAX_RETRY_EXCEEDED"
-        ),
+        "status": "MAX_RETRY_EXCEEDED",
         "movement": movement,
-        "user_type": user_type,
-        "node_resolution": (
-            resolved
-        ),
-        "start_node": (
-            start_node
-        ),
-        "end_node": (
-            end_node
-        ),
+        "mobility_constraints": constraints,
+        "node_resolution": resolved,
+        "start_node": start_node,
+        "end_node": end_node,
         "node_path": [],
         "edge_path": [],
         "traversal_path": [],
         "edge_count": 0,
         "required_facilities": [],
         "required_facility_count": 0,
-        "blocked_edge_ids": (
-            sorted(
-                blocked_edge_ids
-            )
-        ),
-        "attempt_count": (
-            max_retry
-        ),
+        "blocked_edge_ids": sorted(blocked_edge_ids),
+        "attempt_count": max_retry,
     }
-
 
 # ==============================================================================
 # 21. 기본 movement 분석
@@ -2516,83 +1834,25 @@ def find_realtime_safe_internal_path(
 
 def analyze_station_movement(
     movement: dict[str, Any],
-    user_type: str | None = None,
+    mobility_constraints: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """
-    실시간 상태는 반영하지 않고
-    기본 역 내부 동선을 분석합니다.
-
-    user_type을 넘기면
-    사용자 유형 제약은 반영합니다.
-    """
-
-    internal_path = (
-        find_movement_internal_path(
-            movement=movement,
-            user_type=user_type,
-        )
+    """실시간 상태 전의 기본 역 내부 동선을 이동 조건을 반영해 분석합니다."""
+    constraints = normalize_mobility_constraints(mobility_constraints)
+    internal_path = find_movement_internal_path(
+        movement=movement,
+        mobility_constraints=constraints,
     )
-
-    required_facilities = (
-        extract_required_facilities(
-            internal_path
-        )
-    )
-
+    required_facilities = extract_required_facilities(internal_path)
     return {
-        "status": (
-            internal_path.get(
-                "status"
-            )
-        ),
-
-        "movement": (
-            movement
-        ),
-
-        "user_type": (
-            user_type
-        ),
-
-        "node_resolution": (
-            internal_path.get(
-                "node_resolution"
-            )
-        ),
-
-        "start_node": (
-            internal_path.get(
-                "start_node"
-            )
-        ),
-
-        "end_node": (
-            internal_path.get(
-                "end_node"
-            )
-        ),
-
-        "node_path": (
-            internal_path.get(
-                "node_path",
-                [],
-            )
-        ),
-
-        "edge_count": (
-            internal_path.get(
-                "edge_count",
-                0,
-            )
-        ),
-
-        "required_facility_count": (
-            len(
-                required_facilities
-            )
-        ),
-
-        "required_facilities": (
-            required_facilities
-        ),
+        "status": internal_path.get("status"),
+        "movement": movement,
+        "mobility_constraints": constraints,
+        "node_resolution": internal_path.get("node_resolution"),
+        "start_node": internal_path.get("start_node"),
+        "end_node": internal_path.get("end_node"),
+        "node_path": internal_path.get("node_path", []),
+        "edge_count": internal_path.get("edge_count", 0),
+        "required_facility_count": len(required_facilities),
+        "required_facilities": required_facilities,
     }
+

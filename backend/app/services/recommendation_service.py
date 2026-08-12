@@ -16,64 +16,69 @@ from app.services.station_path_service import (
     get_station_graph,
 )
 
+from app.services.bus_matching_service import (
+    match_bus_step_identifiers,
+)
+
+from app.services.bus_arrival_service import (
+    get_low_floor_bus_status,
+)
+
 
 # ==============================================================================
-# 1. 사용자 유형별 설정
+# 1. 2차 프로토타입 추천 설정
 # ==============================================================================
 
-USER_CONFIGS: dict[str, dict[str, Any]] = {
-    "WHEELCHAIR": {
-        "name": "휠체어",
-        "max_incline": 8.3,
-        "max_curb": 2.0,
-        "allow_stairs": False,
-        "require_low_floor_bus": True,
-        "broken_elevator_is_barrier": True,
-        "weights": {
-            "time_per_min": 1.0,
-            "walk_dist_per_m": 0.08,
-            "transfer_penalty": 20.0,
-            "elevator_bonus": -8.0,
-            "low_floor_bus_bonus": -15.0,
-            "unknown_data_penalty": 10.0,
-        },
-    },
-
-    "STROLLER": {
-        "name": "유모차",
-        "max_incline": 10.0,
-        "max_curb": 5.0,
-        "allow_stairs": False,
-        "require_low_floor_bus": False,
-        "broken_elevator_is_barrier": True,
-        "weights": {
-            "time_per_min": 1.0,
-            "walk_dist_per_m": 0.03,
-            "transfer_penalty": 15.0,
-            "elevator_bonus": -10.0,
-            "low_floor_bus_bonus": -5.0,
-            "unknown_data_penalty": 7.0,
-        },
-    },
-
-    "ELDERLY": {
-        "name": "고령자",
-        "max_incline": 8.3,
-        "max_curb": 3.0,
-        "allow_stairs": False,
-        "require_low_floor_bus": False,
-        "broken_elevator_is_barrier": True,
-        "weights": {
-            "time_per_min": 1.2,
-            "walk_dist_per_m": 0.05,
-            "transfer_penalty": 25.0,
-            "elevator_bonus": -12.0,
-            "low_floor_bus_bonus": -5.0,
-            "unknown_data_penalty": 8.0,
-        },
-    },
+DEFAULT_MOBILITY_CONSTRAINTS: dict[str, bool] = {
+    "avoid_stairs": False,
+    "require_elevator": False,
+    "avoid_escalator": False,
+    "avoid_steep_slope": False,
+    "require_low_floor_bus": False,
 }
 
+
+SUPPORTED_ROUTE_PREFERENCES = {
+    "BALANCED",
+    "FASTEST",
+    "MIN_WALKING",
+    "MIN_TRANSFER",
+}
+
+
+PREFERENCE_WEIGHTS: dict[str, dict[str, float]] = {
+    # 접근 가능한 경로 중 시간/도보/환승을 균형 있게 평가
+    "BALANCED": {
+        "time_per_min": 1.0,
+        "walk_dist_per_m": 0.035,
+        "transfer_penalty": 12.0,
+        "unknown_data_penalty": 8.0,
+    },
+
+    # 접근 가능한 경로 중 소요시간을 가장 강하게 반영
+    "FASTEST": {
+        "time_per_min": 1.0,
+        "walk_dist_per_m": 0.005,
+        "transfer_penalty": 2.0,
+        "unknown_data_penalty": 8.0,
+    },
+
+    # 접근 가능한 경로 중 도보 거리를 가장 강하게 반영
+    "MIN_WALKING": {
+        "time_per_min": 0.25,
+        "walk_dist_per_m": 0.10,
+        "transfer_penalty": 5.0,
+        "unknown_data_penalty": 8.0,
+    },
+
+    # 접근 가능한 경로 중 환승 횟수를 가장 강하게 반영
+    "MIN_TRANSFER": {
+        "time_per_min": 0.35,
+        "walk_dist_per_m": 0.01,
+        "transfer_penalty": 35.0,
+        "unknown_data_penalty": 8.0,
+    },
+}
 
 # ==============================================================================
 # 2. 공통 유틸
@@ -107,12 +112,59 @@ def _normalize_text(
     ).strip().lower()
 
 
-def _normalize_user_type(
-    user_type: str,
+def normalize_mobility_constraints(
+    mobility_constraints: dict[str, Any] | None,
+) -> dict[str, bool]:
+    """
+    사용자가 선택한 이동 조건을 내부 dict로 정규화합니다.
+    """
+
+    normalized = dict(
+        DEFAULT_MOBILITY_CONSTRAINTS
+    )
+
+    if not isinstance(
+        mobility_constraints,
+        dict,
+    ):
+        return normalized
+
+    for key in normalized:
+        normalized[key] = bool(
+            mobility_constraints.get(
+                key,
+                False,
+            )
+        )
+
+    return normalized
+
+
+def normalize_route_preference(
+    route_preference: str | None,
 ) -> str:
-    return str(
-        user_type
+    """
+    경로 선호도를 내부 비교용 값으로 정규화합니다.
+    """
+
+    value = str(
+        route_preference
+        or "BALANCED"
     ).strip().upper()
+
+    if value not in SUPPORTED_ROUTE_PREFERENCES:
+        supported = ", ".join(
+            sorted(
+                SUPPORTED_ROUTE_PREFERENCES
+            )
+        )
+
+        raise ValueError(
+            "지원하지 않는 경로 선호도입니다: "
+            f"{value}. 지원 값: {supported}"
+        )
+
+    return value
 
 
 def _append_unique(
@@ -747,8 +799,19 @@ def _station_graph_exists(
 
 def attach_realtime_internal_accessibility(
     route: dict[str, Any],
-    user_type: str,
+    mobility_constraints: dict[str, Any] | None,
 ) -> dict[str, Any]:
+    """
+    역 내부 이동을 사용자의 이동 조건과 실시간 승강설비 상태를
+    함께 반영하여 분석합니다.
+    """
+
+    constraints = (
+        normalize_mobility_constraints(
+            mobility_constraints
+        )
+    )
+
     analyzed_route = deepcopy(
         route
     )
@@ -871,7 +934,9 @@ def attach_realtime_internal_accessibility(
             result = (
                 find_realtime_safe_internal_path(
                     movement=movement,
-                    user_type=user_type,
+                    mobility_constraints=(
+                        constraints
+                    ),
                 )
             )
 
@@ -908,7 +973,6 @@ def attach_realtime_internal_accessibility(
         ).upper()
 
         if status == "SUCCESS":
-
             analyzed_movement_count += 1
 
             facilities = result.get(
@@ -965,7 +1029,6 @@ def attach_realtime_internal_accessibility(
             if result.get(
                 "has_unknown_facility_status"
             ) is True:
-
                 _append_unique(
                     unknown_fields,
                     f"{station_name} 일부 승강설비 실시간 상태",
@@ -976,18 +1039,14 @@ def attach_realtime_internal_accessibility(
             "PATH_NOT_FOUND",
             "MAX_RETRY_EXCEEDED",
         }:
-
             unavailable_movement_count += 1
-
-            reason = (
-                f"{station_name}에서 "
-                "사용자 유형에 맞는 이용 가능한 "
-                "역 내부 이동 동선을 찾지 못했습니다."
-            )
 
             _append_unique(
                 unavailable_reasons,
-                reason,
+                (
+                    f"{station_name}에서 선택한 이동 조건을 "
+                    "만족하는 역 내부 이동 동선을 찾지 못했습니다."
+                ),
             )
 
             blocked_ids = result.get(
@@ -999,7 +1058,6 @@ def attach_realtime_internal_accessibility(
                 blocked_ids,
                 list,
             ):
-
                 for edge_id in blocked_ids:
 
                     edge_text = str(
@@ -1025,7 +1083,6 @@ def attach_realtime_internal_accessibility(
                     )
 
         else:
-
             unknown_movement_count += 1
 
             _append_unique(
@@ -1123,13 +1180,11 @@ def attach_realtime_internal_accessibility(
             ] = None
 
     elif unknown_realtime_facilities:
-
         accessibility[
             "has_broken_elevator"
         ] = None
 
     elif analyzed_movement_count > 0:
-
         accessibility[
             "has_broken_elevator"
         ] = False
@@ -1228,6 +1283,10 @@ def attach_realtime_internal_accessibility(
     ] = unavailable_movement_count
 
     accessibility[
+        "mobility_constraints"
+    ] = constraints
+
+    accessibility[
         "unknown_fields"
     ] = list(
         dict.fromkeys(
@@ -1244,7 +1303,6 @@ def attach_realtime_internal_accessibility(
     )
 
     if unavailable_movement_count > 0:
-
         accessibility[
             "status"
         ] = "INTERNAL_PATH_UNAVAILABLE"
@@ -1254,13 +1312,11 @@ def attach_realtime_internal_accessibility(
         and unknown_movement_count == 0
         and not unknown_realtime_facilities
     ):
-
         accessibility[
             "status"
         ] = "REALTIME_ANALYZED"
 
     elif analyzed_movement_count > 0:
-
         accessibility[
             "status"
         ] = "PARTIALLY_REALTIME_ANALYZED"
@@ -1270,6 +1326,416 @@ def attach_realtime_internal_accessibility(
             "status",
             "UNKNOWN",
         )
+
+    analyzed_route[
+        "accessibility"
+    ] = accessibility
+
+    return analyzed_route
+
+# ==============================================================================
+# 8. 실시간 버스 접근성 분석
+# ==============================================================================
+
+async def attach_realtime_bus_accessibility(
+    route: dict[str, Any],
+) -> dict[str, Any]:
+    """
+    BUS step의 stationId/routeId를 매칭하고,
+    GBIS 실시간 도착정보로 저상버스 이용 가능 여부를 분석합니다.
+
+    판정:
+    - True: 모든 BUS step에서 도착 예정 저상버스 확인
+    - False: 적어도 한 BUS step에서 도착 차량은 있으나 저상버스가 없음
+    - None: 식별자/API/도착정보 미확인
+    """
+
+    analyzed_route = deepcopy(route)
+
+    accessibility = analyzed_route.get(
+        "accessibility",
+        {},
+    )
+
+    if not isinstance(
+        accessibility,
+        dict,
+    ):
+        accessibility = {}
+
+    accessibility = deepcopy(
+        accessibility
+    )
+
+    steps = analyzed_route.get(
+        "steps",
+        [],
+    )
+
+    if not isinstance(
+        steps,
+        list,
+    ):
+        steps = []
+
+    unknown_fields = accessibility.get(
+        "unknown_fields",
+        [],
+    )
+
+    if not isinstance(
+        unknown_fields,
+        list,
+    ):
+        unknown_fields = []
+
+    unknown_fields = list(
+        unknown_fields
+    )
+
+    bus_results: list[
+        dict[str, Any]
+    ] = []
+
+    low_floor_bus_numbers: list[
+        str
+    ] = []
+
+    bus_step_count = 0
+    available_step_count = 0
+    unavailable_step_count = 0
+    unknown_step_count = 0
+
+    for step in steps:
+
+        if not isinstance(
+            step,
+            dict,
+        ):
+            continue
+
+        if str(
+            step.get(
+                "step_type",
+                "",
+            )
+        ).strip().upper() != "BUS":
+            continue
+
+        bus_step_count += 1
+
+        try:
+            identifier_result = (
+                match_bus_step_identifiers(
+                    step
+                )
+            )
+
+        except Exception as error:
+            unknown_step_count += 1
+
+            bus_results.append(
+                {
+                    "step_id": step.get(
+                        "step_id"
+                    ),
+                    "status": (
+                        "IDENTIFIER_MATCH_ERROR"
+                    ),
+                    "message": str(
+                        error
+                    ),
+                    "station_id": None,
+                    "routes": [],
+                }
+            )
+
+            continue
+
+        station_id = identifier_result.get(
+            "station_id"
+        )
+
+        route_matches = identifier_result.get(
+            "routes",
+            [],
+        )
+
+        if not isinstance(
+            route_matches,
+            list,
+        ):
+            route_matches = []
+
+        step_result: dict[str, Any] = {
+            "step_id": step.get(
+                "step_id"
+            ),
+            "boarding_stop_name": (
+                identifier_result.get(
+                    "boarding_stop_name"
+                )
+            ),
+            "station_id": station_id,
+            "station_match": (
+                identifier_result.get(
+                    "station_match"
+                )
+            ),
+            "routes": [],
+        }
+
+        if not station_id:
+            unknown_step_count += 1
+            step_result[
+                "status"
+            ] = "STATION_ID_NOT_FOUND"
+            bus_results.append(
+                step_result
+            )
+            continue
+
+        step_available = False
+        step_confirmed_no_low_floor = False
+        step_unknown = False
+
+        for route_match in route_matches:
+
+            if not isinstance(
+                route_match,
+                dict,
+            ):
+                continue
+
+            bus_number = str(
+                route_match.get(
+                    "bus_number",
+                    "",
+                )
+            ).strip()
+
+            route_id = route_match.get(
+                "route_id"
+            )
+
+            route_result = {
+                "bus_number": (
+                    bus_number
+                ),
+                "route_id": route_id,
+                "route_match_status": (
+                    route_match.get(
+                        "route_match_status"
+                    )
+                ),
+                "realtime": None,
+            }
+
+            if not route_id:
+                step_unknown = True
+
+                route_result[
+                    "realtime"
+                ] = {
+                    "status": (
+                        "ROUTE_ID_NOT_FOUND"
+                    ),
+                    "low_floor_bus_available": (
+                        None
+                    ),
+                }
+
+                step_result[
+                    "routes"
+                ].append(
+                    route_result
+                )
+
+                continue
+
+            try:
+                realtime = (
+                    await get_low_floor_bus_status(
+                        station_id=str(
+                            station_id
+                        ),
+                        route_id=str(
+                            route_id
+                        ),
+                        bus_number=(
+                            bus_number
+                            or None
+                        ),
+                    )
+                )
+
+            except Exception as error:
+                step_unknown = True
+
+                route_result[
+                    "realtime"
+                ] = {
+                    "status": "API_ERROR",
+                    "message": str(
+                        error
+                    ),
+                    "low_floor_bus_available": (
+                        None
+                    ),
+                }
+
+                step_result[
+                    "routes"
+                ].append(
+                    route_result
+                )
+
+                continue
+
+            route_result[
+                "realtime"
+            ] = realtime
+
+            realtime_status = str(
+                realtime.get(
+                    "status",
+                    "UNKNOWN",
+                )
+            ).upper()
+
+            low_floor_available = (
+                realtime.get(
+                    "low_floor_bus_available"
+                )
+            )
+
+            if (
+                realtime_status
+                == "AVAILABLE"
+                and low_floor_available is True
+            ):
+                step_available = True
+
+                if (
+                    bus_number
+                    and bus_number
+                    not in low_floor_bus_numbers
+                ):
+                    low_floor_bus_numbers.append(
+                        bus_number
+                    )
+
+            elif (
+                realtime_status
+                == "NO_LOW_FLOOR_BUS"
+                and low_floor_available is False
+            ):
+                step_confirmed_no_low_floor = True
+
+            else:
+                # NO_REALTIME_ARRIVAL 등은
+                # '저상버스 없음'이 아닌 '확인 불가'로 처리
+                step_unknown = True
+
+            step_result[
+                "routes"
+            ].append(
+                route_result
+            )
+
+        if step_available:
+            available_step_count += 1
+            step_result[
+                "status"
+            ] = "LOW_FLOOR_AVAILABLE"
+
+        elif (
+            step_confirmed_no_low_floor
+            and not step_unknown
+        ):
+            unavailable_step_count += 1
+            step_result[
+                "status"
+            ] = "LOW_FLOOR_NOT_AVAILABLE"
+
+        else:
+            unknown_step_count += 1
+            step_result[
+                "status"
+            ] = "LOW_FLOOR_UNKNOWN"
+
+        bus_results.append(
+            step_result
+        )
+
+    if bus_step_count == 0:
+        has_low_floor_bus: bool | None = None
+
+    elif (
+        available_step_count
+        == bus_step_count
+    ):
+        has_low_floor_bus = True
+
+    elif unavailable_step_count > 0:
+        has_low_floor_bus = False
+
+    else:
+        has_low_floor_bus = None
+
+    accessibility[
+        "has_low_floor_bus"
+    ] = has_low_floor_bus
+
+    accessibility[
+        "low_floor_bus_numbers"
+    ] = low_floor_bus_numbers
+
+    accessibility[
+        "bus_accessibility"
+    ] = bus_results
+
+    accessibility[
+        "bus_step_count"
+    ] = bus_step_count
+
+    accessibility[
+        "confirmed_low_floor_bus_step_count"
+    ] = available_step_count
+
+    accessibility[
+        "confirmed_non_low_floor_bus_step_count"
+    ] = unavailable_step_count
+
+    accessibility[
+        "unknown_low_floor_bus_step_count"
+    ] = unknown_step_count
+
+    if (
+        bus_step_count > 0
+        and has_low_floor_bus is None
+    ):
+        _append_unique(
+            unknown_fields,
+            "저상버스 여부",
+        )
+
+    elif (
+        bus_step_count > 0
+        and has_low_floor_bus is not None
+    ):
+        _remove_value(
+            unknown_fields,
+            "저상버스 여부",
+        )
+
+    accessibility[
+        "unknown_fields"
+    ] = list(
+        dict.fromkeys(
+            unknown_fields
+        )
+    )
 
     analyzed_route[
         "accessibility"
@@ -1476,11 +1942,18 @@ def get_accessibility_data(
 
 def check_hard_barriers(
     route: dict[str, Any],
-    user_type: str,
+    mobility_constraints: dict[str, Any] | None,
 ) -> list[str]:
-    config = USER_CONFIGS[
-        user_type
-    ]
+    """
+    사용자가 선택한 이동 조건을 반드시 만족해야 하는
+    Hard Constraint로 적용합니다.
+    """
+
+    constraints = (
+        normalize_mobility_constraints(
+            mobility_constraints
+        )
+    )
 
     accessibility = (
         get_accessibility_data(
@@ -1488,9 +1961,7 @@ def check_hard_barriers(
         )
     )
 
-    exclusion_reasons: list[
-        str
-    ] = []
+    exclusion_reasons: list[str] = []
 
     for reason in accessibility[
         "unavailable_reasons"
@@ -1506,10 +1977,6 @@ def check_hard_barriers(
                 )
             )
 
-    # --------------------------------------------------------------------------
-    # 역 내부 경로 자체가 이용 불가능
-    # --------------------------------------------------------------------------
-
     if (
         accessibility[
             "internal_path_available"
@@ -1518,63 +1985,85 @@ def check_hard_barriers(
         _append_unique(
             exclusion_reasons,
             (
-                "역 내부에서 사용자 유형에 맞는 "
-                "이동 동선을 확보할 수 없습니다."
+                "선택한 이동 조건으로 이용 가능한 "
+                "역 내부 이동 동선을 확보할 수 없습니다."
             ),
         )
 
-    # --------------------------------------------------------------------------
-    # 계단
-    # --------------------------------------------------------------------------
-
-    has_stairs = accessibility[
-        "has_stairs"
-    ]
-
     if (
-        has_stairs is True
-        and not config[
-            "allow_stairs"
+        constraints[
+            "avoid_stairs"
         ]
+        and accessibility[
+            "has_stairs"
+        ] is True
     ):
         _append_unique(
             exclusion_reasons,
             "계단이 포함된 경로입니다.",
         )
 
-    # --------------------------------------------------------------------------
-    # 경사도
-    # --------------------------------------------------------------------------
-
-    max_incline = accessibility[
-        "max_incline"
-    ]
-
-    if max_incline is not None:
-
-        incline_value = (
-            _safe_number(
-                max_incline
-            )
+    if (
+        constraints[
+            "require_elevator"
+        ]
+        and _route_uses_subway(
+            route
         )
-
+    ):
         if (
-            incline_value
-            >= config[
-                "max_incline"
-            ]
+            accessibility[
+                "internal_path_available"
+            ] is True
+            and accessibility[
+                "has_elevator"
+            ] is False
         ):
             _append_unique(
                 exclusion_reasons,
-                (
-                    "허용 기준을 초과하는 경사가 "
-                    "포함되어 있습니다. "
-                    f"({incline_value:.1f}% 이상)"
-                ),
+                "필수 엘리베이터를 이용할 수 없는 경로입니다.",
             )
 
-    elif (
-        accessibility[
+    if constraints[
+        "avoid_escalator"
+    ]:
+        required_facilities = (
+            accessibility[
+                "required_facilities"
+            ]
+        )
+
+        if isinstance(
+            required_facilities,
+            list,
+        ):
+            uses_escalator = any(
+                str(
+                    facility.get(
+                        "facility_type",
+                        "",
+                    )
+                ).upper()
+                == "ESCALATOR"
+                for facility
+                in required_facilities
+                if isinstance(
+                    facility,
+                    dict,
+                )
+            )
+
+            if uses_escalator:
+                _append_unique(
+                    exclusion_reasons,
+                    "에스컬레이터 이용이 필요한 경로입니다.",
+                )
+
+    if (
+        constraints[
+            "avoid_steep_slope"
+        ]
+        and accessibility[
             "has_steep_slope"
         ] is True
     ):
@@ -1583,52 +2072,33 @@ def check_hard_barriers(
             "급경사 구간이 포함되어 있습니다.",
         )
 
-    # --------------------------------------------------------------------------
-    # 보도 턱
-    # --------------------------------------------------------------------------
-
-    max_curb_height = (
-        accessibility[
-            "max_curb_height"
+    if (
+        constraints[
+            "require_low_floor_bus"
         ]
-    )
-
-    if max_curb_height is not None:
-
-        curb_value = (
-            _safe_number(
-                max_curb_height
-            )
+        and _route_uses_bus(
+            route
+        )
+        and accessibility[
+            "has_low_floor_bus"
+        ] is False
+    ):
+        _append_unique(
+            exclusion_reasons,
+            (
+                "현재 도착 예정 차량 중 저상버스를 "
+                "확인할 수 없는 버스 구간이 있습니다."
+            ),
         )
 
-        if (
-            curb_value
-            > config[
-                "max_curb"
-            ]
-        ):
-            _append_unique(
-                exclusion_reasons,
-                (
-                    "허용 기준보다 높은 보도 턱이 "
-                    "포함되어 있습니다. "
-                    f"({curb_value:.1f}cm)"
-                ),
-            )
-
-    # --------------------------------------------------------------------------
-    # 우회 불가능한 승강기 고장
-    # --------------------------------------------------------------------------
-
     if (
-        config[
-            "broken_elevator_is_barrier"
-        ]
-        and accessibility[
+        accessibility[
             "has_broken_elevator"
         ] is True
+        and accessibility[
+            "internal_path_available"
+        ] is False
     ):
-
         broken_stations = (
             accessibility.get(
                 "broken_elevator_stations",
@@ -1637,7 +2107,6 @@ def check_hard_barriers(
         )
 
         if broken_stations:
-
             station_text = ", ".join(
                 str(
                     station
@@ -1649,9 +2118,8 @@ def check_hard_barriers(
             _append_unique(
                 exclusion_reasons,
                 (
-                    "이용 동선의 승강기 고장으로 "
-                    "대체 내부 경로를 확보하지 못했습니다: "
-                    f"{station_text}"
+                    "승강설비 고장으로 대체 내부 경로를 "
+                    f"확보하지 못했습니다: {station_text}"
                 ),
             )
 
@@ -1659,48 +2127,16 @@ def check_hard_barriers(
             _append_unique(
                 exclusion_reasons,
                 (
-                    "이용 동선의 승강기 고장으로 "
-                    "안전한 이동 경로를 확보하지 못했습니다."
+                    "승강설비 고장으로 안전한 "
+                    "대체 이동 경로를 확보하지 못했습니다."
                 ),
             )
-
-    # --------------------------------------------------------------------------
-    # ★ 휠체어 + 버스 → 저상버스가 '확인된 경우에만' 허용
-    #
-    # 이전:
-    # has_low_floor_bus is False → 제외
-    #
-    # 수정:
-    # has_low_floor_bus is not True → 제외
-    #
-    # 따라서 None(미확인)도 휠체어 사용자에게는 제외됩니다.
-    # --------------------------------------------------------------------------
-
-    if (
-        config[
-            "require_low_floor_bus"
-        ]
-        and _route_uses_bus(
-            route
-        )
-        and accessibility[
-            "has_low_floor_bus"
-        ] is not True
-    ):
-        _append_unique(
-            exclusion_reasons,
-            (
-                "휠체어 이용이 가능한 저상버스로 "
-                "확인되지 않은 경로입니다."
-            ),
-        )
 
     return list(
         dict.fromkeys(
             exclusion_reasons
         )
     )
-
 
 # ==============================================================================
 # 10. 정보 미확인 항목
@@ -1806,19 +2242,30 @@ def find_unknown_fields(
 
 def calculate_route_score(
     route: dict[str, Any],
-    user_type: str,
+    route_preference: str,
 ) -> tuple[
     float,
     list[str],
     list[str],
 ]:
-    config = USER_CONFIGS[
-        user_type
-    ]
+    """
+    Hard Constraint를 통과한 후보 경로에 대해
+    사용자의 경로 선호도에 따라 점수를 계산합니다.
 
-    weights = config[
-        "weights"
-    ]
+    점수가 낮을수록 우선 추천됩니다.
+    """
+
+    preference = (
+        normalize_route_preference(
+            route_preference
+        )
+    )
+
+    weights = (
+        PREFERENCE_WEIGHTS[
+            preference
+        ]
+    )
 
     accessibility = (
         get_accessibility_data(
@@ -1862,14 +2309,6 @@ def calculate_route_score(
         ]
     )
 
-    if (
-        walk_distance <= 300
-        and found_walk_step
-    ):
-        positive_reasons.append(
-            "보행 구간이 비교적 짧습니다."
-        )
-
     transfer_count = int(
         _safe_number(
             route.get(
@@ -1886,6 +2325,38 @@ def calculate_route_score(
         ]
     )
 
+    # --------------------------------------------------------------------------
+    # 추천 이유
+    # --------------------------------------------------------------------------
+
+    if preference == "FASTEST":
+        positive_reasons.append(
+            "접근 가능한 후보 중 이동시간을 우선하여 평가했습니다."
+        )
+
+    elif preference == "MIN_WALKING":
+        positive_reasons.append(
+            "접근 가능한 후보 중 도보 거리를 우선하여 평가했습니다."
+        )
+
+    elif preference == "MIN_TRANSFER":
+        positive_reasons.append(
+            "접근 가능한 후보 중 환승 횟수를 우선하여 평가했습니다."
+        )
+
+    else:
+        positive_reasons.append(
+            "이동시간, 도보 거리, 환승 횟수를 균형 있게 평가했습니다."
+        )
+
+    if (
+        walk_distance <= 300
+        and found_walk_step
+    ):
+        positive_reasons.append(
+            "보행 구간이 비교적 짧습니다."
+        )
+
     if transfer_count == 0:
         positive_reasons.append(
             "환승 없이 이동할 수 있습니다."
@@ -1901,15 +2372,8 @@ def calculate_route_score(
             "has_elevator"
         ] is True
     ):
-        score += (
-            weights[
-                "elevator_bonus"
-            ]
-        )
-
         positive_reasons.append(
-            "실제 이용 동선에서 엘리베이터를 "
-            "사용할 수 있습니다."
+            "실제 역 내부 이동 동선에서 엘리베이터를 이용할 수 있습니다."
         )
 
     if (
@@ -1918,8 +2382,7 @@ def calculate_route_score(
         ] is True
     ):
         positive_reasons.append(
-            "운행 불가 승강설비를 피해 "
-            "대체 역사 내부 동선을 찾았습니다."
+            "운행 불가 승강설비를 피해 대체 역사 내부 동선을 찾았습니다."
         )
 
     if (
@@ -1930,13 +2393,6 @@ def calculate_route_score(
             "has_low_floor_bus"
         ] is True
     ):
-
-        score += (
-            weights[
-                "low_floor_bus_bonus"
-            ]
-        )
-
         low_floor_bus_numbers = (
             accessibility.get(
                 "low_floor_bus_numbers",
@@ -1955,8 +2411,7 @@ def calculate_route_score(
             )
 
             positive_reasons.append(
-                f"저상버스({bus_text})를 "
-                "이용할 수 있습니다."
+                f"저상버스({bus_text})를 이용할 수 있습니다."
             )
 
         else:
@@ -1973,58 +2428,14 @@ def calculate_route_score(
             "계단이 없는 경로로 확인되었습니다."
         )
 
-    max_incline = accessibility[
-        "max_incline"
-    ]
-
-    if max_incline is not None:
-
-        incline_value = (
-            _safe_number(
-                max_incline
-            )
-        )
-
-        if (
-            incline_value
-            < config[
-                "max_incline"
-            ]
-        ):
-            positive_reasons.append(
-                (
-                    "사용자 유형의 허용 기준 이내인 "
-                    f"경사도입니다. "
-                    f"({incline_value:.1f}%)"
-                )
-            )
-
-    max_curb_height = (
+    if (
         accessibility[
-            "max_curb_height"
-        ]
-    )
-
-    if max_curb_height is not None:
-
-        curb_value = (
-            _safe_number(
-                max_curb_height
-            )
+            "has_steep_slope"
+        ] is False
+    ):
+        positive_reasons.append(
+            "급경사 구간이 없는 경로로 확인되었습니다."
         )
-
-        if (
-            curb_value
-            <= config[
-                "max_curb"
-            ]
-        ):
-            positive_reasons.append(
-                (
-                    "보도 턱 높이가 사용자 기준 "
-                    "이내입니다."
-                )
-            )
 
     unknown_fields = (
         find_unknown_fields(
@@ -2051,42 +2462,44 @@ def calculate_route_score(
 
     return (
         final_score,
-
         list(
             dict.fromkeys(
                 positive_reasons
             )
         ),
-
         unknown_fields,
     )
-
 
 # ==============================================================================
 # 12. 후보 경로 하나 평가
 # ==============================================================================
 
-def evaluate_candidate_route(
+async def evaluate_candidate_route(
     route: dict[str, Any],
-    user_type: str,
+    mobility_constraints: dict[str, Any] | None,
+    route_preference: str,
 ) -> dict[str, Any]:
-    user_type = (
-        _normalize_user_type(
-            user_type
+    """
+    후보 경로 하나를 2차 프로토타입 기준으로 평가합니다.
+
+    1. 역사/시설 접근성 데이터 분석
+    2. 이동 조건 + 실시간 내부 경로 분석
+    3. 실시간 버스 접근성 분석
+    4. Hard Constraint 검사
+    5. 통과한 경우 선호도 기반 점수 계산
+    """
+
+    constraints = (
+        normalize_mobility_constraints(
+            mobility_constraints
         )
     )
 
-    if user_type not in USER_CONFIGS:
-
-        supported_types = ", ".join(
-            USER_CONFIGS.keys()
+    preference = (
+        normalize_route_preference(
+            route_preference
         )
-
-        raise ValueError(
-            f"지원하지 않는 사용자 유형입니다: "
-            f"{user_type}. "
-            f"지원 유형: {supported_types}"
-        )
+    )
 
     evaluated_route = (
         attach_facility_accessibility(
@@ -2097,14 +2510,25 @@ def evaluate_candidate_route(
     evaluated_route = (
         attach_realtime_internal_accessibility(
             route=evaluated_route,
-            user_type=user_type,
+            mobility_constraints=(
+                constraints
+            ),
         )
     )
+
+    if _route_uses_bus(
+        evaluated_route
+    ):
+        evaluated_route = (
+            await attach_realtime_bus_accessibility(
+                evaluated_route
+            )
+        )
 
     exclusion_reasons = (
         check_hard_barriers(
             evaluated_route,
-            user_type,
+            constraints,
         )
     )
 
@@ -2116,21 +2540,18 @@ def evaluate_candidate_route(
     )
 
     if is_available:
-
         (
             score,
             positive_reasons,
             unknown_fields,
         ) = calculate_route_score(
             evaluated_route,
-            user_type,
+            preference,
         )
 
     else:
-
         score = None
         positive_reasons = []
-
         unknown_fields = (
             find_unknown_fields(
                 evaluated_route
@@ -2140,30 +2561,16 @@ def evaluate_candidate_route(
     evaluated_route[
         "evaluation"
     ] = {
-        "is_available": (
-            is_available
-        ),
-
+        "is_available": is_available,
         "score": score,
-
         "is_recommended": False,
-
-        "positive_reasons": (
-            positive_reasons
-        ),
-
-        "exclusion_reasons": (
-            exclusion_reasons
-        ),
-
-        "unknown_fields": (
+        "route_preference": preference,
+        "mobility_constraints": constraints,
+        "positive_reasons": positive_reasons,
+        "exclusion_reasons": exclusion_reasons,
+        "unknown_fields": unknown_fields,
+        "has_unknown_accessibility_data": bool(
             unknown_fields
-        ),
-
-        "has_unknown_accessibility_data": (
-            bool(
-                unknown_fields
-            )
         ),
     }
 
@@ -2179,18 +2586,29 @@ def evaluate_candidate_route(
 
     return evaluated_route
 
-
 # ==============================================================================
 # 13. 모든 후보 경로 평가
 # ==============================================================================
 
-def evaluate_all_candidates(
+async def evaluate_all_candidates(
     routes: list[dict[str, Any]],
-    user_type: str,
+    mobility_constraints: dict[str, Any] | None,
+    route_preference: str,
 ) -> list[dict[str, Any]]:
-    user_type = (
-        _normalize_user_type(
-            user_type
+    """
+    모든 후보 경로를 동일한 이동 조건과 선호도로 평가합니다.
+    BUS 경로는 실시간 API 호출이 포함되므로 async로 동작합니다.
+    """
+
+    constraints = (
+        normalize_mobility_constraints(
+            mobility_constraints
+        )
+    )
+
+    preference = (
+        normalize_route_preference(
+            route_preference
         )
     )
 
@@ -2198,7 +2616,8 @@ def evaluate_all_candidates(
         deepcopy(
             route
         )
-        for route in routes
+        for route
+        in routes
     ]
 
     needs_movement_attachment = any(
@@ -2208,11 +2627,11 @@ def evaluate_all_candidates(
             ),
             list,
         )
-        for route in routes_copy
+        for route
+        in routes_copy
     )
 
     if needs_movement_attachment:
-
         routes_with_movements = (
             attach_station_movements(
                 routes_copy
@@ -2220,51 +2639,71 @@ def evaluate_all_candidates(
         )
 
     else:
-
         routes_with_movements = (
             routes_copy
         )
 
-    return [
-        evaluate_candidate_route(
-            route=route,
-            user_type=user_type,
-        )
-        for route
-        in routes_with_movements
-    ]
+    evaluated_routes: list[
+        dict[str, Any]
+    ] = []
 
+    for route in routes_with_movements:
+        evaluated_route = (
+            await evaluate_candidate_route(
+                route=route,
+                mobility_constraints=(
+                    constraints
+                ),
+                route_preference=(
+                    preference
+                ),
+            )
+        )
+
+        evaluated_routes.append(
+            evaluated_route
+        )
+
+    return evaluated_routes
 
 # ==============================================================================
 # 14. 최적 후보 경로 선택
 # ==============================================================================
 
-def select_best_candidate(
+async def select_best_candidate(
     routes: list[dict[str, Any]],
-    user_type: str,
+    mobility_constraints: dict[str, Any] | None,
+    route_preference: str = "BALANCED",
 ) -> dict[str, Any]:
-    user_type = (
-        _normalize_user_type(
-            user_type
+    """
+    2차 프로토타입 최종 추천.
+
+    1. 사용자의 이동 조건으로 이용 불가능한 후보를 제외
+    2. 남은 후보를 경로 선호도에 따라 점수화
+    3. 가장 낮은 점수의 경로를 추천
+    """
+
+    constraints = (
+        normalize_mobility_constraints(
+            mobility_constraints
         )
     )
 
-    if user_type not in USER_CONFIGS:
-
-        supported_types = ", ".join(
-            USER_CONFIGS.keys()
+    preference = (
+        normalize_route_preference(
+            route_preference
         )
-
-        raise ValueError(
-            f"지원하지 않는 사용자 유형입니다: "
-            f"{user_type}. "
-            f"지원 유형: {supported_types}"
-        )
+    )
 
     evaluated_routes = (
-        evaluate_all_candidates(
+        await evaluate_all_candidates(
             routes=routes,
-            user_type=user_type,
+            mobility_constraints=(
+                constraints
+            ),
+            route_preference=(
+                preference
+            ),
         )
     )
 
@@ -2286,13 +2725,11 @@ def select_best_candidate(
                     "route_id"
                 )
             ),
-
             "route_type": (
                 route.get(
                     "route_type"
                 )
             ),
-
             "exclusion_reasons": (
                 route[
                     "evaluation"
@@ -2300,7 +2737,6 @@ def select_best_candidate(
                     "exclusion_reasons"
                 ]
             ),
-
             "unknown_fields": (
                 route[
                     "evaluation"
@@ -2308,7 +2744,6 @@ def select_best_candidate(
                     "unknown_fields"
                 ]
             ),
-
             "accessibility_status": (
                 route.get(
                     "accessibility",
@@ -2319,10 +2754,8 @@ def select_best_candidate(
                 )
             ),
         }
-
         for route
         in evaluated_routes
-
         if not route[
             "evaluation"
         ][
@@ -2333,39 +2766,28 @@ def select_best_candidate(
     if not available_routes:
 
         return {
-            "user_type": user_type,
-
-            "user_type_name": (
-                USER_CONFIGS[
-                    user_type
-                ][
-                    "name"
-                ]
+            "mobility_constraints": (
+                constraints
             ),
-
+            "route_preference": (
+                preference
+            ),
             "recommended_route": None,
-
             "alternative_routes": [],
-
             "excluded_routes": (
                 excluded_routes
             ),
-
             "message": (
-                "해당 사용자 유형으로 "
-                "안전하게 이용할 수 있는 "
-                "경로를 찾지 못했습니다."
+                "선택한 이동 조건으로 출발지부터 목적지까지 "
+                "끊김 없이 이용할 수 있는 경로를 찾지 못했습니다."
             ),
-
             "summary": {
                 "total_candidate_count": (
                     len(
                         evaluated_routes
                     )
                 ),
-
                 "available_route_count": 0,
-
                 "excluded_route_count": (
                     len(
                         excluded_routes
@@ -2374,6 +2796,7 @@ def select_best_candidate(
             },
         }
 
+    # 점수가 낮을수록 우선
     available_routes.sort(
         key=lambda route: (
             _safe_number(
@@ -2386,7 +2809,6 @@ def select_best_candidate(
                     "inf"
                 ),
             ),
-
             _safe_number(
                 route.get(
                     "total_time_minutes"
@@ -2395,7 +2817,6 @@ def select_best_candidate(
                     "inf"
                 ),
             ),
-
             _safe_number(
                 route.get(
                     "transfer_count"
@@ -2404,10 +2825,9 @@ def select_best_candidate(
                     "inf"
                 ),
             ),
-
             _safe_number(
                 route.get(
-                    "total_distance_meters"
+                    "total_walk_distance_meters"
                 ),
                 default=float(
                     "inf"
@@ -2435,41 +2855,32 @@ def select_best_candidate(
     )
 
     return {
-        "user_type": user_type,
-
-        "user_type_name": (
-            USER_CONFIGS[
-                user_type
-            ][
-                "name"
-            ]
+        "mobility_constraints": (
+            constraints
         ),
-
+        "route_preference": (
+            preference
+        ),
         "recommended_route": (
             recommended_route
         ),
-
         "alternative_routes": (
             alternative_routes
         ),
-
         "excluded_routes": (
             excluded_routes
         ),
-
         "summary": {
             "total_candidate_count": (
                 len(
                     evaluated_routes
                 )
             ),
-
             "available_route_count": (
                 len(
                     available_routes
                 )
             ),
-
             "excluded_route_count": (
                 len(
                     excluded_routes
@@ -2477,3 +2888,4 @@ def select_best_candidate(
             ),
         },
     }
+
