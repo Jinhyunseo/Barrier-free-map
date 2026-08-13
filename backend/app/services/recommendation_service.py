@@ -23,7 +23,9 @@ from app.services.bus_matching_service import (
 from app.services.bus_arrival_service import (
     get_low_floor_bus_status,
 )
-
+from app.services.walking_accessibility_service import (
+    attach_walking_accessibility,
+)
 
 # ==============================================================================
 # 1. 2차 프로토타입 추천 설정
@@ -377,8 +379,21 @@ def _route_uses_subway(
 def calculate_walk_distance(
     route: dict[str, Any],
 ) -> tuple[int, bool]:
+    """
+    경로의 전체 도보 거리를 계산합니다.
+
+    포함 범위:
+    1. 카카오 대중교통 경로 내부 WALKING step
+    2. TMAP 출발지 -> 첫 승차지점 보행
+    3. TMAP 마지막 하차지점 -> 목적지 보행
+    """
+
     walk_distance = 0
     found_walk_step = False
+
+    # --------------------------------------------------------------------------
+    # 1. 카카오 경로 내부 WALKING step
+    # --------------------------------------------------------------------------
 
     for step in route.get(
         "steps",
@@ -410,9 +425,81 @@ def calculate_walk_distance(
             )
         )
 
+    # --------------------------------------------------------------------------
+    # 2. TMAP first-mile + last-mile 보행
+    # --------------------------------------------------------------------------
+
+    access_walk_distance = _safe_number(
+        route.get(
+            "access_walk_distance_meters"
+        ),
+        default=0.0,
+    )
+
+    if access_walk_distance > 0:
+        found_walk_step = True
+
+        walk_distance += int(
+            round(
+                access_walk_distance
+            )
+        )
+
     return (
         walk_distance,
         found_walk_step,
+    )
+
+
+def calculate_total_travel_time(
+    route: dict[str, Any],
+) -> tuple[int, float]:
+    """
+    후보 경로의 전체 이동시간을 초/분 단위로 정규화합니다.
+
+    카카오의 total_time_seconds / total_time_minutes는
+    출발지~목적지 전체 경로 시간을 나타내므로,
+    TMAP first-mile / last-mile 시간을 단순히 다시 더하지 않습니다.
+    TMAP 보행시간은 access_walk_time_seconds로 별도 유지합니다.
+
+    반환:
+    - total_travel_time_seconds
+    - total_travel_time_minutes
+    """
+
+    total_time_seconds = int(
+        round(
+            _safe_number(
+                route.get(
+                    "total_time_seconds"
+                ),
+                default=0.0,
+            )
+        )
+    )
+
+    if total_time_seconds <= 0:
+        total_time_minutes = _safe_number(
+            route.get(
+                "total_time_minutes"
+            ),
+            default=0.0,
+        )
+
+        total_time_seconds = int(
+            round(
+                total_time_minutes * 60
+            )
+        )
+
+    total_time_minutes = round(
+        total_time_seconds / 60,
+        1,
+    )
+
+    return (
+        total_time_seconds,
+        total_time_minutes,
     )
 
 
@@ -2003,6 +2090,34 @@ def check_hard_barriers(
             "계단이 포함된 경로입니다.",
         )
 
+    # --------------------------------------------------------------------------
+    # TMAP 보행 구간 계단 검사
+    # --------------------------------------------------------------------------
+
+    walking_accessibility = route.get(
+        "walking_accessibility",
+        {},
+    )
+
+    if not isinstance(
+        walking_accessibility,
+        dict,
+    ):
+        walking_accessibility = {}
+
+    if (
+        constraints[
+            "avoid_stairs"
+        ]
+        and walking_accessibility.get(
+            "has_stairs"
+        ) is True
+    ):
+        _append_unique(
+            exclusion_reasons,
+            "보행 구간에 계단이 포함되어 있습니다.",
+        )
+
     if (
         constraints[
             "require_elevator"
@@ -2192,19 +2307,6 @@ def find_unknown_fields(
             "보도 턱 높이",
         )
 
-    if (
-        _route_uses_bus(
-            route
-        )
-        and accessibility[
-            "has_low_floor_bus"
-        ] is None
-    ):
-        _append_unique(
-            unknown_fields,
-            "저상버스 여부",
-        )
-
     if _route_uses_subway(
         route
     ):
@@ -2279,13 +2381,11 @@ def calculate_route_score(
         str
     ] = []
 
-    total_time_minutes = (
-        _safe_number(
-            route.get(
-                "total_time_minutes"
-            ),
-            default=0.0,
-        )
+    (
+        _,
+        total_time_minutes,
+    ) = calculate_total_travel_time(
+        route
     )
 
     score += (
@@ -2392,6 +2492,18 @@ def calculate_route_score(
         and accessibility[
             "has_low_floor_bus"
         ] is True
+        and isinstance(
+            accessibility.get(
+                "bus_accessibility"
+            ),
+            list,
+        )
+        and len(
+            accessibility.get(
+                "bus_accessibility",
+                [],
+            )
+        ) > 0
     ):
         low_floor_bus_numbers = (
             accessibility.get(
@@ -2485,8 +2597,9 @@ async def evaluate_candidate_route(
     1. 역사/시설 접근성 데이터 분석
     2. 이동 조건 + 실시간 내부 경로 분석
     3. 실시간 버스 접근성 분석
-    4. Hard Constraint 검사
-    5. 통과한 경우 선호도 기반 점수 계산
+    4. TMAP 보행 경로 접근성 분석
+    5. Hard Constraint 검사
+    6. 통과한 경우 선호도 기반 점수 계산
     """
 
     constraints = (
@@ -2516,14 +2629,54 @@ async def evaluate_candidate_route(
         )
     )
 
-    if _route_uses_bus(
-        evaluated_route
+    # --------------------------------------------------------------------------
+    # 저상버스가 필요한 경우에만 실시간 저상버스 분석
+    # --------------------------------------------------------------------------
+
+    if (
+        constraints["require_low_floor_bus"]
+        and _route_uses_bus(
+            evaluated_route
+        )
     ):
         evaluated_route = (
             await attach_realtime_bus_accessibility(
                 evaluated_route
             )
         )
+
+    # --------------------------------------------------------------------------
+    # TMAP 보행 경로 접근성 분석
+    # --------------------------------------------------------------------------
+
+    evaluated_route = (
+        attach_walking_accessibility(
+            evaluated_route
+        )
+    )
+
+    # --------------------------------------------------------------------------
+    # 전체 이동시간 정규화
+    # --------------------------------------------------------------------------
+
+    (
+        total_travel_time_seconds,
+        total_travel_time_minutes,
+    ) = calculate_total_travel_time(
+        evaluated_route
+    )
+
+    evaluated_route[
+        "total_travel_time_seconds"
+    ] = total_travel_time_seconds
+
+    evaluated_route[
+        "total_travel_time_minutes"
+    ] = total_travel_time_minutes
+
+    # --------------------------------------------------------------------------
+    # Hard Barrier 검사
+    # --------------------------------------------------------------------------
 
     exclusion_reasons = (
         check_hard_barriers(

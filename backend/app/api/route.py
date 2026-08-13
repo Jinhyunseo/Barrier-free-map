@@ -44,7 +44,12 @@ from app.services.bus_matching_service import (
 from app.services.bus_arrival_service import (
     get_low_floor_bus_status,
 )
-
+from app.services.walking_route_service import (
+    get_walking_route,
+)
+from app.services.walking_integration_service import (
+    attach_walking_access_to_routes,
+)
 
 router = APIRouter(
     prefix="/routes",
@@ -181,26 +186,38 @@ async def get_routes_by_places(
     # 4. 응답 단순화
     # --------------------------------------------------------------------------
 
-    simplified_data = (
-        simplify_routes(
-            kakao_data
-        )
+    simplified_data = simplify_routes(
+        kakao_data
     )
 
-    routes = (
-        simplified_data.get(
-            "routes",
-            [],
-        )
+    routes = simplified_data["routes"]
+
+    routes = await attach_walking_access_to_routes(
+        routes=routes,
+
+        origin_x=origin.longitude,
+        origin_y=origin.latitude,
+
+        destination_x=destination.longitude,
+        destination_y=destination.latitude,
+
+        origin_name=request.origin_name,
+        destination_name=request.destination_name,
+
+        avoid_stairs=(
+            request.mobility_constraints.avoid_stairs
+        ),
     )
 
-    if not routes:
-        raise HTTPException(
-            status_code=404,
-            detail=(
-                "조회된 후보 경로가 없습니다."
-            ),
-        )
+    result = await select_best_candidate(
+        routes=routes,
+        mobility_constraints=(
+            request.mobility_constraints.model_dump()
+        ),
+        route_preference=(
+            request.route_preference
+        ),
+    )
 
     # --------------------------------------------------------------------------
     # 5. 승차 / 환승 / 하차 movement 추출
@@ -365,6 +382,40 @@ async def get_recommended_route(
                 "조회된 후보 경로가 없습니다."
             ),
         )
+    # ==========================================================================
+    # 5. 출발지/목적지 보행 경로 연결
+    # ==========================================================================
+
+    try:
+        routes = await attach_walking_access_to_routes(
+            routes=routes,
+
+            origin_x=origin.longitude,
+            origin_y=origin.latitude,
+
+            destination_x=destination.longitude,
+            destination_y=destination.latitude,
+
+            origin_name=request.origin_name,
+            destination_name=request.destination_name,
+
+            avoid_stairs=(
+                request.mobility_constraints.avoid_stairs
+            ),
+
+            # TMAP 호출 전 후보 3개를
+            # 사용자의 경로 선호도에 따라 선별
+            route_preference=request.route_preference,
+        )
+
+    except Exception as error:
+        raise HTTPException(
+            status_code=502,
+            detail=(
+                "보행 경로 연결 중 "
+                f"오류가 발생했습니다: {error}"
+            ),
+        ) from error
 
     # ==========================================================================
     # 5. station_movements 추출
@@ -954,3 +1005,16 @@ async def debug_bus_arrival(
     )
 
     return result
+@router.get("/debug/walking-route")
+async def debug_walking_route(
+    start_x: float,
+    start_y: float,
+    end_x: float,
+    end_y: float,
+):
+    return await get_walking_route(
+        start_x=start_x,
+        start_y=start_y,
+        end_x=end_x,
+        end_y=end_y,
+    )
