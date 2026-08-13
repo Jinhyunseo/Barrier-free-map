@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from app.data.station_metadata import STATION_METADATA
+from app.services.station_facility_service import load_facility_json
 
 
 # ==============================================================================
@@ -37,12 +38,24 @@ OUTPUT_FILE = (
 # ==============================================================================
 
 INTERNAL_STATION_CODES = {
-    "판교역": "PGY",
-    "정자역": "JGJ",
+    "가천대역": "GCH",
+    "태평역": "TPG",
+    "모란역": "MRN",
+    "야탑역": "YTP",
     "이매역": "IME",
     "서현역": "SHY",
     "수내역": "SNE",
-    "야탑역": "YTP",
+    "정자역": "JGJ",
+    "미금역": "MGM",
+    "오리역": "ORI",
+    "남위례역": "NWR",
+    "산성역": "SSG",
+    "남한산성입구역": "NHS",
+    "단대오거리역": "DDE",
+    "신흥역": "SHN",
+    "수진역": "SJN",
+    "판교역": "PGY",
+    "성남역": "SNM",
 }
 
 
@@ -973,6 +986,268 @@ def add_imae_transfer_walking_edges(
                 ),
             }
         )
+def add_moran_transfer_walking_edges(
+    *,
+    station_name: str,
+    station_code: str,
+    nodes: dict[str, dict[str, Any]],
+    edges: list[dict[str, Any]],
+) -> None:
+    """
+    모란역 8호선 ↔ 수인분당선 환승 동선을
+    B1 대합실을 기준으로 명시적으로 연결합니다.
+
+    모란역 시설 데이터 구조:
+    - 8호선: B3 승강장 -> B1/B2 대합실
+    - 수인분당선: B2 승강장 -> B1 맞이방
+
+    원천 시설 데이터에는 실제 환승역임에도
+    '환승통로'라는 명시적인 표현이 없어
+    일반 환승 WALKING edge 생성 로직에서
+    환승 연결이 생성되지 않을 수 있습니다.
+
+    따라서 두 노선의 B1 대합실 공간을
+    WALKING edge로 연결합니다.
+    """
+
+    if station_name != "모란역":
+        return
+
+    # ---------------------------------------------------------
+    # 모란역 B1 CONCOURSE 후보 탐색
+    # ---------------------------------------------------------
+
+    b1_concourses: list[
+        dict[str, Any]
+    ] = []
+
+    for node in nodes.values():
+
+        if (
+            node.get("type")
+            != "CONCOURSE"
+        ):
+            continue
+
+        if (
+            str(
+                node.get(
+                    "floor",
+                    "",
+                )
+            ).strip().upper()
+            != "B1"
+        ):
+            continue
+
+        b1_concourses.append(
+            node
+        )
+
+    if not b1_concourses:
+        return
+
+    # ---------------------------------------------------------
+    # 8호선 / 수인분당선과 연결되어 있는
+    # B1 CONCOURSE를 각각 찾습니다.
+    # ---------------------------------------------------------
+
+    line_concourses: dict[
+        str,
+        set[str],
+    ] = {
+        "8호선": set(),
+        "수인분당선": set(),
+    }
+
+    for edge in edges:
+
+        line_name = str(
+            edge.get(
+                "line_name",
+                "",
+            )
+        ).strip()
+
+        if line_name not in line_concourses:
+            continue
+
+        from_node = str(
+            edge.get(
+                "from_node",
+                "",
+            )
+        ).strip()
+
+        to_node = str(
+            edge.get(
+                "to_node",
+                "",
+            )
+        ).strip()
+
+        for concourse in b1_concourses:
+
+            concourse_id = str(
+                concourse.get(
+                    "id",
+                    "",
+                )
+            ).strip()
+
+            if not concourse_id:
+                continue
+
+            if (
+                from_node == concourse_id
+                or to_node == concourse_id
+            ):
+                line_concourses[
+                    line_name
+                ].add(
+                    concourse_id
+                )
+
+    line8_concourses = list(
+        line_concourses["8호선"]
+    )
+
+    suin_concourses = list(
+        line_concourses["수인분당선"]
+    )
+
+    if (
+        not line8_concourses
+        or not suin_concourses
+    ):
+        return
+
+    # ---------------------------------------------------------
+    # 두 노선 B1 대합실 연결
+    # ---------------------------------------------------------
+
+    walking_index = 1
+
+    for line8_concourse_id in (
+        line8_concourses
+    ):
+
+        for suin_concourse_id in (
+            suin_concourses
+        ):
+
+            # 동일 노드라면 이미 공용 공간이므로
+            # 별도의 edge가 필요하지 않습니다.
+            if (
+                line8_concourse_id
+                == suin_concourse_id
+            ):
+                continue
+
+            # 이미 WALKING 연결이 있으면 중복 생성 방지
+            already_exists = any(
+                str(
+                    edge.get(
+                        "transport_type",
+                        "",
+                    )
+                ).upper()
+                == "WALKING"
+                and {
+                    str(
+                        edge.get(
+                            "from_node",
+                            "",
+                        )
+                    ),
+                    str(
+                        edge.get(
+                            "to_node",
+                            "",
+                        )
+                    ),
+                }
+                == {
+                    line8_concourse_id,
+                    suin_concourse_id,
+                }
+                for edge in edges
+            )
+
+            if already_exists:
+                continue
+
+            while True:
+
+                edge_id = (
+                    f"{station_code}"
+                    f"_WALK_MORAN_TRANSFER_"
+                    f"{walking_index:03d}"
+                )
+
+                walking_index += 1
+
+                if not any(
+                    edge.get("id")
+                    == edge_id
+                    for edge in edges
+                ):
+                    break
+
+            edges.append(
+                {
+                    "id": edge_id,
+
+                    "station_name": (
+                        station_name
+                    ),
+
+                    # 두 노선을 연결하는 공용 환승 통로이므로
+                    # 특정 노선으로 지정하지 않습니다.
+                    "line_name": None,
+
+                    "from_node": (
+                        line8_concourse_id
+                    ),
+
+                    "to_node": (
+                        suin_concourse_id
+                    ),
+
+                    "transport_type": (
+                        "WALKING"
+                    ),
+
+                    "wheelchair_accessible": (
+                        True
+                    ),
+
+                    "is_bidirectional": True,
+
+                    "from_floor": "B1",
+                    "to_floor": "B1",
+
+                    "exit_no": None,
+
+                    "detail_location": (
+                        "모란역 8호선 ↔ "
+                        "수인분당선 환승 통로"
+                    ),
+
+                    "direction": None,
+                    "direction_name": None,
+
+                    "operator_code": None,
+                    "line_code": None,
+                    "kric_station_code": None,
+
+                    "description": (
+                        "모란역 B1 대합실 "
+                        "8호선 ↔ 수인분당선 "
+                        "환승 보행 연결"
+                    ),
+                }
+            )
 
 
 # ==============================================================================
@@ -1722,7 +1997,7 @@ def build_station_graph(
     )
 
     # --------------------------------------------------------------------------
-    # 노선별 시설 JSON 처리
+    # 노선별 통합 시설 JSON 처리
     # --------------------------------------------------------------------------
 
     for line_index, (
@@ -1733,24 +2008,31 @@ def build_station_graph(
         start=1,
     ):
 
-        facility_file = (
-            line_metadata.get(
-                "facility_file"
+        try:
+            station_data = load_facility_json(
+                station_name=station_name,
+                line_name=line_name,
             )
-        )
 
-        if not facility_file:
+        except (
+            FileNotFoundError,
+            ValueError,
+        ) as error:
+            print(
+                f"⚠️ {station_name} / "
+                f"{line_name} 시설 데이터 로드 실패: "
+                f"{error}"
+            )
             continue
 
-        source_files.append(
-            facility_file
+        integrated_source = (
+            "Elevator_Escalator_현황_통합.json"
         )
 
-        station_data = (
-            load_facility_file(
-                facility_file
+        if integrated_source not in source_files:
+            source_files.append(
+                integrated_source
             )
-        )
 
         elevators = (
             station_data.get(
