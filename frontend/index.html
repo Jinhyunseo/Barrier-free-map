@@ -3,1123 +3,560 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>배리어프리 길안내 Service</title>
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <!-- FontAwesome 아이콘 라이브러리 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <title>
-    배리어프리 길안내 Service
-  </title>
-
-
-  <!-- =========================================================
-       FontAwesome
-  ========================================================== -->
-
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  >
-
-
-  <!-- =========================================================
-       Kakao Map SDK
-
-       현재 팀원이 사용하던 키를 그대로 유지했습니다.
-  ========================================================== -->
-
-  <script
-    type="text/javascript"
-    src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=a6e4cc9d6599ccd6f520b7e4932b0a70&libraries=services"
-  ></script>
-
+  <!-- 카카오 지도 SDK -->
+  <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=a6e4cc9d6599ccd6f520b7e4932b0a70&libraries=services"></script>
 
   <style>
-
     /* =========================================================
-       공통
+       공통 스타일
     ========================================================== */
-
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
-
-    html,
-    body {
+    html, body {
       width: 100%;
       height: 100%;
-
       overflow: hidden;
-    }
-
-
-    body {
       background: #ffffff;
     }
 
-
     .app-container {
       display: flex;
-
       width: 100vw;
       height: 100vh;
     }
 
-
     /* =========================================================
-       좌측 Sidebar
+       좌측 사이드바 (전체 스크롤 가능 구조)
     ========================================================== */
-
     .sidebar {
       width: 420px;
       min-width: 420px;
       height: 100%;
-
       background: #ffffff;
-
       z-index: 10;
-
-      box-shadow:
-        4px 0 15px rgba(
-          0,
-          0,
-          0,
-          0.08
-        );
-
+      box-shadow: 4px 0 15px rgba(0, 0, 0, 0.08);
       display: flex;
       flex-direction: column;
     }
 
-
-    /* =========================================================
-       상단 검색 영역
-    ========================================================== */
-
     .sidebar-header {
-      padding: 20px;
-
+      padding: 16px 20px;
       background: #ffffff;
-
-      border-bottom:
-        1px solid #e2e8f0;
+      border-bottom: 1px solid #e2e8f0;
+      flex-shrink: 0;
     }
 
+    .app-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
     .app-title {
       font-size: 20px;
       font-weight: 800;
-
-      margin-bottom: 16px;
-
       display: flex;
       align-items: center;
       gap: 8px;
-
       color: #f39eba;
     }
 
-
-    .search-box {
-      background: #ffffff;
-
-      border:
-        1.5px solid #f39eba;
-
-      border-radius: 14px;
-
-      padding: 14px;
-
-      display: flex;
-      flex-direction: column;
-
-      gap: 12px;
-
-      box-shadow:
-        0 4px 12px
-        rgba(
-          243,
-          158,
-          186,
-          0.15
-        );
+    .btn-edit-profile {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      color: #475569;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
     }
 
+    .btn-edit-profile:hover {
+      background: #f39eba;
+      color: #ffffff;
+      border-color: #f39eba;
+    }
+
+    .sidebar-scroll-content {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 16px;
+      background: #f8fafc;
+    }
+
+    /* 입력 필드 */
+    .search-box {
+      background: #ffffff;
+      border: 1.5px solid #f39eba;
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 4px 12px rgba(243, 158, 186, 0.15);
+    }
 
     .inputs-wrapper {
       display: flex;
-
       align-items: center;
-
       gap: 10px;
-
       position: relative;
     }
-
 
     .inputs-container {
       flex: 1;
-
       display: flex;
       flex-direction: column;
-
       gap: 8px;
-
       position: relative;
     }
-
 
     .inputs-container::before {
       content: '';
-
       position: absolute;
-
       left: 17px;
       top: 24px;
       bottom: 24px;
-
       width: 1.5px;
-
-      border-left:
-        2px dotted #f39eba;
-
+      border-left: 2px dotted #f39eba;
       z-index: 1;
     }
 
-
     .input-group {
       display: flex;
-
       align-items: center;
-
       background: #f8fafc;
-
-      border:
-        1px solid #e2e8f0;
-
+      border: 1px solid #e2e8f0;
       border-radius: 10px;
-
-      padding:
-        0 12px;
-
+      padding: 0 12px;
       height: 42px;
-
       position: relative;
-
       z-index: 2;
-
-      transition:
-        all 0.2s;
+      transition: all 0.2s;
     }
-
 
     .input-group:focus-within {
       border-color: #f39eba;
-
       background: #ffffff;
-
-      box-shadow:
-        0 0 0 3px
-        rgba(
-          243,
-          158,
-          186,
-          0.2
-        );
+      box-shadow: 0 0 0 3px rgba(243, 158, 186, 0.2);
     }
-
 
     .input-icon {
       font-size: 14px;
-
       margin-right: 10px;
-
       width: 16px;
-
       text-align: center;
     }
 
-
-    .input-icon.start {
-      color: #2563eb;
-    }
-
-
-    .input-icon.end {
-      color: #ef4444;
-    }
-
+    .input-icon.start { color: #2563eb; }
+    .input-icon.end { color: #ef4444; }
 
     .input-group input {
       border: none;
-
       background: transparent;
-
       outline: none;
-
       width: 100%;
-
       font-size: 14px;
-
       color: #0f172a;
-
       font-weight: 700;
     }
 
-
     .input-group input::placeholder {
       color: #94a3b8;
-
       font-weight: 500;
     }
-
-
-    /* =========================================================
-       출발 / 도착 스왑
-    ========================================================== */
 
     .swap-btn {
       width: 36px;
       height: 36px;
-
       border-radius: 50%;
-
-      border:
-        1px solid #e2e8f0;
-
+      border: 1px solid #e2e8f0;
       background: #ffffff;
-
       color: #64748b;
-
       font-size: 13px;
-
       cursor: pointer;
-
       display: flex;
-
       align-items: center;
-
       justify-content: center;
-
-      transition:
-        all 0.2s;
-
-      box-shadow:
-        0 2px 4px
-        rgba(
-          0,
-          0,
-          0,
-          0.05
-        );
+      transition: all 0.2s;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     }
-
 
     .swap-btn:hover {
       background: #f8ccdb;
-
       color: #000000;
-
       border-color: #f39eba;
-
-      transform:
-        rotate(180deg);
+      transform: rotate(180deg);
     }
-
-
-    /* =========================================================
-       검색 버튼
-    ========================================================== */
 
     .search-btn {
       width: 100%;
-
       padding: 12px;
-
       border: none;
-
       border-radius: 10px;
-
       background: #f8ccdb;
-
       color: #000000;
-
       font-size: 14px;
-
       font-weight: 800;
-
       cursor: pointer;
-
-      box-shadow:
-        0 2px 4px
-        rgba(
-          243,
-          158,
-          186,
-          0.6
-        );
-
-      transition:
-        background 0.2s;
-
+      box-shadow: 0 2px 4px rgba(243, 158, 186, 0.6);
+      transition: background 0.2s;
       display: flex;
-
       align-items: center;
-
       justify-content: center;
-
       gap: 6px;
     }
 
+    .search-btn:hover { background: #f39eba; }
+    .search-btn:disabled { cursor: wait; opacity: 0.65; }
 
-    .search-btn:hover {
-      background: #f39eba;
+    /* 경로 선호도 UI */
+    .pref-section {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px 14px;
     }
 
-
-    .search-btn:disabled {
-      cursor: wait;
-
-      opacity: 0.65;
+    .pref-question {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #334155;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
-
-
-    /* =========================================================
-       사용자 유형
-    ========================================================== */
 
     .type-filter {
       display: flex;
-
-      background: #f1f5f9;
-
-      padding: 6px;
-
       gap: 6px;
-
-      border-bottom:
-        1px solid #e2e8f0;
     }
-
 
     .chip {
       flex: 1;
-
       text-align: center;
-
-      padding:
-        10px 0;
-
-      font-size: 14px;
-
+      padding: 9px 0;
+      font-size: 12.5px;
       font-weight: 700;
-
-      color: #475569;
-
+      color: #64748b;
       cursor: pointer;
-
-      border-radius: 6px;
-
-      transition:
-        all 0.2s;
-
+      border-radius: 8px;
+      transition: all 0.2s;
       background: #ffffff;
-
-      border:
-        1px solid #f39eba;
+      border: 1.5px solid #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
     }
 
+    .chip .radio-dot {
+      font-size: 10px;
+      color: #94a3b8;
+    }
 
     .chip.active {
       background: #f39eba;
-
       color: #ffffff;
-
       border-color: #f39eba;
-
-      box-shadow:
-        0 2px 4px
-        rgba(
-          243,
-          158,
-          186,
-          0.6
-        );
+      box-shadow: 0 2px 6px rgba(243, 158, 186, 0.4);
     }
 
-
-    /* =========================================================
-       경로 상세 영역
-    ========================================================== */
-
-    .route-detail-container {
-      flex: 1;
-
-      overflow-y: auto;
-
-      padding: 16px;
-
-      display: flex;
-      flex-direction: column;
-
-      gap: 16px;
-
-      background: #f8fafc;
+    .chip.active .radio-dot {
+      color: #ffffff;
     }
-
-
-    /* =========================================================
-       로딩 / 오류
-    ========================================================== */
 
     .status-card {
       display: none;
-
       background: #ffffff;
-
-      border:
-        1px solid #e2e8f0;
-
+      border: 1px solid #e2e8f0;
       border-radius: 12px;
-
       padding: 14px;
-
       font-size: 13px;
-
       color: #475569;
-
       line-height: 1.5;
     }
 
-
-    .status-card.show {
-      display: block;
-    }
-
-
+    .status-card.show { display: block; }
     .status-card.error {
       color: #b91c1c;
-
       background: #fef2f2;
-
       border-color: #fecaca;
     }
 
-
-    /* =========================================================
-       요약 카드
-    ========================================================== */
-
     .route-summary-card {
       background: #ffffff;
-
       border-radius: 12px;
-
       padding: 18px;
-
-      border:
-        1px solid #e2e8f0;
-
-      box-shadow:
-        0 1px 3px
-        rgba(
-          243,
-          158,
-          186,
-          0.6
-        );
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 3px rgba(243, 158, 186, 0.6);
     }
-
 
     .route-badge-row {
       display: flex;
-
       justify-content: space-between;
-
       align-items: center;
-
       margin-bottom: 8px;
-
-      position: relative;
     }
-
 
     .route-no {
       background: #f8ccdb;
-
       color: #000000;
-
       font-size: 13px;
-
       font-weight: 800;
-
-      padding:
-        4px 8px;
-
+      padding: 4px 8px;
       border-radius: 6px;
     }
 
-
-    /* =========================================================
-       상세 조건 Tooltip
-    ========================================================== */
-
-    .info-icon-container {
-      position: relative;
-
-      display: inline-block;
+    .applied-cond-text {
+      font-size: 11px;
+      color: #64748b;
+      font-weight: 600;
     }
-
-
-    .info-icon-btn {
-      background: #e2e8f0;
-
-      color: #334155;
-
-      font-size: 12px;
-
-      font-weight: 800;
-
-      padding:
-        4px 10px;
-
-      border-radius: 20px;
-
-      cursor: pointer;
-
-      display: flex;
-
-      align-items: center;
-
-      gap: 4px;
-
-      transition:
-        all 0.2s;
-
-      border:
-        1px solid #cbd5e1;
-    }
-
-
-    .info-icon-btn:hover {
-      background: #f39eba;
-
-      color: #ffffff;
-
-      border-color: #f39eba;
-    }
-
-
-    .info-tooltip {
-      visibility: hidden;
-
-      opacity: 0;
-
-      width: 300px;
-
-      background-color: #ffffff;
-
-      color: #0f172a;
-
-      text-align: left;
-
-      border-radius: 10px;
-
-      padding: 14px;
-
-      position: absolute;
-
-      z-index: 100;
-
-      top: 120%;
-
-      right: 0;
-
-      box-shadow:
-        0 4px 20px
-        rgba(
-          0,
-          0,
-          0,
-          0.15
-        );
-
-      border:
-        1.5px solid #f39eba;
-
-      transition:
-        opacity 0.2s ease-in-out,
-        visibility 0.2s ease-in-out;
-    }
-
-
-    .info-tooltip::after {
-      content: "";
-
-      position: absolute;
-
-      bottom: 100%;
-
-      right: 15px;
-
-      border-width: 6px;
-
-      border-style: solid;
-
-      border-color:
-        transparent
-        transparent
-        #f39eba
-        transparent;
-    }
-
-
-    .info-icon-container:hover
-    .info-tooltip,
-
-    .info-tooltip.active {
-      visibility: visible;
-
-      opacity: 1;
-    }
-
-
-    .tooltip-title {
-      font-size: 13px;
-
-      font-weight: 800;
-
-      color: #0f172a;
-
-      margin-bottom: 8px;
-
-      padding-bottom: 4px;
-
-      border-bottom:
-        1px solid #e2e8f0;
-    }
-
-
-    .reason-item {
-      font-size: 12px;
-
-      color: #334155;
-
-      margin-bottom: 6px;
-
-      line-height: 1.4;
-    }
-
-
-    .reason-item:last-child {
-      margin-bottom: 0;
-    }
-
-
-    /* =========================================================
-       요약
-    ========================================================== */
 
     .main-time {
       font-size: 28px;
-
       font-weight: 900;
-
       color: #0f172a;
-
       margin-bottom: 8px;
     }
-
 
     .sub-info-grid {
       display: grid;
-
-      grid-template-columns:
-        repeat(
-          3,
-          1fr
-        );
-
+      grid-template-columns: repeat(3, 1fr);
       gap: 8px;
-
       background: #f8ccdb;
-
       padding: 10px;
-
       border-radius: 8px;
-
       margin-bottom: 12px;
-
       text-align: center;
     }
 
-
-    .sub-info-item {
-      font-size: 12px;
-
-      color: #000000;
-    }
-
-
+    .sub-info-item { font-size: 12px; color: #000000; }
     .sub-info-item strong {
       display: block;
-
       font-size: 15px;
-
       color: #000000;
-
       margin-top: 2px;
     }
-
-
-    /* =========================================================
-       추천 이유
-    ========================================================== */
 
     .reason-box {
       background: #f0f9ff;
-
-      border:
-        1.5px solid #f39eba;
-
+      border: 1.5px solid #f39eba;
       border-radius: 10px;
-
       padding: 14px;
     }
 
-
     .reason-title {
       font-size: 13.5px;
-
       font-weight: 800;
-
       color: #000000;
-
       margin-bottom: 8px;
     }
-
 
     .ai-reason-text {
       font-size: 13px;
-
       color: #1e293b;
-
       line-height: 1.5;
-
       font-weight: 600;
-
       background: #ffffff;
-
       padding: 10px;
-
       border-radius: 6px;
-
-      border-left:
-        3px solid #f39eba;
+      border-left: 3px solid #f39eba;
     }
 
-
-    /* =========================================================
-       이동 경로 Timeline
-    ========================================================== */
-
+    /* Timeline */
     .timeline-card {
       background: #ffffff;
-
       border-radius: 12px;
-
       padding: 20px;
-
-      border:
-        1px solid #e2e8f0;
+      border: 1px solid #e2e8f0;
     }
-
 
     .timeline-title {
       font-size: 16px;
-
       font-weight: 800;
-
       color: #000000;
-
       margin-bottom: 18px;
-
       padding-bottom: 10px;
-
-      border-bottom:
-        2px solid #f1f5f9;
+      border-bottom: 2px solid #f1f5f9;
     }
 
-
-    .timeline {
-      position: relative;
-
-      padding-left: 36px;
-    }
-
-
-    .timeline-item {
-      position: relative;
-
-      padding-bottom: 24px;
-    }
-
-
-    .timeline-item:last-child {
-      padding-bottom: 0;
-    }
-
+    .timeline { position: relative; padding-left: 36px; }
+    .timeline-item { position: relative; padding-bottom: 24px; }
+    .timeline-item:last-child { padding-bottom: 0; }
 
     .timeline-item::before {
       content: '';
-
       position: absolute;
-
       left: -19px;
-
       top: 24px;
-
       bottom: -10px;
-
       width: 3px;
-
       background: #f8ccdb;
     }
 
-
-    .timeline-item:last-child::before {
-      display: none;
-    }
-
+    .timeline-item:last-child::before { display: none; }
 
     .timeline-dot {
       position: absolute;
-
       left: -35px;
-
       top: 2px;
-
       width: 34px;
-
       height: 34px;
-
       border-radius: 50%;
-
       display: flex;
-
       align-items: center;
-
       justify-content: center;
-
       font-size: 15px;
-
-      border:
-        2px solid #ffffff;
-
-      box-shadow:
-        0 2px 5px
-        rgba(
-          0,
-          0,
-          0,
-          0.15
-        );
+      border: 2px solid #ffffff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
     }
 
+    .timeline-dot.walk { background: #e0f2fe; color: #0369a1; }
+    .timeline-dot.bus { background: #dcfce7; color: #15803d; }
+    .timeline-dot.subway { background: #fce7f3; color: #be185d; }
+    .timeline-dot.transfer { background: #fef9c3; color: #a16207; }
+    .timeline-dot.end { background: #fee2e2; color: #b91c1c; }
 
-    .timeline-dot.walk {
-      background: #e0f2fe;
-      color: #0369a1;
+    .step-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .step-title { font-size: 15px; font-weight: 800; color: #0f172a; }
+    .step-desc { font-size: 14px; color: #475569; margin-top: 2px; font-weight: 500; line-height: 1.5; }
+
+    /* 토글 경유 정류장 스타일 (버튼 글자색: 검정색) */
+    .station-toggle-wrapper {
+      margin-top: 8px;
     }
 
-
-    .timeline-dot.bus {
-      background: #dcfce7;
-      color: #15803d;
-    }
-
-
-    .timeline-dot.subway {
-      background: #fce7f3;
-      color: #be185d;
-    }
-
-
-    .timeline-dot.transfer {
-      background: #fef9c3;
-      color: #a16207;
-    }
-
-
-    .timeline-dot.end {
-      background: #fee2e2;
-      color: #b91c1c;
-    }
-
-
-    .step-header {
-      display: flex;
-
-      align-items: center;
-
-      gap: 8px;
-
-      margin-bottom: 6px;
-    }
-
-
-    .step-title {
-      font-size: 15px;
-
-      font-weight: 800;
-
-      color: #0f172a;
-    }
-
-
-    .bus-type-badge {
+    .btn-toggle-stations {
+      background: #fdf2f4;
+      border: 1px solid #f8ccdb;
+      border-radius: 6px;
+      padding: 6px 10px;
       font-size: 12px;
-
       font-weight: 700;
-
-      padding:
-        2px 8px;
-
-      border-radius: 4px;
+      color: #0f172a; /* 버튼 텍스트 검정색 */
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
     }
 
-
-    .bus-type-badge.low-floor {
-      background: #dcfce7;
-
-      color: #15803d;
-
-      border:
-        1px solid #86efac;
+    .btn-toggle-stations:hover {
+      background: #f39eba;
+      color: #ffffff;
+      border-color: #f39eba;
     }
-
-
-    .bus-type-badge.normal {
-      background: #fee2e2;
-
-      color: #b91c1c;
-
-      border:
-        1px solid #fca5a5;
-    }
-
-
-    .step-desc {
-      font-size: 14px;
-
-      color: #475569;
-
-      margin-top: 2px;
-
-      font-weight: 500;
-
-      line-height: 1.5;
-    }
-
 
     .station-list {
-      margin-top: 10px;
-
-      background: #f8fafc;
-
-      border:
-        1px solid #e2e8f0;
-
+      display: none;
+      margin-top: 8px;
+      background: #fdf2f4;
+      border: 1px solid #f8ccdb;
       border-radius: 8px;
-
       padding: 12px;
-
-      font-size: 14px;
-
-      color: #000000;
-
-      line-height: 1.7;
+      font-size: 13.5px;
+      color: #1e293b;
     }
 
-
-    .station-title {
-      font-weight: 800;
-
-      color: #475569;
-
-      font-size: 12px;
-
-      margin-bottom: 6px;
+    .station-list.show {
+      display: block;
     }
 
+    /* 전체 경유 목록 제목 글자색: 검정색 */
+    .station-title { font-weight: 800; color: #0f172a; font-size: 12px; margin-bottom: 10px; }
 
-
-    /* =========================================================
-       역사 내부 접근성 이동 안내
-    ========================================================== */
-
-    .timeline-dot.accessibility {
-      background: #ede9fe;
-      color: #6d28d9;
+    /* 핑크 색상 세로형 정류장 목록 스타일 */
+    .vertical-station-container {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding-left: 4px;
     }
 
-    .accessibility-guide {
+    .vertical-station-item {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1e293b;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* 핑크색 동그라미 */
+    .vertical-station-item i {
+      font-size: 10px;
+      color: #f39eba;
+    }
+
+    /* 핑크색 연결선 */
+    .vertical-station-line {
+      font-size: 11px;
+      color: #f8ccdb;
+      padding-left: 3px;
+      line-height: 1;
+      margin: 2px 0;
+      font-weight: bold;
+    }
+
+    .timeline-dot.accessibility { background: #ede9fe; color: #6d28d9; }
+    .accessibility-guide { margin-top: 10px; padding: 12px; background: #faf5ff; border: 1px solid #ddd6fe; border-radius: 9px; }
+    .accessibility-guide-title { font-size: 12px; font-weight: 800; color: #6d28d9; margin-bottom: 8px; }
+    .facility-step { padding: 8px 0; border-bottom: 1px dashed #ddd6fe; font-size: 13px; line-height: 1.55; color: #334155; }
+    .facility-step:last-child { border-bottom: none; padding-bottom: 0; }
+    .facility-step:first-child { padding-top: 0; }
+    .facility-name { font-weight: 800; color: #0f172a; }
+    .facility-location { margin-top: 3px; color: #475569; }
+    .facility-status { display: inline-block; margin-top: 5px; padding: 2px 7px; border-radius: 999px; font-size: 11px; font-weight: 800; background: #dcfce7; color: #15803d; }
+    .facility-status.unknown { background: #fef3c7; color: #92400e; }
+    .facility-status.unavailable { background: #fee2e2; color: #b91c1c; }
+    .internal-path-warning { margin-top: 8px; padding: 8px 10px; border-radius: 7px; background: #fff7ed; color: #9a3412; font-size: 12px; font-weight: 700; line-height: 1.5; }
+
+    /* 실시간 저상버스 안내 전용 UI */
+    .bus-accessibility-guide {
       margin-top: 10px;
       padding: 12px;
-      background: #faf5ff;
-      border: 1px solid #ddd6fe;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
       border-radius: 9px;
     }
 
-    .accessibility-guide-title {
+    .bus-accessibility-title {
       font-size: 12px;
       font-weight: 800;
-      color: #6d28d9;
+      color: #15803d;
       margin-bottom: 8px;
     }
 
-    .facility-step {
-      padding: 8px 0;
-      border-bottom: 1px dashed #ddd6fe;
-      font-size: 13px;
-      line-height: 1.55;
+    .bus-accessibility-row {
+      font-size: 12.5px;
       color: #334155;
+      line-height: 1.55;
     }
 
-    .facility-step:last-child {
-      border-bottom: none;
-      padding-bottom: 0;
-    }
+    .bus-accessibility-row strong { color: #0f172a; }
 
-    .facility-step:first-child {
-      padding-top: 0;
-    }
-
-    .facility-name {
-      font-weight: 800;
-      color: #0f172a;
-    }
-
-    .facility-location {
-      margin-top: 3px;
-      color: #475569;
-    }
-
-    .facility-status {
+    .bus-accessibility-status {
       display: inline-block;
-      margin-top: 5px;
+      margin-top: 6px;
       padding: 2px 7px;
       border-radius: 999px;
       font-size: 11px;
@@ -1128,3353 +565,1253 @@
       color: #15803d;
     }
 
-    .facility-status.unknown {
+    .bus-accessibility-status.unknown {
       background: #fef3c7;
       color: #92400e;
     }
 
-    .facility-status.unavailable {
+    .bus-accessibility-status.unavailable {
       background: #fee2e2;
       color: #b91c1c;
     }
 
-    .internal-path-warning {
-      margin-top: 8px;
-      padding: 8px 10px;
-      border-radius: 7px;
-      background: #fff7ed;
-      color: #9a3412;
+
+    /* TMAP first/last-mile 보행 접근성 */
+    .walking-access-guide {
+      margin-top: 10px;
+      padding: 11px 12px;
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      border-radius: 9px;
+    }
+    .walking-access-title { font-size: 12px; font-weight: 800; color: #0369a1; margin-bottom: 5px; }
+    .walking-access-meta { font-size: 12.5px; color: #334155; line-height: 1.5; }
+    .walking-access-warning {
+      margin-top: 6px; padding: 6px 8px; border-radius: 7px;
+      background: #fff7ed; color: #9a3412; font-size: 11.5px;
+      font-weight: 700; line-height: 1.45;
+    }
+
+    #map { flex: 1; height: 100%; }
+
+    /* =========================================================
+       모달 모음 (1단계: 회원가입 / 2단계: 프로필 설정)
+    ========================================================== */
+    .modal-overlay {
+      display: flex;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      padding: 32px;
+      border-radius: 20px;
+      width: 400px;
+      box-shadow: 0 20px 30px rgba(0, 0, 0, 0.25);
+      border: 2px solid #f39eba;
+      animation: modalFadeIn 0.3s ease-out;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-badge {
+      display: inline-block;
+      background: #fdf2f4;
+      color: #d81b60;
       font-size: 12px;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+    }
+
+    .modal-title {
+      font-size: 19px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+
+    .modal-desc {
+      font-size: 12.5px;
+      color: #64748b;
+      line-height: 1.4;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 13.5px;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .form-input:focus {
+      border-color: #f39eba;
+      box-shadow: 0 0 0 3px rgba(243, 158, 186, 0.2);
+    }
+
+    .btn-action {
+      width: 100%;
+      padding: 14px;
+      background: #f8ccdb;
+      color: #000000;
+      border: none;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(243, 158, 186, 0.4);
+      transition: all 0.2s;
+    }
+
+    .btn-action:hover {
+      background: #f39eba;
+      color: #ffffff;
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .checkbox-label {
+      font-size: 14px;
       font-weight: 700;
-      line-height: 1.5;
+      color: #334155;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      transition: all 0.2s;
     }
 
-    /* =========================================================
-       지도
-    ========================================================== */
-
-    #map {
-      flex: 1;
-
-      height: 100%;
+    .checkbox-label:hover {
+      background: #fdf2f4;
+      border-color: #f39eba;
     }
 
-
-    /* =========================================================
-       작은 화면 대응
-    ========================================================== */
-
-    @media (
-      max-width: 900px
-    ) {
-
-      .sidebar {
-        width: 380px;
-        min-width: 380px;
-      }
-
+    .checkbox-label input {
+      accent-color: #f39eba;
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
     }
 
+    @media (max-width: 900px) {
+      .sidebar { width: 380px; min-width: 380px; }
+      .modal-card { width: 90%; padding: 24px; }
+    }
   </style>
-
 </head>
 
-
 <body>
-
   <div class="app-container">
 
-
-    <!-- =======================================================
-         Sidebar
-    ======================================================== -->
-
+    <!-- 좌측 사이드바 -->
     <div class="sidebar">
 
-
-      <!-- =====================================================
-           검색
-      ====================================================== -->
-
       <div class="sidebar-header">
+        <div class="app-title-row">
+          <div class="app-title">
+            <i class="fa-solid fa-route"></i>
+            배리어프리 길안내
+          </div>
 
-        <div class="app-title">
-
-          <i
-            class="fa-solid fa-route"
-          ></i>
-
-          배리어프리 길안내
-
+          <button class="btn-edit-profile" onclick="openProfileModal()">
+            ⚙️ 이동 조건 변경
+          </button>
         </div>
+      </div>
 
+      <!-- 통합 스크롤 영역 -->
+      <div class="sidebar-scroll-content">
 
         <div class="search-box">
-
-
           <div class="inputs-wrapper">
-
-
             <div class="inputs-container">
-
-
-              <!-- 출발 -->
-
               <div class="input-group">
-
-                <i
-                  class="
-                    fa-regular
-                    fa-circle-dot
-                    input-icon
-                    start
-                  "
-                ></i>
-
-                <input
-                  type="text"
-                  id="start-input"
-                  value="판교역"
-                  placeholder="출발지 검색"
-                >
-
+                <i class="fa-regular fa-circle-dot input-icon start"></i>
+                <input type="text" id="start-input" value="판교역" placeholder="출발지 (기본: 현재 위치)">
               </div>
 
-
-              <!-- 도착 -->
-
               <div class="input-group">
-
-                <i
-                  class="
-                    fa-solid
-                    fa-location-dot
-                    input-icon
-                    end
-                  "
-                ></i>
-
-                <input
-                  type="text"
-                  id="end-input"
-                  value="수내역"
-                  placeholder="도착지 검색"
-                >
-
+                <i class="fa-solid fa-location-dot input-icon end"></i>
+                <input type="text" id="end-input" value="수내역" placeholder="목적지 입력">
               </div>
-
-
             </div>
 
-
-            <!-- 출발/도착 교환 -->
-
-            <button
-              class="swap-btn"
-              onclick="swapStartEnd()"
-              title="출발지/도착지 바꾸기"
-            >
-
-              <i
-                class="
-                  fa-solid
-                  fa-arrows-rotate
-                "
-              ></i>
-
+            <button class="swap-btn" onclick="swapStartEnd()" title="출발지/도착지 바꾸기">
+              <i class="fa-solid fa-arrows-rotate"></i>
             </button>
-
-
           </div>
 
-
-          <!-- 검색 -->
-
-          <button
-            class="search-btn"
-            id="search-button"
-            onclick="searchRoute()"
-          >
-
-            <i
-              class="
-                fa-solid
-                fa-magnifying-glass
-              "
-            ></i>
-
-            <span id="search-button-text">
-              맞춤 경로 탐색
-            </span>
-
+          <button class="search-btn" id="search-button" onclick="searchRoute()">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span id="search-button-text">맞춤 경로 탐색</span>
           </button>
-
-
         </div>
 
-      </div>
+        <div class="pref-section">
+          <div class="pref-question">
+            <i class="fa-solid fa-circle-question" style="color: #f39eba;"></i>
+            어떤 경로를 선호하시나요?
+          </div>
 
-
-      <!-- =====================================================
-           사용자 유형
-      ====================================================== -->
-
-      <div class="type-filter">
-
-        <div
-          class="chip active"
-          onclick="selectType('휠체어')"
-        >
-          휠체어
-        </div>
-
-        <div
-          class="chip"
-          onclick="selectType('노약자')"
-        >
-          노약자
-        </div>
-
-        <div
-          class="chip"
-          onclick="selectType('유모차')"
-        >
-          유모차
-        </div>
-
-      </div>
-
-
-      <!-- =====================================================
-           결과
-      ====================================================== -->
-
-      <div class="route-detail-container">
-
-
-        <!-- 상태 메시지 -->
-
-        <div
-          id="status-card"
-          class="status-card"
-        ></div>
-
-
-        <!-- ===================================================
-             요약 카드
-        ==================================================== -->
-
-        <div
-          class="route-summary-card"
-          id="route-summary-card"
-        >
-
-
-          <div class="route-badge-row">
-
-            <span
-              class="route-no"
-              id="route-no"
-            >
-              맞춤 추천 경로
-            </span>
-
-
-            <div class="info-icon-container">
-
-
-              <button
-                class="info-icon-btn"
-                onclick="toggleTooltip(event)"
-              >
-
-                <i
-                  class="
-                    fa-solid
-                    fa-circle-info
-                  "
-                ></i>
-
-                경로 상세 조건
-
-              </button>
-
-
-              <div
-                class="info-tooltip"
-                id="info-tooltip"
-              >
-
-                <div class="tooltip-title">
-                  📋 확인된 접근성 정보
-                </div>
-
-                <div
-                  id="reason-list"
-                >
-                </div>
-
-              </div>
-
-
+          <div class="type-filter">
+            <div class="chip active" data-pref="balanced" onclick="selectPreference('balanced', this)">
+              <span class="radio-dot">●</span> 추천
             </div>
+            <div class="chip" data-pref="time" onclick="selectPreference('time', this)">
+              <span class="radio-dot">○</span> 최단 시간
+            </div>
+            <div class="chip" data-pref="walk" onclick="selectPreference('walk', this)">
+              <span class="radio-dot">○</span> 최소 도보
+            </div>
+            <div class="chip" data-pref="transfer" onclick="selectPreference('transfer', this)">
+              <span class="radio-dot">○</span> 최소 환승
+            </div>
+          </div>
+        </div>
 
+        <div id="status-card" class="status-card"></div>
+
+        <div class="route-summary-card" id="route-summary-card">
+          <div class="route-badge-row">
+            <span class="route-no" id="route-no">
+              균형 추천 경로
+            </span>
+            <span class="applied-cond-text" id="applied-cond-summary">
+              조건 적용 중
+            </span>
           </div>
 
-
-          <div
-            class="main-time"
-            id="route-time"
-          >
-            -
-          </div>
-
+          <div class="main-time" id="route-time">-</div>
 
           <div class="sub-info-grid">
-
             <div class="sub-info-item">
-
               이동거리
-
-              <strong id="route-dist">
-                -
-              </strong>
-
+              <strong id="route-dist">-</strong>
             </div>
-
-
             <div class="sub-info-item">
-
               환승횟수
-
-              <strong id="route-trans">
-                -
-              </strong>
-
+              <strong id="route-trans">-</strong>
             </div>
-
-
             <div class="sub-info-item">
-
               예상요금
-
-              <strong id="route-fare">
-                -
-              </strong>
-
+              <strong id="route-fare">-</strong>
             </div>
-
           </div>
 
-
           <div class="reason-box">
-
             <div class="reason-title">
               💡 이 경로를 추천하는 이유
             </div>
-
-            <div
-              id="ai-reason"
-              class="ai-reason-text"
-            >
-              출발지와 목적지를 입력하고
-              맞춤 경로를 검색해주세요.
+            <div id="ai-reason" class="ai-reason-text">
+              출발지와 목적지를 입력하고 맞춤 경로를 검색해주세요.
             </div>
-
           </div>
-
-
         </div>
 
-
-        <!-- ===================================================
-             Timeline
-        ==================================================== -->
-
         <div class="timeline-card">
-
           <div class="timeline-title">
             이동 노선 및 정류장 목록
           </div>
-
-          <div
-            class="timeline"
-            id="timeline-list"
-          >
-          </div>
-
+          <div class="timeline" id="timeline-list"></div>
         </div>
 
-
       </div>
-
     </div>
 
-
-    <!-- =======================================================
-         Kakao 지도
-    ======================================================== -->
-
+    <!-- Kakao 지도 -->
     <div id="map"></div>
+  </div>
 
+  <!-- 1단계 모달 -->
+  <div class="modal-overlay" id="signup-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span class="modal-badge">Step 1/2</span>
+        <div class="modal-title">배리어프리 회원가입</div>
+        <div class="modal-desc">서비스 이용을 위한 회원 정보를 입력해주세요.</div>
+      </div>
 
+      <div class="form-group">
+        <input type="email" id="signup-email" class="form-input" placeholder="이메일 주소 입력">
+        <input type="password" id="signup-password" class="form-input" placeholder="비밀번호 입력">
+        <input type="text" id="signup-name" class="form-input" placeholder="닉네임 / 이름">
+      </div>
+
+      <button class="btn-action" onclick="goToStep2()">가입하고 프로필 설정하기 ➔</button>
+    </div>
+  </div>
+
+  <!-- 2단계 모달 -->
+  <div class="modal-overlay" id="profile-modal" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span class="modal-badge">Step 2/2</span>
+        <div class="modal-title">이동에 필요한 조건 선택</div>
+        <div class="modal-desc">개별 이동 제약 조건을 선택하시면 맞춤형 경로를 추천해 드립니다.</div>
+      </div>
+
+      <div class="checkbox-group">
+        <label class="checkbox-label">
+          <input type="checkbox" id="cond-stairs" value="no_stairs" checked>
+          <span> 계단 이용 어려움</span>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="cond-elevator" value="elevator_required" checked>
+          <span> 엘리베이터 필수</span>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="cond-escalator" value="no_escalator">
+          <span> 에스컬레이터 이용 어려움</span>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="cond-slope" value="avoid_steep_slope">
+          <span> 급경사 피하기</span>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="cond-low-floor-bus" value="require_low_floor_bus">
+          <span> 저상버스 필요</span>
+        </label>
+      </div>
+
+      <button class="btn-action" onclick="completeOnboarding()">설정 완료하고 길찾기 시작</button>
+    </div>
   </div>
 
 
   <script>
-
-
     /* =========================================================
-       1. 설정
+       1. 설정 및 변수
     ========================================================== */
-
-    const API_BASE_URL =
-      'http://127.0.0.1:8000';
-
+    const API_BASE_URL = 'http://127.0.0.1:8000';
 
     let map = null;
-
     let startPoint = null;
     let endPoint = null;
-
     let startMarker = null;
     let endMarker = null;
-
     let currentPolylines = [];
 
-    let currentSelectedType =
-      '휠체어';
-
-    let latestRouteResponse =
-      null;
+    let currentPreference = 'balanced';
+    let currentPreferenceName = '균형 추천';
+    let latestRouteResponse = null;
 
 
     /* =========================================================
-       2. 초기화
+       2. 초기화 및 지도
     ========================================================== */
-
-    window.addEventListener(
-      'DOMContentLoaded',
-      function () {
-
-        if (
-          window.kakao
-          &&
-          window.kakao.maps
-        ) {
-
-          initMap();
-
-        } else {
-
-          alert(
-            '카카오 지도 SDK 로드에 실패했습니다. ' +
-            'Kakao JavaScript 키와 도메인 설정을 확인해주세요.'
-          );
-
-        }
-
+    window.addEventListener('DOMContentLoaded', function () {
+      if (window.kakao && window.kakao.maps) {
+        initMap();
+      } else {
+        alert('카카오 지도 SDK 로드에 실패했습니다. Kakao JavaScript 키를 확인해주세요.');
       }
-    );
-
+    });
 
     function initMap() {
-
-      const container =
-        document.getElementById(
-          'map'
-        );
-
-
+      const container = document.getElementById('map');
       const options = {
-
-        center:
-          new kakao.maps.LatLng(
-            37.386,
-            127.12
-          ),
-
+        center: new kakao.maps.LatLng(37.386, 127.12),
         level: 5
-
       };
-
-
-      map =
-        new kakao.maps.Map(
-          container,
-          options
-        );
-
-
-      /*
-       * 페이지 실행 직후
-       * 판교역 → 수내역 예시를
-       * 자동 검색하고 싶으면 아래 주석을 풀면 됩니다.
-       *
-       * searchRoute();
-       */
-
+      map = new kakao.maps.Map(container, options);
     }
 
 
     /* =========================================================
-       3. 사용자 유형 변환
+       3. 온보딩
     ========================================================== */
-
-    function getBackendUserType() {
-
-      const typeMap = {
-
-        '휠체어':
-          'WHEELCHAIR',
-
-        '노약자':
-          'ELDERLY',
-
-        '유모차':
-          'STROLLER'
-
-      };
-
-
-      return (
-        typeMap[
-          currentSelectedType
-        ]
-        ||
-        'WHEELCHAIR'
-      );
-
-    }
-
-
-    /* =========================================================
-       4. 사용자 유형 선택
-    ========================================================== */
-
-    function selectType(
-      type
-    ) {
-
-      currentSelectedType =
-        type;
-
-
-      const chips =
-        document.querySelectorAll(
-          '.chip'
-        );
-
-
-      chips.forEach(
-        chip => {
-
-          if (
-            chip.innerText.trim()
-            ===
-            type
-          ) {
-
-            chip.classList.add(
-              'active'
-            );
-
-          } else {
-
-            chip.classList.remove(
-              'active'
-            );
-
-          }
-
-        }
-      );
-
-
-      /*
-       * 기존 검색 결과가 있는 상태라면
-       * 사용자 유형 변경 즉시 다시 검색
-       */
-
-      const startKeyword =
-        document
-          .getElementById(
-            'start-input'
-          )
-          .value
-          .trim();
-
-
-      const endKeyword =
-        document
-          .getElementById(
-            'end-input'
-          )
-          .value
-          .trim();
-
-
-      if (
-        startKeyword
-        &&
-        endKeyword
-      ) {
-
-        searchRoute();
-
+    function goToStep2() {
+      const email = document.getElementById('signup-email').value.trim();
+      if (!email) {
+        alert('이메일 주소를 입력해주세요.');
+        return;
       }
+      document.getElementById('signup-modal').style.display = 'none';
+      document.getElementById('profile-modal').style.display = 'flex';
+    }
 
+    function openProfileModal() {
+      document.getElementById('profile-modal').style.display = 'flex';
+    }
+
+    function completeOnboarding() {
+      document.getElementById('profile-modal').style.display = 'none';
+
+      const startKeyword = document.getElementById('start-input').value.trim();
+      const endKeyword = document.getElementById('end-input').value.trim();
+
+      if (startKeyword && endKeyword) {
+        searchRoute();
+      }
     }
 
 
     /* =========================================================
-       5. Enter 검색
+       4. 경로 선호도 선택 UI
     ========================================================== */
+    function selectPreference(prefKey, element) {
+      currentPreference = prefKey;
 
-    document
-      .getElementById(
-        'start-input'
-      )
-      .addEventListener(
-        'keydown',
-        function (
-          event
-        ) {
+      const chips = document.querySelectorAll('.chip');
+      chips.forEach(chip => {
+        chip.classList.remove('active');
+        const dot = chip.querySelector('.radio-dot');
+        if (dot) dot.innerText = '○';
+      });
 
-          if (
-            event.key
-            ===
-            'Enter'
-          ) {
+      element.classList.add('active');
+      const activeDot = element.querySelector('.radio-dot');
+      if (activeDot) activeDot.innerText = '●';
 
-            searchRoute();
+      currentPreferenceName = element.innerText.replace(/[●○]/g, '').trim();
 
-          }
+      const startKeyword = document.getElementById('start-input').value.trim();
+      const endKeyword = document.getElementById('end-input').value.trim();
 
-        }
-      );
+      if (startKeyword && endKeyword) {
+        searchRoute();
+      }
+    }
 
+    function getBackendPreference() {
+      const preferenceMap = {
+        balanced: 'BALANCED',
+        time: 'FASTEST',
+        walk: 'MIN_WALKING',
+        transfer: 'MIN_TRANSFER'
+      };
 
-    document
-      .getElementById(
-        'end-input'
-      )
-      .addEventListener(
-        'keydown',
-        function (
-          event
-        ) {
-
-          if (
-            event.key
-            ===
-            'Enter'
-          ) {
-
-            searchRoute();
-
-          }
-
-        }
-      );
+      return preferenceMap[currentPreference] || 'BALANCED';
+    }
 
 
     /* =========================================================
-       6. 출발 / 도착 스왑
+       5. 검색 핸들러 & 스왑
     ========================================================== */
+    document.getElementById('start-input').addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') searchRoute();
+    });
+
+    document.getElementById('end-input').addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') searchRoute();
+    });
 
     function swapStartEnd() {
-
-      const startInput =
-        document.getElementById(
-          'start-input'
-        );
-
-
-      const endInput =
-        document.getElementById(
-          'end-input'
-        );
-
-
-      const temp =
-        startInput.value;
-
-
-      startInput.value =
-        endInput.value;
-
-
-      endInput.value =
-        temp;
-
-
+      const startInput = document.getElementById('start-input');
+      const endInput = document.getElementById('end-input');
+      const temp = startInput.value;
+      startInput.value = endInput.value;
+      endInput.value = temp;
       searchRoute();
-
     }
 
-
-    /* =========================================================
-       7. UI 상태
-    ========================================================== */
-
-    function setLoading(
-      isLoading
-    ) {
-
-      const button =
-        document.getElementById(
-          'search-button'
-        );
-
-
-      const text =
-        document.getElementById(
-          'search-button-text'
-        );
-
-
-      button.disabled =
-        isLoading;
-
-
-      if (
-        isLoading
-      ) {
-
-        text.innerText =
-          '경로 분석 중...';
-
-      } else {
-
-        text.innerText =
-          '맞춤 경로 탐색';
-
-      }
-
+    function setLoading(isLoading) {
+      const button = document.getElementById('search-button');
+      const text = document.getElementById('search-button-text');
+      button.disabled = isLoading;
+      text.innerText = isLoading ? '경로 분석 중...' : '맞춤 경로 탐색';
     }
 
-
-    function showStatus(
-      message,
-      isError = false
-    ) {
-
-      const statusCard =
-        document.getElementById(
-          'status-card'
-        );
-
-
-      statusCard.innerText =
-        message;
-
-
-      statusCard.classList.add(
-        'show'
-      );
-
-
-      if (
-        isError
-      ) {
-
-        statusCard.classList.add(
-          'error'
-        );
-
-      } else {
-
-        statusCard.classList.remove(
-          'error'
-        );
-
-      }
-
+    function showStatus(message, isError = false) {
+      const statusCard = document.getElementById('status-card');
+      statusCard.innerText = message;
+      statusCard.classList.add('show');
+      if (isError) statusCard.classList.add('error');
+      else statusCard.classList.remove('error');
     }
-
 
     function hideStatus() {
-
-      const statusCard =
-        document.getElementById(
-          'status-card'
-        );
-
-
-      statusCard.classList.remove(
-        'show'
-      );
-
-
-      statusCard.classList.remove(
-        'error'
-      );
-
+      const statusCard = document.getElementById('status-card');
+      statusCard.classList.remove('show', 'error');
     }
 
 
     /* =========================================================
-       8. FastAPI 추천 API 호출
+       6. FastAPI 추천 API 실제 호출 (모의 데이터 없이 순수 백엔드 연동)
     ========================================================== */
-
     async function searchRoute() {
+      const startKeyword = document.getElementById('start-input').value.trim();
+      const endKeyword = document.getElementById('end-input').value.trim();
 
-      const startKeyword =
-        document
-          .getElementById(
-            'start-input'
-          )
-          .value
-          .trim();
-
-
-      const endKeyword =
-        document
-          .getElementById(
-            'end-input'
-          )
-          .value
-          .trim();
-
-
-      if (
-        !startKeyword
-        ||
-        !endKeyword
-      ) {
-
-        showStatus(
-          '출발지와 목적지를 모두 입력해주세요.',
-          true
-        );
-
+      if (!startKeyword || !endKeyword) {
+        showStatus('출발지와 목적지를 모두 입력해주세요.', true);
         return;
-
       }
 
-
-      const userType =
-        getBackendUserType();
-
-
-      hideStatus();
-
-      setLoading(
-        true
-      );
-
-
-      try {
-
-        const response =
-          await fetch(
-            `${API_BASE_URL}/routes/recommend`,
-            {
-
-              method:
-                'POST',
-
-              headers: {
-
-                'Content-Type':
-                  'application/json'
-
-              },
-
-              body:
-                JSON.stringify(
-                  {
-
-                    origin_name:
-                      startKeyword,
-
-                    destination_name:
-                      endKeyword,
-
-                    user_type:
-                      userType
-
-                  }
-                )
-
-            }
-          );
-
-
-        let data = null;
-
-
-        try {
-
-          data =
-            await response.json();
-
-        } catch (
-          parseError
-        ) {
-
-          throw new Error(
-            '백엔드 응답을 JSON으로 읽을 수 없습니다.'
-          );
-
-        }
-
-
-        if (
-          !response.ok
-        ) {
-
-          let message =
-            '경로 탐색에 실패했습니다.';
-
-
-          if (
-            data
-            &&
-            data.detail
-          ) {
-
-            if (
-              typeof data.detail
-              ===
-              'string'
-            ) {
-
-              message =
-                data.detail;
-
-            } else {
-
-              message =
-                JSON.stringify(
-                  data.detail
-                );
-
-            }
-
-          }
-
-
-          throw new Error(
-            message
-          );
-
-        }
-
-
-        console.log(
-          '======================================'
-        );
-
-        console.log(
-          'FastAPI 추천 결과'
-        );
-
-        console.log(
-          data
-        );
-
-        console.log(
-          '======================================'
-        );
-
-
-        latestRouteResponse =
-          data;
-
-
-        /* -----------------------------------------------------
-           추천 가능한 경로 없음
-        ------------------------------------------------------ */
-
-        if (
-          !data.recommended_route
-        ) {
-
-          clearRouteMap();
-
-
-          clearRouteUI();
-
-
-          showStatus(
-            data.message
-            ||
-            '현재 조건에서 이용 가능한 추천 경로를 찾지 못했습니다.',
-            true
-          );
-
-
-          return;
-
-        }
-
-
-        /* -----------------------------------------------------
-           출발 / 도착 좌표
-        ------------------------------------------------------ */
-
-        startPoint =
-          new kakao.maps.LatLng(
-
-            data.origin.latitude,
-
-            data.origin.longitude
-
-          );
-
-
-        endPoint =
-          new kakao.maps.LatLng(
-
-            data.destination.latitude,
-
-            data.destination.longitude
-
-          );
-
-
-        updateMarkers();
-
-
-        renderBackendRoute(
-          data
-        );
-
-
-        drawBackendRoute(
-          data.recommended_route
-        );
-
-
-        const summary =
-          data.summary
-          ||
-          {};
-
-
-        showStatus(
-
-          `총 ${
-            summary.total_candidate_count
-            ??
-            '-'
-          }개 후보 중 ${
-            summary.available_route_count
-            ??
-            '-'
-          }개의 이용 가능 경로를 분석했습니다.`
-
-        );
-
-
-      } catch (
-        error
-      ) {
-
-        console.error(
-          error
-        );
-
-
-        clearRouteMap();
-
-
-        showStatus(
-
-          '경로 탐색 중 오류가 발생했습니다.\n'
-          +
-          error.message,
-
-          true
-
-        );
-
-      } finally {
-
-        setLoading(
-          false
-        );
-
-      }
-
-    }
-
-
-    /* =========================================================
-       9. 출발 / 도착 Marker
-    ========================================================== */
-
-    function updateMarkers() {
-
-      if (
-        startMarker
-      ) {
-
-        startMarker.setMap(
-          null
-        );
-
-      }
-
-
-      if (
-        endMarker
-      ) {
-
-        endMarker.setMap(
-          null
-        );
-
-      }
-
-
-      if (
-        startPoint
-      ) {
-
-        startMarker =
-          new kakao.maps.Marker(
-            {
-
-              map:
-                map,
-
-              position:
-                startPoint
-
-            }
-          );
-
-      }
-
-
-      if (
-        endPoint
-      ) {
-
-        endMarker =
-          new kakao.maps.Marker(
-            {
-
-              map:
-                map,
-
-              position:
-                endPoint
-
-            }
-          );
-
-      }
-
-    }
-
-
-    /* =========================================================
-       10. 추천 결과 카드
-    ========================================================== */
-
-    function renderBackendRoute(
-      data
-    ) {
-
-      const route =
-        data.recommended_route;
-
-
-      /* -------------------------------------------------------
-         상단 추천 표시
-      -------------------------------------------------------- */
-
-      document
-        .getElementById(
-          'route-no'
-        )
-        .innerText =
-          `${data.user_type_name || ''} 맞춤 추천`;
-
-
-      /* -------------------------------------------------------
-         시간
-      -------------------------------------------------------- */
-
-      const totalMinutes =
-        route.total_time_minutes
-        ??
-        Math.ceil(
-          (
-            route.total_time_seconds
-            ||
-            0
-          )
-          /
-          60
-        );
-
-
-      document
-        .getElementById(
-          'route-time'
-        )
-        .innerText =
-          `${totalMinutes}분`;
-
-
-      /* -------------------------------------------------------
-         거리
-      -------------------------------------------------------- */
-
-      const distanceMeters =
-        Number(
-          route.total_distance_meters
-          ||
-          0
-        );
-
-
-      const distanceText =
-        distanceMeters
-        >
-        0
-
-        ?
-
-        `${(
-          distanceMeters
-          /
-          1000
-        ).toFixed(
-          1
-        )}km`
-
-        :
-
-        '정보 없음';
-
-
-      document
-        .getElementById(
-          'route-dist'
-        )
-        .innerText =
-          distanceText;
-
-
-      /* -------------------------------------------------------
-         환승
-      -------------------------------------------------------- */
-
-      const transferCount =
-        route.transfer_count
-        ??
-        0;
-
-
-      document
-        .getElementById(
-          'route-trans'
-        )
-        .innerText =
-          `${transferCount}회`;
-
-
-      /* -------------------------------------------------------
-         요금
-      -------------------------------------------------------- */
-
-      let fareText =
-        '정보 없음';
-
-
-      if (
-        route.fare
-        !==
-        null
-        &&
-        route.fare
-        !==
-        undefined
-      ) {
-
-        fareText =
-          `${Number(
-            route.fare
-          ).toLocaleString(
-            'ko-KR'
-          )}원`;
-
-      }
-
-
-      document
-        .getElementById(
-          'route-fare'
-        )
-        .innerText =
-          fareText;
-
-
-      /* -------------------------------------------------------
-         추천 이유
-      -------------------------------------------------------- */
-
-      const evaluation =
-        route.evaluation
-        ||
-        {};
-
-
-      const positiveReasons =
-        Array.isArray(
-          evaluation.positive_reasons
-        )
-        ?
-
-        evaluation.positive_reasons
-
-        :
-
-        [];
-
-
-      const reasonText =
-        positiveReasons.length
-        >
-        0
-
-        ?
-
-        positiveReasons.join(
-          ' '
-        )
-
-        :
-
-        (
-          '사용자의 이동 유형과 현재 확인 가능한 '
-          +
-          '접근성 정보를 바탕으로 선택한 경로입니다.'
-        );
-
-
-      document
-        .getElementById(
-          'ai-reason'
-        )
-        .innerText =
-          reasonText;
-
-
-      /* -------------------------------------------------------
-         Tooltip
-      -------------------------------------------------------- */
-
-      renderAccessibilityReasons(
-        route
-      );
-
-
-      /* -------------------------------------------------------
-         Timeline
-      -------------------------------------------------------- */
-
-      renderBackendTimeline(
-        route
-      );
-
-    }
-
-
-    /* =========================================================
-       11. 접근성 상세 조건
-    ========================================================== */
-
-    function renderAccessibilityReasons(
-      route
-    ) {
-
-      const evaluation =
-        route.evaluation
-        ||
-        {};
-
-
-      const accessibility =
-        route.accessibility
-        ||
-        {};
-
-
-      const reasons = [];
-
-
-      const positiveReasons =
-        Array.isArray(
-          evaluation.positive_reasons
-        )
-        ?
-
-        evaluation.positive_reasons
-
-        :
-
-        [];
-
-
-      positiveReasons.forEach(
-        reason => {
-
-          reasons.push(
-            `✔ ${escapeHtml(
-              String(
-                reason
-              )
-            )}`
-          );
-
-        }
-      );
-
-
-      /* -------------------------------------------------------
-         실제 내부 경로
-      -------------------------------------------------------- */
-
-      if (
-        accessibility
-          .internal_path_available
-        ===
-        true
-      ) {
-
-        reasons.push(
-          '✔ 사용자 유형에 맞는 역사 내부 이동 경로 확인'
-        );
-
-      }
-
-
-      /* -------------------------------------------------------
-         엘리베이터
-      -------------------------------------------------------- */
-
-      if (
-        accessibility
-          .required_elevator_count
-        >
-        0
-      ) {
-
-        reasons.push(
-
-          `✔ 실제 이동 동선에 엘리베이터 ${
-            accessibility.required_elevator_count
-          }개 사용`
-
-        );
-
-      }
-
-
-      /* -------------------------------------------------------
-         고장 우회
-      -------------------------------------------------------- */
-
-      if (
-        accessibility
-          .rerouted_due_to_facility_failure
-        ===
-        true
-      ) {
-
-        reasons.push(
-          '✔ 운행 불가 승강설비를 피해 대체 경로 탐색 완료'
-        );
-
-      }
-
-
-      /* -------------------------------------------------------
-         실시간 상태 미확인
-      -------------------------------------------------------- */
-
-      const unknownRealtime =
-        accessibility
-          .unknown_realtime_facilities;
-
-
-      if (
-        Array.isArray(
-          unknownRealtime
-        )
-        &&
-        unknownRealtime.length
-        >
-        0
-      ) {
-
-        reasons.push(
-
-          `⚠ 실시간 상태 미확인 시설 ${
-            unknownRealtime.length
-          }개`
-
-        );
-
-      }
-
-
-      /* -------------------------------------------------------
-         기타 Unknown
-      -------------------------------------------------------- */
-
-      const unknownFields =
-        Array.isArray(
-          evaluation.unknown_fields
-        )
-        ?
-
-        evaluation.unknown_fields
-
-        :
-
-        [];
-
-
-      unknownFields.forEach(
-        field => {
-
-          reasons.push(
-
-            `⚠ 미확인 정보: ${
-              escapeHtml(
-                String(
-                  field
-                )
-              )
-            }`
-
-          );
-
-        }
-      );
-
-
-      let html =
-        '';
-
-
-      if (
-        reasons.length
-        ===
-        0
-      ) {
-
-        html =
-          `
-            <div class="reason-item">
-              확인된 상세 조건이 없습니다.
-            </div>
-          `;
-
-      } else {
-
-        html =
-          reasons
-            .map(
-              reason =>
-                `
-                  <div class="reason-item">
-                    ${reason}
-                  </div>
-                `
-            )
-            .join(
-              ''
-            );
-
-      }
-
-
-      document
-        .getElementById(
-          'reason-list'
-        )
-        .innerHTML =
-          html;
-
-    }
-
-
-    /* =========================================================
-       12. Timeline
-    ========================================================== */
-
-    function renderBackendTimeline(
-      route
-    ) {
-
-      const steps =
-        Array.isArray(
-          route.steps
-        )
-        ?
-        route.steps
-        :
-        [];
-
-
-      const internalPaths =
-        getInternalAccessibilityPaths(
-          route
-        );
-
-
-      const renderedInternalPaths =
-        new Set();
-
-
-      let timelineHtml =
-        '';
-
-
-      steps.forEach(
-        (step, stepIndex) => {
-
-          const stepType =
-            String(
-              step.step_type
-              ||
-              ''
-            )
-              .toUpperCase();
-
-
-          const guidance =
-            String(
-              step.guidance
-              ||
-              ''
-            );
-
-
-          const stops =
-            Array.isArray(
-              step.stops
-            )
-            ?
-            step.stops
-            :
-            [];
-
-
-          const firstStop =
-            normalizeStationName(
-              stops[0]
-              ||
-              ''
-            );
-
-
-          const lastStop =
-            normalizeStationName(
-              stops[
-                stops.length - 1
-              ]
-              ||
-              ''
-            );
-
-
-          /*
-           * SUBWAY 탑승 직전:
-           * - BOARDING
-           * - 해당 역에서 다음 노선으로 갈아타는 TRANSFER
-           */
-          if (
-            stepType
-            ===
-            'SUBWAY'
-          ) {
-
-            internalPaths.forEach(
-              (internalPath, internalIndex) => {
-
-                if (
-                  renderedInternalPaths.has(
-                    internalIndex
-                  )
-                ) {
-
-                  return;
-
-                }
-
-
-                const movementType =
-                  getInternalPathMovementType(
-                    internalPath
-                  );
-
-
-                const stationName =
-                  normalizeStationName(
-                    getInternalPathStationName(
-                      internalPath
-                    )
-                  );
-
-
-                const toLine =
-                  String(
-                    internalPath.movement?.to_line
-                    ||
-                    ''
-                  )
-                    .trim();
-
-
-                const stepLines =
-                  getStepLineNames(
-                    step
-                  );
-
-
-                const isBoarding =
-                  movementType
-                    .includes(
-                      'BOARD'
-                    )
-                  &&
-                  stationName
-                  ===
-                  firstStop;
-
-
-                const isTransferIntoThisStep =
-                  movementType
-                    .includes(
-                      'TRANSFER'
-                    )
-                  &&
-                  stationName
-                  ===
-                  firstStop
-                  &&
-                  (
-                    !toLine
-                    ||
-                    stepLines.includes(
-                      toLine
-                    )
-                  );
-
-
-                if (
-                  isBoarding
-                  ||
-                  isTransferIntoThisStep
-                ) {
-
-                  timelineHtml +=
-                    renderInternalPathTimelineItem(
-                      internalPath
-                    );
-
-
-                  renderedInternalPaths.add(
-                    internalIndex
-                  );
-
-                }
-
-              }
-            );
-
-          }
-
-
-          let type =
-            'walk';
-
-
-          let iconClass =
-            'fa-solid fa-person-walking';
-
-
-          if (
-            stepType
-            ===
-            'SUBWAY'
-          ) {
-
-            type =
-              'subway';
-
-            iconClass =
-              'fa-solid fa-train-subway';
-
-          }
-
-          else if (
-            stepType
-            ===
-            'BUS'
-          ) {
-
-            type =
-              'bus';
-
-            iconClass =
-              'fa-solid fa-bus';
-
-          }
-
-          else if (
-            stepType
-            ===
-            'WALKING'
-          ) {
-
-            if (
-              guidance.includes(
-                '환승'
-              )
-            ) {
-
-              type =
-                'transfer';
-
-              iconClass =
-                'fa-solid fa-arrows-rotate';
-
-            }
-
-          }
-
-
-          let title =
-            guidance;
-
-
-          if (
-            !title
-          ) {
-
-            if (
-              stepType
-              ===
-              'SUBWAY'
-            ) {
-
-              title =
-                '지하철 이동';
-
-            } else if (
-              stepType
-              ===
-              'BUS'
-            ) {
-
-              title =
-                '버스 이동';
-
-            } else {
-
-              title =
-                '도보 이동';
-
-            }
-
-          }
-
-
-          let vehicleText =
-            '';
-
-
-          if (
-            Array.isArray(
-              step.vehicles
-            )
-          ) {
-
-            vehicleText =
-              step.vehicles
-                .map(
-                  vehicle =>
-                    vehicle.name
-                )
-                .filter(
-                  Boolean
-                )
-                .join(
-                  ', '
-                );
-
-          }
-
-
-          const descriptionParts =
-            [];
-
-
-          if (
-            step.distance
-            !==
-            undefined
-            &&
-            step.distance
-            !==
-            null
-          ) {
-
-            descriptionParts.push(
-              `${Number(
-                step.distance
-              ).toLocaleString(
-                'ko-KR'
-              )}m`
-            );
-
-          }
-
-
-          if (
-            step.time
-            !==
-            undefined
-            &&
-            step.time
-            !==
-            null
-          ) {
-
-            descriptionParts.push(
-              `${Math.ceil(
-                Number(
-                  step.time
-                )
-                /
-                60
-              )}분`
-            );
-
-          }
-
-
-          if (
-            vehicleText
-          ) {
-
-            descriptionParts.push(
-              vehicleText
-            );
-
-          }
-
-
-          const description =
-            descriptionParts.join(
-              ' · '
-            );
-
-
-          let stationsHtml =
-            '';
-
-
-          if (
-            stops.length
-            >
-            0
-          ) {
-
-            stationsHtml =
-              `
-                <div class="station-list">
-
-                  <div class="station-title">
-                    🚏 경유 정류장/역
-                    (${stops.length}개)
-                  </div>
-
-                  <div>
-                    ${stops
-                      .map(
-                        stop =>
-                          escapeHtml(
-                            String(
-                              stop
-                            )
-                          )
-                      )
-                      .join(
-                        ' ➔ '
-                      )}
-                  </div>
-
-                </div>
-              `;
-
-          }
-
-
-          timelineHtml +=
-            `
-              <div class="timeline-item">
-
-                <div class="timeline-dot ${type}">
-                  <i class="${iconClass}"></i>
-                </div>
-
-                <div class="step-header">
-                  <span class="step-title">
-                    ${escapeHtml(
-                      title
-                    )}
-                  </span>
-                </div>
-
-                <div class="step-desc">
-                  ${escapeHtml(
-                    description
-                  )}
-                </div>
-
-                ${stationsHtml}
-
-              </div>
-            `;
-
-
-          /*
-           * SUBWAY 하차 직후:
-           * - ALIGHTING
-           *
-           * TRANSFER는 다음 SUBWAY 구간 직전에 표시하므로
-           * 여기서는 하차 동선만 표시합니다.
-           */
-          if (
-            stepType
-            ===
-            'SUBWAY'
-          ) {
-
-            internalPaths.forEach(
-              (internalPath, internalIndex) => {
-
-                if (
-                  renderedInternalPaths.has(
-                    internalIndex
-                  )
-                ) {
-
-                  return;
-
-                }
-
-
-                const movementType =
-                  getInternalPathMovementType(
-                    internalPath
-                  );
-
-
-                const stationName =
-                  normalizeStationName(
-                    getInternalPathStationName(
-                      internalPath
-                    )
-                  );
-
-
-                const isAlighting =
-                  (
-                    movementType
-                      .includes(
-                        'ALIGHT'
-                      )
-                    ||
-                    movementType
-                      .includes(
-                        'ARRIV'
-                      )
-                    ||
-                    movementType
-                      .includes(
-                        'EXIT'
-                      )
-                  )
-                  &&
-                  stationName
-                  ===
-                  lastStop;
-
-
-                if (
-                  isAlighting
-                ) {
-
-                  timelineHtml +=
-                    renderInternalPathTimelineItem(
-                      internalPath
-                    );
-
-
-                  renderedInternalPaths.add(
-                    internalIndex
-                  );
-
-                }
-
-              }
-            );
-
-          }
-
-        }
-      );
-
-
-      /*
-       * 자동 매칭되지 않은 내부경로도 마지막에 표시합니다.
-       * 그래프/응답 필드가 일부 다른 경우에도 정보가 사라지지 않게 하기 위한 fallback입니다.
-       */
-      internalPaths.forEach(
-        (internalPath, internalIndex) => {
-
-          if (
-            renderedInternalPaths.has(
-              internalIndex
-            )
-          ) {
-
-            return;
-
-          }
-
-
-          timelineHtml +=
-            renderInternalPathTimelineItem(
-              internalPath
-            );
-
-
-          renderedInternalPaths.add(
-            internalIndex
-          );
-
-        }
-      );
-
-
-      if (
-        latestRouteResponse
-        &&
-        latestRouteResponse.destination
-      ) {
-
-        const destinationName =
-          latestRouteResponse
-            .destination
-            .name
-          ||
-          '목적지';
-
-
-        timelineHtml +=
-          `
-            <div class="timeline-item">
-
-              <div class="timeline-dot end">
-                <i class="fa-solid fa-location-dot"></i>
-              </div>
-
-              <div class="step-header">
-                <span class="step-title">
-                  ${escapeHtml(
-                    destinationName
-                  )} 도착
-                </span>
-              </div>
-
-              <div class="step-desc">
-                목적지에 도착했습니다.
-              </div>
-
-            </div>
-          `;
-
-      }
-
-
-      document
-        .getElementById(
-          'timeline-list'
-        )
-        .innerHTML =
-          timelineHtml;
-
-    }
-
-
-    function getInternalAccessibilityPaths(
-      route
-    ) {
-
-      const accessibility =
-        route.accessibility
-        ||
-        {};
-
-
-      if (
-        Array.isArray(
-          accessibility.internal_paths
-        )
-      ) {
-
-        return accessibility.internal_paths;
-
-      }
-
-
-      if (
-        Array.isArray(
-          route.internal_paths
-        )
-      ) {
-
-        return route.internal_paths;
-
-      }
-
-
-      return [];
-
-    }
-
-
-    function normalizeStationName(
-      value
-    ) {
-
-      return String(
-        value
-        ||
-        ''
-      )
-        .trim()
-        .replace(
-          /\(.*?\)/g,
-          ''
-        )
-        .replace(
-          /\s+/g,
-          ''
-        )
-        .replace(
-          /역$/g,
-          ''
-        );
-
-    }
-
-
-    function getInternalPathStationName(
-      path
-    ) {
-
-      return (
-        path.station_name
-        ||
-        path.movement?.station_name
-        ||
-        path.node_resolution?.station_name
-        ||
-        path.start_node?.station_name
-        ||
-        path.end_node?.station_name
-        ||
-        ''
-      );
-
-    }
-
-
-    function getInternalPathMovementType(
-      path
-    ) {
-
-      return String(
-        path.movement_type
-        ||
-        path.movement?.movement_type
-        ||
-        path.node_resolution?.movement_type
-        ||
-        ''
-      )
-        .toUpperCase();
-
-    }
-
-
-    function getStepLineNames(
-      step
-    ) {
-
-      if (
-        !Array.isArray(
-          step.vehicles
-        )
-      ) {
-
-        return [];
-
-      }
-
-
-      return step.vehicles
-        .map(
-          vehicle =>
-            String(
-              vehicle.name
-              ||
-              ''
-            ).trim()
-        )
-        .filter(
-          Boolean
-        );
-
-    }
-
-
-    function getFacilityTypeName(
-      facilityType
-    ) {
-
-      const type =
-        String(
-          facilityType
-          ||
-          ''
-        )
-          .toUpperCase();
-
-
-      if (
-        type
-        ===
-        'ELEVATOR'
-      ) {
-
-        return '엘리베이터';
-
-      }
-
-
-      if (
-        type
-        ===
-        'ESCALATOR'
-      ) {
-
-        return '에스컬레이터';
-
-      }
-
-
-      if (
-        type
-        ===
-        'STAIRS'
-      ) {
-
-        return '계단';
-
-      }
-
-
-      if (
-        type
-        ===
-        'RAMP'
-      ) {
-
-        return '경사로';
-
-      }
-
-
-      if (
-        type
-        ===
-        'WALKING'
-        ||
-        type
-        ===
-        'WALKWAY'
-      ) {
-
-        return '이동 통로';
-
-      }
-
-
-      return (
-        facilityType
-        ||
-        '이동 시설'
-      );
-
-    }
-
-
-    function getFloorMovementText(
-      facility
-    ) {
-
-      const fromFloor =
-        facility.actual_from_floor
-        ||
-        facility.edge_from_floor
-        ||
-        '';
-
-
-      const toFloor =
-        facility.actual_to_floor
-        ||
-        facility.edge_to_floor
-        ||
-        '';
-
-
-      if (
-        fromFloor
-        &&
-        toFloor
-        &&
-        fromFloor
-        !==
-        toFloor
-      ) {
-
-        return `${fromFloor} → ${toFloor}`;
-
-      }
-
-
-      return (
-        fromFloor
-        ||
-        toFloor
-        ||
-        ''
-      );
-
-    }
-
-
-    function getInternalPathTitle(
-      path
-    ) {
-
-      const stationName =
-        getInternalPathStationName(
-          path
-        )
-        ||
-        '역사';
-
-
-      const movementType =
-        getInternalPathMovementType(
-          path
-        );
-
-
-      if (
-        movementType.includes(
-          'TRANSFER'
-        )
-      ) {
-
-        return `♿ ${stationName} 환승 안내`;
-
-      }
-
-
-      if (
-        movementType.includes(
-          'ALIGHT'
-        )
-        ||
-        movementType.includes(
-          'ARRIV'
-        )
-        ||
-        movementType.includes(
-          'EXIT'
-        )
-      ) {
-
-        return `♿ ${stationName} 하차 안내`;
-
-      }
-
-
-      if (
-        movementType.includes(
-          'BOARD'
-        )
-        ||
-        movementType.includes(
-          'DEPART'
-        )
-      ) {
-
-        return `♿ ${stationName} 승차 안내`;
-
-      }
-
-
-      return `♿ ${stationName} 역사 내부 이동`;
-
-    }
-
-
-    function getRealtimeStatusInfo(
-      facility
-    ) {
-
-      const realtime =
-        facility.realtime
-        ||
-        {};
-
-
-      const status =
-        String(
-          realtime.realtime_status
-          ||
-          facility.realtime_status
-          ||
-          'UNKNOWN'
-        )
-          .toUpperCase();
-
-
-      if (
-        status
-        ===
-        'AVAILABLE'
-        ||
-        status
-        ===
-        'NORMAL'
-      ) {
-
-        return {
-          text: '운행 가능',
-          className: ''
-        };
-
-      }
-
-
-      if (
-        status
-        ===
-        'UNAVAILABLE'
-        ||
-        status
-        ===
-        'STOPPED'
-        ||
-        status
-        ===
-        'OUT_OF_SERVICE'
-      ) {
-
-        return {
-          text: '운행 불가',
-          className: 'unavailable'
-        };
-
-      }
-
-
-      return {
-        text: '실시간 상태 미확인',
-        className: 'unknown'
+      const mobilityConstraints = {
+        avoid_stairs: document.getElementById('cond-stairs').checked,
+        require_elevator: document.getElementById('cond-elevator').checked,
+        avoid_escalator: document.getElementById('cond-escalator').checked,
+        avoid_steep_slope: document.getElementById('cond-slope').checked,
+        require_low_floor_bus: document.getElementById('cond-low-floor-bus').checked
       };
 
+      const selectedConditionCount = Object.values(mobilityConstraints).filter(Boolean).length;
+      document.getElementById('applied-cond-summary').innerText =
+        `조건 ${selectedConditionCount}개 적용 중`;
+
+      hideStatus();
+      setLoading(true);
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/routes/recommend`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            origin_name: startKeyword,
+            destination_name: endKeyword,
+            mobility_constraints: mobilityConstraints,
+            route_preference: getBackendPreference()
+          })
+        });
+
+        let data = null;
+        try {
+          data = await response.json();
+        } catch (parseError) {
+          throw new Error('백엔드 응답을 JSON으로 읽을 수 없습니다.');
+        }
+
+        if (!response.ok) {
+          let message = '경로 탐색에 실패했습니다.';
+          if (data && data.detail) {
+            message = typeof data.detail === 'string' ? data.detail : JSON.stringify(data.detail);
+          }
+          throw new Error(message);
+        }
+
+        console.log('FastAPI 추천 결과:', data);
+        latestRouteResponse = data;
+
+        if (!data.recommended_route) {
+          clearRouteMap();
+          clearRouteUI();
+          showStatus(data.message || '현재 조건에서 이용 가능한 추천 경로를 찾지 못했습니다.', true);
+          return;
+        }
+
+        startPoint = new kakao.maps.LatLng(data.origin.latitude, data.origin.longitude);
+        endPoint = new kakao.maps.LatLng(data.destination.latitude, data.destination.longitude);
+
+        updateMarkers();
+        renderBackendRoute(data);
+        drawBackendRoute(data.recommended_route);
+
+        const summary = data.summary || {};
+        showStatus(
+          `총 ${summary.total_candidate_count ?? '-'}개 후보 중 ${summary.available_route_count ?? '-'}개의 이용 가능 경로를 분석했습니다.`
+        );
+
+      } catch (error) {
+        console.error(error);
+        clearRouteMap();
+        showStatus('경로 탐색 중 오류가 발생했습니다.\n' + error.message, true);
+      } finally {
+        setLoading(false);
+      }
     }
 
 
-    function renderInternalPathTimelineItem(
-      path
-    ) {
+    /* =========================================================
+       7. 마커 및 화면 렌더링 함수들
+    ========================================================== */
+    function updateMarkers() {
+      if (startMarker) startMarker.setMap(null);
+      if (endMarker) endMarker.setMap(null);
 
-      const stationName =
-        getInternalPathStationName(
-          path
-        )
-        ||
-        '역사';
+      if (startPoint) startMarker = new kakao.maps.Marker({ map: map, position: startPoint });
+      if (endPoint) endMarker = new kakao.maps.Marker({ map: map, position: endPoint });
+    }
 
+    function renderBackendRoute(data) {
+      const route = data.recommended_route;
 
-      const status =
-        String(
-          path.status
-          ||
-          'UNKNOWN'
-        )
-          .toUpperCase();
+      document.getElementById('route-no').innerText = `${currentPreferenceName} 경로`;
 
+      const totalMinutes =
+        route.total_travel_time_minutes ??
+        route.total_time_minutes ??
+        Math.ceil((route.total_travel_time_seconds ?? route.total_time_seconds ?? 0) / 60);
+      document.getElementById('route-time').innerText = `${totalMinutes}분`;
 
-      const facilities =
-        Array.isArray(
-          path.required_facilities
-        )
-        ?
-        path.required_facilities
-        :
-        [];
+      const distanceMeters = Number(route.total_distance_meters || 0);
+      document.getElementById('route-dist').innerText = distanceMeters > 0 ? `${(distanceMeters / 1000).toFixed(1)}km` : '정보 없음';
 
+      const transferCount = route.transfer_count ?? 0;
+      document.getElementById('route-trans').innerText = `${transferCount}회`;
 
-      let facilityHtml =
-        '';
+      let fareText = '정보 없음';
+      if (route.fare !== null && route.fare !== undefined) {
+        fareText = `${Number(route.fare).toLocaleString('ko-KR')}원`;
+      }
+      document.getElementById('route-fare').innerText = fareText;
 
+      const evaluation = route.evaluation || {};
+      const positiveReasons = Array.isArray(evaluation.positive_reasons) ? evaluation.positive_reasons : [];
+      const reasonText = positiveReasons.length > 0
+        ? positiveReasons.join(' ')
+        : '선택하신 이동 조건과 접근성 정보를 바탕으로 최적화된 맞춤 경로입니다.';
 
-      if (
-        facilities.length
-        >
-        0
-      ) {
+      document.getElementById('ai-reason').innerText = reasonText;
 
-        facilityHtml =
-          facilities
-            .map(
-              (facility, index) => {
+      renderBackendTimeline(route);
+    }
 
-                const facilityName =
-                  getFacilityTypeName(
-                    facility.facility_type
-                  );
+    function getBusAccessibilityForStep(route, stepId) {
+      const accessibility = route.accessibility || {};
+      const busAccessibility = Array.isArray(accessibility.bus_accessibility)
+        ? accessibility.bus_accessibility
+        : [];
 
+      return busAccessibility.find(item => Number(item.step_id) === Number(stepId)) || null;
+    }
 
-                const floorText =
-                  getFloorMovementText(
-                    facility
-                  );
+    /* 실시간 저상버스 안내 렌더링 (차량번호 숨김 반영) */
+    function renderBusAccessibilityGuide(route, step) {
+      const result = getBusAccessibilityForStep(route, step.step_id);
+      if (!result) return '';
 
+      const routes = Array.isArray(result.routes) ? result.routes : [];
 
-                const exitNo =
-                  facility.exit_no;
+      if (routes.length === 0) {
+        return `
+          <div class="bus-accessibility-guide">
+            <div class="bus-accessibility-title">♿ 실시간 저상버스 안내</div>
+            <div class="bus-accessibility-row">실시간 저상버스 정보를 확인하지 못했습니다.</div>
+            <span class="bus-accessibility-status unknown">정보 미확인</span>
+          </div>
+        `;
+      }
 
+      const rows = routes.map(item => {
+        const realtime = item.realtime || {};
+        const status = String(realtime.status || '').toUpperCase();
+        const nextBus = realtime.next_low_floor_bus || null;
+        const busNumber = item.bus_number || '-';
 
-                const detailLocation =
-                  String(
-                    facility.detail_location
-                    ||
-                    ''
-                  )
-                    .trim();
+        if (status === 'AVAILABLE' && realtime.low_floor_bus_available === true) {
+          const details = [];
 
+          if (nextBus?.arrival_minutes !== null && nextBus?.arrival_minutes !== undefined) {
+            details.push(`약 ${nextBus.arrival_minutes}분 후 도착`);
+          }
 
-                const realtimeStatus =
-                  getRealtimeStatusInfo(
-                    facility
-                  );
+          if (nextBus?.remaining_stops !== null && nextBus?.remaining_stops !== undefined) {
+            details.push(`${nextBus.remaining_stops}개 정류장 전`);
+          }
 
+          return `
+            <div class="bus-accessibility-row">
+              <strong>${escapeHtml(busNumber)}번 저상버스</strong>
+              ${details.length ? ` · ${escapeHtml(details.join(' · '))}` : ''}
+            </div>
+          `;
+        }
 
-                const headlineParts = [
-                  `${index + 1}. ${facilityName} 이용`
-                ];
+        if (status === 'NO_LOW_FLOOR_BUS') {
+          return `
+            <div class="bus-accessibility-row">
+              <strong>${escapeHtml(busNumber)}번</strong> · 현재 도착 예정 차량 중 저상버스 없음
+            </div>
+          `;
+        }
 
+        return `
+          <div class="bus-accessibility-row">
+            <strong>${escapeHtml(busNumber)}번</strong> · 실시간 저상버스 정보 미확인
+          </div>
+        `;
+      }).join('');
 
-                if (
-                  exitNo
-                  !==
-                  null
-                  &&
-                  exitNo
-                  !==
-                  undefined
-                  &&
-                  String(
-                    exitNo
-                  ).trim()
-                ) {
+      const resultStatus = String(result.status || '').toUpperCase();
+      let badgeText = '정보 미확인';
+      let badgeClass = 'unknown';
 
-                  headlineParts.push(
-                    `${String(
-                      exitNo
-                    ).trim()}번 출구 방향`
-                  );
+      if (resultStatus === 'LOW_FLOOR_AVAILABLE') {
+        badgeText = '저상버스 이용 가능';
+        badgeClass = '';
+      } else if (resultStatus === 'LOW_FLOOR_NOT_AVAILABLE') {
+        badgeText = '저상버스 없음';
+        badgeClass = 'unavailable';
+      }
 
-                }
+      return `
+        <div class="bus-accessibility-guide">
+          <div class="bus-accessibility-title">♿ 실시간 저상버스 안내</div>
+          ${rows}
+          <span class="bus-accessibility-status ${badgeClass}">${badgeText}</span>
+        </div>
+      `;
+    }
 
+    /* 정류장 토글 버튼 텍스트 조절 */
+    function toggleStations(stepIndex, count) {
+      const listEl = document.getElementById(`station-list-${stepIndex}`);
+      const btnEl = document.getElementById(`station-btn-${stepIndex}`);
+      if (!listEl) return;
 
-                if (
-                  floorText
-                ) {
-
-                  headlineParts.push(
-                    floorText
-                  );
-
-                }
-
-
-                return `
-                  <div class="facility-step">
-
-                    <div class="facility-name">
-                      ${headlineParts
-                        .map(
-                          value =>
-                            escapeHtml(
-                              value
-                            )
-                        )
-                        .join(
-                          ' · '
-                        )}
-                    </div>
-
-                    ${
-                      detailLocation
-                      ?
-                      `
-                        <div class="facility-location">
-                          📍 ${escapeHtml(
-                            detailLocation
-                          )}
-                        </div>
-                      `
-                      :
-                      ''
-                    }
-
-                    <span
-                      class="facility-status ${realtimeStatus.className}"
-                    >
-                      ${escapeHtml(
-                        realtimeStatus.text
-                      )}
-                    </span>
-
-                  </div>
-                `;
-
-              }
-            )
-            .join(
-              ''
-            );
-
+      if (listEl.classList.contains('show')) {
+        listEl.classList.remove('show');
+        btnEl.innerHTML = `▼ 경유 정류장/역 (${count}개) 보기`;
       } else {
-
-        const startDescription =
-          path.start_node?.description
-          ||
-          path.start_node?.detail_location
-          ||
-          '';
+        listEl.classList.add('show');
+        btnEl.innerHTML = `▲ 경유 목록 접기`;
+      }
+    }
 
 
-        const endDescription =
-          path.end_node?.description
-          ||
-          path.end_node?.detail_location
-          ||
-          '';
+    function getWalkingAccessPart(route, key) {
+      return (route.walking_access || {})[key] || null;
+    }
 
+    function getWalkingAccessibilityPart(route, key) {
+      return (route.walking_accessibility || {})[key] || null;
+    }
 
-        facilityHtml =
-          `
-            <div class="facility-step">
+    function renderAccessWalkingTimelineItem(route, key, placeName) {
+      const access = getWalkingAccessPart(route, key);
+      const accessibility = getWalkingAccessibilityPart(route, key);
+      if (!access && !accessibility) return '';
 
-              <div class="facility-name">
-                역사 내부 접근 가능 경로
-              </div>
+      const label = key === 'first_mile' ? '첫 보행 구간' : '마지막 보행 구간';
 
-              ${
-                startDescription
-                ?
-                `
-                  <div class="facility-location">
-                    출발:
-                    ${escapeHtml(
-                      startDescription
-                    )}
-                  </div>
-                `
-                :
-                ''
-              }
+      const distance =
+        access?.distance_meters ??
+        access?.distance ??
+        access?.total_distance_meters ??
+        null;
 
-              ${
-                endDescription
-                ?
-                `
-                  <div class="facility-location">
-                    도착:
-                    ${escapeHtml(
-                      endDescription
-                    )}
-                  </div>
-                `
-                :
-                ''
-              }
+      const seconds =
+        access?.time_seconds ??
+        access?.duration_seconds ??
+        access?.total_time_seconds ??
+        null;
 
-            </div>
-          `;
-
+      const meta = [];
+      if (distance !== null && distance !== undefined) {
+        meta.push(`${Number(distance).toLocaleString('ko-KR')}m`);
+      }
+      if (seconds !== null && seconds !== undefined) {
+        meta.push(`약 ${Math.max(1, Math.ceil(Number(seconds) / 60))}분`);
       }
 
+      const barriers = Array.isArray(accessibility?.detected_barriers)
+        ? [...accessibility.detected_barriers]
+        : [];
 
-      let warningHtml =
-        '';
+      if (accessibility?.has_stairs === true && !barriers.includes('계단')) barriers.push('계단');
+      if (accessibility?.has_overpass === true && !barriers.includes('육교')) barriers.push('육교');
 
-
-      if (
-        status
-        !==
-        'SUCCESS'
-      ) {
-
-        const message =
-          path.message
-          ||
-          path.node_resolution?.message
-          ||
-          '해당 역사 내부 이동 경로의 일부 정보를 확인하지 못했습니다.';
-
-
-        warningHtml =
-          `
-            <div class="internal-path-warning">
-              ⚠ ${escapeHtml(
-                message
-              )}
-            </div>
-          `;
-
-      }
-
-
-      const nodePath =
-        Array.isArray(
-          path.node_path
-        )
-        ?
-        path.node_path
-        :
-        [];
-
-
-      const nodePathText =
-        nodePath.length
-        >
-        1
-        ?
-        `${nodePath.length - 1}개 내부 구간 이동`
-        :
-        (
-          status
-          ===
-          'SUCCESS'
-          ?
-          '역사 내부 접근성 경로 확인'
-          :
-          '역사 내부 동선 일부 미확인'
-        );
-
+      const warningHtml = barriers.length
+        ? `<div class="walking-access-warning">⚠️ 보행 주의 요소: ${barriers.map(v => escapeHtml(String(v))).join(', ')}</div>`
+        : '';
 
       return `
         <div class="timeline-item">
-
-          <div class="timeline-dot accessibility">
-            <i class="fa-solid fa-wheelchair-move"></i>
-          </div>
-
-          <div class="step-header">
-            <span class="step-title">
-              ${escapeHtml(
-                getInternalPathTitle(
-                  path
-                )
-              )}
-            </span>
-          </div>
-
-          <div class="step-desc">
-            ${escapeHtml(
-              nodePathText
-            )}
-          </div>
-
-          <div class="accessibility-guide">
-
-            <div class="accessibility-guide-title">
-              ${escapeHtml(
-                stationName
-              )} 내부 접근성 동선
-            </div>
-
-            ${facilityHtml}
-
-            ${warningHtml}
-
-          </div>
-
+          <div class="timeline-dot walk"><i class="fa-solid fa-person-walking"></i></div>
+          <div class="step-header"><span class="step-title">${escapeHtml(label)}</span></div>
+          <div class="step-desc">${placeName ? `${escapeHtml(placeName)} · ` : ''}${meta.length ? escapeHtml(meta.join(' · ')) : '도보 이동'}</div>
+          ${warningHtml}
         </div>
       `;
-
     }
 
+    function renderBackendTimeline(route) {
+      const steps = Array.isArray(route.steps) ? route.steps : [];
+      const internalPaths = getInternalAccessibilityPaths(route);
+      const renderedInternalPaths = new Set();
+      let timelineHtml = '';
 
-    /* =========================================================
-       13. 지도 - 실제 Backend path
-    ========================================================== */
+      const originName = latestRouteResponse?.origin?.name || '출발지';
+      timelineHtml += renderAccessWalkingTimelineItem(route, 'first_mile', originName);
 
-    function drawBackendRoute(
-      route
-    ) {
+      steps.forEach((step, stepIndex) => {
+        const stepType = String(step.step_type || '').toUpperCase();
+        const guidance = String(step.guidance || '');
+        const stops = Array.isArray(step.stops) ? step.stops : [];
+        const firstStop = normalizeStationName(stops[0] || '');
+        const lastStop = normalizeStationName(stops[stops.length - 1] || '');
 
-      if (
-        !map
-      ) {
+        if (stepType === 'SUBWAY') {
+          internalPaths.forEach((internalPath, internalIndex) => {
+            if (renderedInternalPaths.has(internalIndex)) return;
 
-        return;
+            const movementType = getInternalPathMovementType(internalPath);
+            const stationName = normalizeStationName(getInternalPathStationName(internalPath));
+            const toLine = String(internalPath.movement?.to_line || '').trim();
+            const stepLines = getStepLineNames(step);
 
+            const isBoarding = movementType.includes('BOARD') && stationName === firstStop;
+            const isTransferIntoThisStep = movementType.includes('TRANSFER') && stationName === firstStop && (!toLine || stepLines.includes(toLine));
+
+            if (isBoarding || isTransferIntoThisStep) {
+              timelineHtml += renderInternalPathTimelineItem(internalPath);
+              renderedInternalPaths.add(internalIndex);
+            }
+          });
+        }
+
+        let type = 'walk';
+        let iconClass = 'fa-solid fa-person-walking';
+
+        if (stepType === 'SUBWAY') {
+          type = 'subway';
+          iconClass = 'fa-solid fa-train-subway';
+        } else if (stepType === 'BUS') {
+          type = 'bus';
+          iconClass = 'fa-solid fa-bus';
+        } else if (stepType === 'WALKING' && guidance.includes('환승')) {
+          type = 'transfer';
+          iconClass = 'fa-solid fa-arrows-rotate';
+        }
+
+        let title = guidance || (stepType === 'SUBWAY' ? '지하철 이동' : stepType === 'BUS' ? '버스 이동' : '도보 이동');
+        let vehicleText = Array.isArray(step.vehicles) ? step.vehicles.map(v => v.name).filter(Boolean).join(', ') : '';
+
+        const descriptionParts = [];
+        if (step.distance !== undefined && step.distance !== null) {
+          descriptionParts.push(`${Number(step.distance).toLocaleString('ko-KR')}m`);
+        }
+        if (step.time !== undefined && step.time !== null) {
+          descriptionParts.push(`${Math.ceil(Number(step.time) / 60)}분`);
+        }
+        if (vehicleText) descriptionParts.push(vehicleText);
+
+        const description = descriptionParts.join(' · ');
+
+        /* 핑크색 세로선 경유 목록 */
+        let stationsHtml = '';
+        if (stops.length > 0) {
+          const verticalStopsHtml = stops.map((stop, idx) => {
+            const isLast = idx === stops.length - 1;
+            return `
+              <div class="vertical-station-item">
+                <i class="fa-solid fa-circle"></i>
+                <span>${escapeHtml(String(stop))}</span>
+              </div>
+              ${!isLast ? `<div class="vertical-station-line">│</div>` : ''}
+            `;
+          }).join('');
+
+          stationsHtml = `
+            <div class="station-toggle-wrapper">
+              <button class="btn-toggle-stations" id="station-btn-${stepIndex}" onclick="toggleStations(${stepIndex}, ${stops.length})">
+                ▼ 경유 정류장/역 (${stops.length}개) 보기
+              </button>
+              <div class="station-list" id="station-list-${stepIndex}">
+                <div class="station-title">🚏 전체 경유 목록</div>
+                <div class="vertical-station-container">
+                  ${verticalStopsHtml}
+                </div>
+              </div>
+            </div>
+          `;
+        }
+
+        const requireLowFloorBus =
+          document.getElementById('cond-low-floor-bus').checked;
+
+        const busAccessibilityHtml = (
+          stepType === 'BUS'
+          && requireLowFloorBus
+        )
+          ? renderBusAccessibilityGuide(route, step)
+          : '';
+
+        timelineHtml += `
+          <div class="timeline-item">
+            <div class="timeline-dot ${type}"><i class="${iconClass}"></i></div>
+            <div class="step-header"><span class="step-title">${escapeHtml(title)}</span></div>
+            <div class="step-desc">${escapeHtml(description)}</div>
+            ${stationsHtml}
+            ${busAccessibilityHtml}
+          </div>
+        `;
+
+        if (stepType === 'SUBWAY') {
+          internalPaths.forEach((internalPath, internalIndex) => {
+            if (renderedInternalPaths.has(internalIndex)) return;
+
+            const movementType = getInternalPathMovementType(internalPath);
+            const stationName = normalizeStationName(getInternalPathStationName(internalPath));
+            const isAlighting = (movementType.includes('ALIGHT') || movementType.includes('ARRIV') || movementType.includes('EXIT')) && stationName === lastStop;
+
+            if (isAlighting) {
+              timelineHtml += renderInternalPathTimelineItem(internalPath);
+              renderedInternalPaths.add(internalIndex);
+            }
+          });
+        }
+      });
+
+      internalPaths.forEach((internalPath, internalIndex) => {
+        if (!renderedInternalPaths.has(internalIndex)) {
+          timelineHtml += renderInternalPathTimelineItem(internalPath);
+          renderedInternalPaths.add(internalIndex);
+        }
+      });
+
+      const destinationNameForWalk = latestRouteResponse?.destination?.name || '목적지';
+      timelineHtml += renderAccessWalkingTimelineItem(route, 'last_mile', destinationNameForWalk);
+
+      if (latestRouteResponse && latestRouteResponse.destination) {
+        const destinationName = latestRouteResponse.destination.name || '목적지';
+        timelineHtml += `
+          <div class="timeline-item">
+            <div class="timeline-dot end"><i class="fa-solid fa-location-dot"></i></div>
+            <div class="step-header"><span class="step-title">${escapeHtml(destinationName)} 도착</span></div>
+            <div class="step-desc">목적지에 도착했습니다.</div>
+          </div>
+        `;
       }
 
+      document.getElementById('timeline-list').innerHTML = timelineHtml;
+    }
 
+    function getInternalAccessibilityPaths(route) {
+      const accessibility = route.accessibility || {};
+      if (Array.isArray(accessibility.internal_paths)) return accessibility.internal_paths;
+      if (Array.isArray(route.internal_paths)) return route.internal_paths;
+      return [];
+    }
+
+    function normalizeStationName(value) {
+      return String(value || '').trim().replace(/\(.*?\)/g, '').replace(/\s+/g, '').replace(/역$/g, '');
+    }
+
+    function getInternalPathStationName(path) {
+      return path.station_name || path.movement?.station_name || path.node_resolution?.station_name || path.start_node?.station_name || path.end_node?.station_name || '';
+    }
+
+    function getInternalPathMovementType(path) {
+      return String(path.movement_type || path.movement?.movement_type || path.node_resolution?.movement_type || '').toUpperCase();
+    }
+
+    function getStepLineNames(step) {
+      if (!Array.isArray(step.vehicles)) return [];
+      return step.vehicles.map(v => String(v.name || '').trim()).filter(Boolean);
+    }
+
+    function getFacilityTypeName(facilityType) {
+      const type = String(facilityType || '').toUpperCase();
+      if (type === 'ELEVATOR') return '엘리베이터';
+      if (type === 'ESCALATOR') return '에스컬레이터';
+      if (type === 'STAIRS') return '계단';
+      if (type === 'RAMP') return '경사로';
+      if (type === 'WALKING' || type === 'WALKWAY') return '이동 통로';
+      return facilityType || '이동 시설';
+    }
+
+    function getFloorMovementText(facility) {
+      const fromFloor = facility.actual_from_floor || facility.edge_from_floor || '';
+      const toFloor = facility.actual_to_floor || facility.edge_to_floor || '';
+      if (fromFloor && toFloor && fromFloor !== toFloor) return `${fromFloor} → ${toFloor}`;
+      return fromFloor || toFloor || '';
+    }
+
+    function getInternalPathTitle(path) {
+      const stationName = getInternalPathStationName(path) || '역사';
+      const movementType = getInternalPathMovementType(path);
+      if (movementType.includes('TRANSFER')) return `♿ ${stationName} 환승 안내`;
+      if (movementType.includes('ALIGHT') || movementType.includes('ARRIV') || movementType.includes('EXIT')) return `♿ ${stationName} 하차 안내`;
+      if (movementType.includes('BOARD') || movementType.includes('DEPART')) return `♿ ${stationName} 승차 안내`;
+      return `♿ ${stationName} 역사 내부 이동`;
+    }
+
+    function getRealtimeStatusInfo(facility) {
+      const realtime = facility.realtime || {};
+      const status = String(realtime.realtime_status || facility.realtime_status || 'UNKNOWN').toUpperCase();
+      if (status === 'AVAILABLE' || status === 'NORMAL') return { text: '운행 가능', className: '' };
+      if (status === 'UNAVAILABLE' || status === 'STOPPED' || status === 'OUT_OF_SERVICE') return { text: '운행 불가', className: 'unavailable' };
+      return { text: '실시간 상태 미확인', className: 'unknown' };
+    }
+
+    function renderInternalPathTimelineItem(path) {
+      const stationName = getInternalPathStationName(path) || '역사';
+      const status = String(path.status || 'UNKNOWN').toUpperCase();
+      const facilities = Array.isArray(path.required_facilities) ? path.required_facilities : [];
+
+      let facilityHtml = '';
+      if (facilities.length > 0) {
+        facilityHtml = facilities.map((facility, index) => {
+          const facilityName = getFacilityTypeName(facility.facility_type);
+          const floorText = getFloorMovementText(facility);
+          const exitNo = facility.exit_no;
+          const detailLocation = String(facility.detail_location || '').trim();
+          const realtimeStatus = getRealtimeStatusInfo(facility);
+
+          const headlineParts = [`${index + 1}. ${facilityName} 이용`];
+          if (exitNo !== null && exitNo !== undefined && String(exitNo).trim()) {
+            headlineParts.push(`${String(exitNo).trim()}번 출구 방향`);
+          }
+          if (floorText) headlineParts.push(floorText);
+
+          return `
+            <div class="facility-step">
+              <div class="facility-name">${headlineParts.map(v => escapeHtml(v)).join(' · ')}</div>
+              ${detailLocation ? `<div class="facility-location">📍 ${escapeHtml(detailLocation)}</div>` : ''}
+              <span class="facility-status ${realtimeStatus.className}">${escapeHtml(realtimeStatus.text)}</span>
+            </div>
+          `;
+        }).join('');
+      } else {
+        const startDescription = path.start_node?.description || path.start_node?.detail_location || '';
+        const endDescription = path.end_node?.description || path.end_node?.detail_location || '';
+        facilityHtml = `
+          <div class="facility-step">
+            <div class="facility-name">역사 내부 접근 가능 경로</div>
+            ${startDescription ? `<div class="facility-location">출발: ${escapeHtml(startDescription)}</div>` : ''}
+            ${endDescription ? `<div class="facility-location">도착: ${escapeHtml(endDescription)}</div>` : ''}
+          </div>
+        `;
+      }
+
+      let warningHtml = '';
+      if (status !== 'SUCCESS') {
+        const message = path.message || path.node_resolution?.message || '해당 역사 내부 이동 경로의 일부 정보를 확인하지 못했습니다.';
+        warningHtml = `<div class="internal-path-warning">⚠ ${escapeHtml(message)}</div>`;
+      }
+
+      const nodePath = Array.isArray(path.node_path) ? path.node_path : [];
+      const nodePathText = nodePath.length > 1
+        ? `${nodePath.length - 1}개 내부 구간 이동`
+        : (status === 'SUCCESS' ? '역사 내부 접근성 경로 확인' : '역사 내부 동선 일부 미확인');
+
+      return `
+        <div class="timeline-item">
+          <div class="timeline-dot accessibility"><i class="fa-solid fa-wheelchair-move"></i></div>
+          <div class="step-header"><span class="step-title">${escapeHtml(getInternalPathTitle(path))}</span></div>
+          <div class="step-desc">${escapeHtml(nodePathText)}</div>
+          <div class="accessibility-guide">
+            <div class="accessibility-guide-title">${escapeHtml(stationName)} 내부 접근성 동선</div>
+            ${facilityHtml}
+            ${warningHtml}
+          </div>
+        </div>
+      `;
+    }
+
+    /* 노선별 고유 색상 매핑 함수 */
+    function getStepColor(step) {
+      if (!step) return '#f39eba';
+      const stepType = String(step.step_type || '').toUpperCase();
+
+      if (stepType === 'WALKING' || stepType === 'WALK') return '#f39eba';
+
+      const vehicles = Array.isArray(step.vehicles) ? step.vehicles : [];
+      const vehicleName = vehicles.map(v => String(v.name || '')).join(' ');
+
+      if (stepType === 'SUBWAY') {
+        if (vehicleName.includes('1호선')) return '#0052A4';
+        if (vehicleName.includes('2호선')) return '#00A84D';
+        if (vehicleName.includes('3호선')) return '#EF7C1C';
+        if (vehicleName.includes('4호선')) return '#00A5DE';
+        if (vehicleName.includes('5호선')) return '#996CAC';
+        if (vehicleName.includes('6호선')) return '#CD7C2F';
+        if (vehicleName.includes('7호선')) return '#747F00';
+        if (vehicleName.includes('8호선')) return '#EA545D';
+        if (vehicleName.includes('9호선')) return '#BDB092';
+        if (vehicleName.includes('신분당')) return '#D4003B';
+        if (vehicleName.includes('수인분당') || vehicleName.includes('분당')) return '#EAE12F';
+        if (vehicleName.includes('경의중앙')) return '#77C4A3';
+        if (vehicleName.includes('공항')) return '#0090D2';
+        if (vehicleName.includes('경춘')) return '#178C72';
+        return '#0052A4';
+      }
+
+      if (stepType === 'BUS') {
+        if (vehicleName.includes('직행') || vehicleName.includes('광역')) return '#E61C24';
+        if (vehicleName.includes('간선')) return '#015294';
+        if (vehicleName.includes('지선')) return '#53B332';
+        if (vehicleName.includes('마을')) return '#53B332';
+        return '#33A852';
+      }
+
+      return '#f39eba';
+    }
+
+    /* 지도 선 그리기 */
+    function drawBackendRoute(route) {
+      if (!map) return;
       clearRouteMap();
 
+      const bounds = new kakao.maps.LatLngBounds();
+      let hasPoints = false;
 
-      const pathData =
-        Array.isArray(
-          route.path
-        )
-        ?
+      function drawPath(pathData, options = {}) {
+        if (!Array.isArray(pathData) || pathData.length === 0) return;
 
-        route.path
+        const kakaoPath = pathData
+          .filter(point => Array.isArray(point) && point.length >= 2)
+          .map(point => new kakao.maps.LatLng(Number(point[1]), Number(point[0])));
 
-        :
+        if (kakaoPath.length < 2) return;
 
-        [];
+        kakaoPath.forEach(point => bounds.extend(point));
+        hasPoints = true;
 
+        const polyline = new kakao.maps.Polyline({
+          path: kakaoPath,
+          strokeWeight: options.strokeWeight ?? 7,
+          strokeColor: options.strokeColor ?? '#64748b',
+          strokeOpacity: options.strokeOpacity ?? 0.9,
+          strokeStyle: options.strokeStyle ?? 'solid'
+        });
 
-      if (
-        pathData.length
-        ===
-        0
-      ) {
-
-        fitMapToEndpoints();
-
-        return;
-
+        polyline.setMap(map);
+        currentPolylines.push(polyline);
       }
 
+      const firstMilePath = route?.walking_access?.first_mile?.path || [];
+      drawPath(firstMilePath, {
+        strokeWeight: 6,
+        strokeColor: '#0284c7',
+        strokeOpacity: 0.95,
+        strokeStyle: 'dash'
+      });
 
-      /*
-       * Backend path:
-       *
-       * [
-       *   longitude,
-       *   latitude
-       * ]
-       *
-       * Kakao:
-       *
-       * LatLng(
-       *   latitude,
-       *   longitude
-       * )
-       */
+      const steps = Array.isArray(route.steps) ? route.steps : [];
 
+      const busTransferColors = [
+        '#16a34a',
+        '#f97316',
+        '#dc2626',
+        '#0891b2',
+        '#ca8a04',
+        '#db2777'
+      ];
+      let busSegmentIndex = 0;
 
-      const kakaoPath =
-        pathData
-          .filter(
-            point =>
+      steps.forEach(step => {
+        const pathData = Array.isArray(step.path) ? step.path : [];
+        if (pathData.length === 0) return;
 
-              Array.isArray(
-                point
-              )
-              &&
-              point.length
-              >=
-              2
+        const stepType = String(step.step_type || '').toUpperCase();
+        const isWalk = stepType === 'WALKING' || stepType === 'WALK';
 
-          )
-          .map(
-            point => {
+        let color = '#64748b';
+        let weight = 8;
+        let style = 'solid';
 
-              const longitude =
-                Number(
-                  point[
-                    0
-                  ]
-                );
-
-
-              const latitude =
-                Number(
-                  point[
-                    1
-                  ]
-                );
-
-
-              return (
-                new kakao.maps.LatLng(
-                  latitude,
-                  longitude
-                )
-              );
-
-            }
-          );
-
-
-      if (
-        kakaoPath.length
-        ===
-        0
-      ) {
-
-        fitMapToEndpoints();
-
-        return;
-
-      }
-
-
-      const polyline =
-        new kakao.maps.Polyline(
-          {
-
-            path:
-              kakaoPath,
-
-            strokeWeight:
-              7,
-
-            strokeColor:
-              '#f39eba',
-
-            strokeOpacity:
-              0.9,
-
-            strokeStyle:
-              'solid'
-
-          }
-        );
-
-
-      polyline.setMap(
-        map
-      );
-
-
-      currentPolylines.push(
-        polyline
-      );
-
-
-      /* -------------------------------------------------------
-         전체 경로 Bounds
-      -------------------------------------------------------- */
-
-      const bounds =
-        new kakao.maps.LatLngBounds();
-
-
-      kakaoPath.forEach(
-        point => {
-
-          bounds.extend(
-            point
-          );
-
+        if (isWalk) {
+          color = '#0284c7';
+          weight = 6;
+          style = 'dash';
+        } else if (stepType === 'BUS') {
+          // 버스를 환승할 때마다 다른 색상 사용
+          color = busTransferColors[
+            busSegmentIndex % busTransferColors.length
+          ];
+          busSegmentIndex += 1;
+        } else if (stepType === 'SUBWAY') {
+          color = '#7c3aed';
+        } else {
+          color = getStepColor(step);
         }
-      );
 
+        drawPath(pathData, {
+          strokeWeight: weight,
+          strokeColor: color,
+          strokeOpacity: 0.9,
+          strokeStyle: style
+        });
+      });
 
-      if (
-        startPoint
-      ) {
+      const lastMilePath = route?.walking_access?.last_mile?.path || [];
+      drawPath(lastMilePath, {
+        strokeWeight: 6,
+        strokeColor: '#0284c7',
+        strokeOpacity: 0.95,
+        strokeStyle: 'dash'
+      });
 
-        bounds.extend(
-          startPoint
-        );
-
+      if (!hasPoints) {
+        const globalPath = Array.isArray(route.path) ? route.path : [];
+        drawPath(globalPath, {
+          strokeWeight: 7,
+          strokeColor: '#64748b',
+          strokeOpacity: 0.85,
+          strokeStyle: 'solid'
+        });
       }
 
+      if (startPoint) bounds.extend(startPoint);
+      if (endPoint) bounds.extend(endPoint);
 
-      if (
-        endPoint
-      ) {
-
-        bounds.extend(
-          endPoint
-        );
-
+      if (hasPoints || startPoint || endPoint) {
+        map.setBounds(bounds);
       }
-
-
-      map.setBounds(
-        bounds
-      );
-
     }
-
-
-    /* =========================================================
-       14. 지도 초기화
-    ========================================================== */
 
     function clearRouteMap() {
-
-      currentPolylines.forEach(
-        polyline => {
-
-          polyline.setMap(
-            null
-          );
-
-        }
-      );
-
-
-      currentPolylines =
-        [];
-
+      currentPolylines.forEach(polyline => polyline.setMap(null));
+      currentPolylines = [];
     }
-
 
     function fitMapToEndpoints() {
-
-      if (
-        !map
-        ||
-        !startPoint
-        ||
-        !endPoint
-      ) {
-
-        return;
-
-      }
-
-
-      const bounds =
-        new kakao.maps.LatLngBounds();
-
-
-      bounds.extend(
-        startPoint
-      );
-
-
-      bounds.extend(
-        endPoint
-      );
-
-
-      map.setBounds(
-        bounds
-      );
-
+      if (!map || !startPoint || !endPoint) return;
+      const bounds = new kakao.maps.LatLngBounds();
+      bounds.extend(startPoint);
+      bounds.extend(endPoint);
+      map.setBounds(bounds);
     }
-
-
-    /* =========================================================
-       15. 결과 초기화
-    ========================================================== */
 
     function clearRouteUI() {
-
-      document
-        .getElementById(
-          'route-no'
-        )
-        .innerText =
-          '맞춤 추천 경로';
-
-
-      document
-        .getElementById(
-          'route-time'
-        )
-        .innerText =
-          '-';
-
-
-      document
-        .getElementById(
-          'route-dist'
-        )
-        .innerText =
-          '-';
-
-
-      document
-        .getElementById(
-          'route-trans'
-        )
-        .innerText =
-          '-';
-
-
-      document
-        .getElementById(
-          'route-fare'
-        )
-        .innerText =
-          '-';
-
-
-      document
-        .getElementById(
-          'ai-reason'
-        )
-        .innerText =
-          '추천 가능한 경로가 없습니다.';
-
-
-      document
-        .getElementById(
-          'reason-list'
-        )
-        .innerHTML =
-          '';
-
-
-      document
-        .getElementById(
-          'timeline-list'
-        )
-        .innerHTML =
-          '';
-
+      document.getElementById('route-no').innerText = `${currentPreferenceName} 경로`;
+      document.getElementById('route-time').innerText = '-';
+      document.getElementById('route-dist').innerText = '-';
+      document.getElementById('route-trans').innerText = '-';
+      document.getElementById('route-fare').innerText = '-';
+      document.getElementById('ai-reason').innerText = '추천 가능한 경로가 없습니다.';
+      document.getElementById('timeline-list').innerHTML = '';
     }
 
-
-    /* =========================================================
-       16. Tooltip
-    ========================================================== */
-
-    function toggleTooltip(
-      event
-    ) {
-
-      event.stopPropagation();
-
-
-      const tooltip =
-        document.getElementById(
-          'info-tooltip'
-        );
-
-
-      tooltip.classList.toggle(
-        'active'
-      );
-
+    function escapeHtml(text) {
+      return String(text)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
     }
-
-
-    document.addEventListener(
-      'click',
-      function (
-        event
-      ) {
-
-        const tooltip =
-          document.getElementById(
-            'info-tooltip'
-          );
-
-
-        const container =
-          document.querySelector(
-            '.info-icon-container'
-          );
-
-
-        if (
-          tooltip
-          &&
-          container
-          &&
-          !container.contains(
-            event.target
-          )
-        ) {
-
-          tooltip.classList.remove(
-            'active'
-          );
-
-        }
-
-      }
-    );
-
-
-    /* =========================================================
-       17. HTML Escape
-    ========================================================== */
-
-    function escapeHtml(
-      text
-    ) {
-
-      return String(
-        text
-      )
-        .replaceAll(
-          '&',
-          '&amp;'
-        )
-        .replaceAll(
-          '<',
-          '&lt;'
-        )
-        .replaceAll(
-          '>',
-          '&gt;'
-        )
-        .replaceAll(
-          '"',
-          '&quot;'
-        )
-        .replaceAll(
-          "'",
-          '&#039;'
-        );
-
-    }
-
-
   </script>
-
 </body>
 
 </html>
