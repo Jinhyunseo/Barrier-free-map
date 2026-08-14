@@ -1,0 +1,200 @@
+# ============================================================
+# Seongnam Barrier-Free Navigation - Git Ignore
+#
+# Repository structure
+#   /backend  -> FastAPI + MySQL + Gemini
+#   /frontend -> frontend
+# ============================================================
+
+
+# ------------------------------------------------------------
+# Python bytecode / cache
+# ------------------------------------------------------------
+
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+.pytest_cache/
+.mypy_cache/
+.pyright/
+.ruff_cache/
+
+.coverage
+.coverage.*
+htmlcov/
+
+
+# ------------------------------------------------------------
+# Python Virtual Environment
+# ------------------------------------------------------------
+
+.venv/
+venv/
+env/
+ENV/
+
+backend/.venv/
+backend/venv/
+
+
+# ------------------------------------------------------------
+# Environment / Secret files
+#
+# API Key, DB Password 등을 GitHub에 올리지 않습니다.
+# ------------------------------------------------------------
+
+.env
+.env.*
+
+backend/.env
+backend/.env.*
+
+frontend/.env
+frontend/.env.*
+
+# 예제 환경설정 파일은 Git에 포함
+!.env.example
+!backend/.env.example
+!frontend/.env.example
+
+
+# ------------------------------------------------------------
+# Runtime uploaded files
+#
+# 사용자 사진 제보로 생성되는 이미지는 Git에 올리지 않습니다.
+# ------------------------------------------------------------
+
+backend/static/uploads/*
+
+# 폴더 자체는 유지하고 싶으면 .gitkeep 사용
+!backend/static/uploads/.gitkeep
+
+
+# ------------------------------------------------------------
+# Local test images
+# ------------------------------------------------------------
+
+/야탑역 승강기 테스트 사진.jpg
+
+backend/*테스트*사진*.jpg
+backend/*테스트*사진*.jpeg
+backend/*테스트*사진*.png
+
+backend/*test*.jpg
+backend/*test*.jpeg
+backend/*test*.png
+
+
+# ------------------------------------------------------------
+# Log / Runtime files
+# ------------------------------------------------------------
+
+*.log
+logs/
+backend/logs/
+
+*.pid
+*.pid.lock
+
+
+# ------------------------------------------------------------
+# Local databases
+#
+# MySQL schema SQL 파일은 제외하지 않습니다.
+# ------------------------------------------------------------
+
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+
+
+# ------------------------------------------------------------
+# Python build/package artifacts
+# ------------------------------------------------------------
+
+build/
+dist/
+
+*.egg-info/
+.eggs/
+wheels/
+pip-wheel-metadata/
+
+
+# ------------------------------------------------------------
+# Frontend / Node.js
+# ------------------------------------------------------------
+
+node_modules/
+frontend/node_modules/
+
+frontend/dist/
+frontend/build/
+frontend/.vite/
+frontend/.cache/
+
+.npm/
+.pnpm-store/
+.yarn/cache/
+
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+
+# ------------------------------------------------------------
+# IDE / Editor
+# ------------------------------------------------------------
+
+.vscode/
+.idea/
+
+*.code-workspace
+
+*.swp
+*.swo
+*~
+
+
+# ------------------------------------------------------------
+# Windows / macOS files
+# ------------------------------------------------------------
+
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+
+# ------------------------------------------------------------
+# Temporary / backup files
+# ------------------------------------------------------------
+
+*.tmp
+*.temp
+*.bak
+*.backup
+*.old
+*.orig
+*.rej
+
+
+# ------------------------------------------------------------
+# Test / coverage
+# ------------------------------------------------------------
+
+.tox/
+.nox/
+
+coverage.xml
+
+*.cover
+*.py,cover

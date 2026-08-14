@@ -1,0 +1,208 @@
+[
+  {
+    "railOprIsttCd": "KR",
+    "lnCd": "K1",
+    "stinCd": "K230",
+    "stinNm": "",
+    "elevators": [
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K230",
+        "exitNo": null,
+        "dtlLoc": "(1F)2번출입구앞(B1)맞이방미금방향역무실옆통로",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지상",
+        "runStinFlorTo": 1,
+        "rglnPsno": 15,
+        "rglnWgt": 1050
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K230",
+        "exitNo": null,
+        "dtlLoc": "(1F)4번출입구옆(B1)맞이방3번/4번출입구중층에스컬레이터옆",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지상",
+        "runStinFlorTo": 1,
+        "rglnPsno": 15,
+        "rglnWgt": 1050
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K230",
+        "exitNo": null,
+        "dtlLoc": "(B1)미금방향(하행)맞이방남쪽표내는곳앞(B2)미금방면(하행)승강장2-1위치",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 2,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 1,
+        "rglnPsno": 15,
+        "rglnWgt": 1050
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K230",
+        "exitNo": null,
+        "dtlLoc": "(B1)수내방향(상행)맞이방남쪽표내는곳앞(B2)수내방면(상행)승강장6-4위치",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 2,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 1,
+        "rglnPsno": 15,
+        "rglnWgt": 1050
+      }
+    ],
+    "escalators": [
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K230",
+        "updnDvNm": "상행",
+        "exitNo": "1",
+        "dtlLoc": "(B1과 F1중층) > (1F)1번출입구 지상",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 1.5,
+        "grndDvNmTo": "지상",
+        "runStinFlorTo": 1
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K230",
+        "updnDvNm": "상행",
+        "exitNo": "1",
+        "dtlLoc": "(B1)1번출입구 방향(스토리웨이 인근)>B1과 1F중층",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 1.5
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K230",
+        "updnDvNm": "하행",
+        "exitNo": "2",
+        "dtlLoc": " (1F)2번출입구 >(B1과 1F중층)",
+        "grndDvNmFr": "지상",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 1.5
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K230",
+        "updnDvNm": "하행",
+        "exitNo": "2",
+        "dtlLoc": "(B1과 F1중층)> B1(스토리웨이 인근 맞이방)",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 1.5,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 1
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K230",
+        "updnDvNm": "상행",
+        "exitNo": "4",
+        "dtlLoc": "(B1과 F1중층, 환승주차장입구)>(1F)4번출입구",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 1.5,
+        "grndDvNmTo": "지상",
+        "runStinFlorTo": 1
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K230",
+        "updnDvNm": "하행",
+        "exitNo": "4",
+        "dtlLoc": "(1F)4번출입구>(B1과 F1중층, 환승주차장 입구)",
+        "grndDvNmFr": "지상",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 1.5
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K230",
+        "updnDvNm": "상행",
+        "exitNo": "3,4",
+        "dtlLoc": "(B1)맞이방> 중층(지하주차장입구)",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 1.5
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K230",
+        "updnDvNm": "하행",
+        "exitNo": "3,4",
+        "dtlLoc": "(B1과 F1중층, 환승주차장 입구)>(B1)맞이방",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 1.5,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 1
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K230",
+        "updnDvNm": "상행",
+        "exitNo": "4-4",
+        "dtlLoc": "(B2)미금방향승강장 4-4>(B1)북쪽 맞이방, 표내는곳 내",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 2,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 1
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K230",
+        "updnDvNm": "하행",
+        "exitNo": null,
+        "dtlLoc": "(B1)북쪽 맞이방,표내는곳 내> (B2)미금방향승강장 4-4",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 2
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K230",
+        "updnDvNm": "상행",
+        "exitNo": "4-1",
+        "dtlLoc": "(B2)수내방향 승강장 4-1>(B1)북쪽 맞이방,표내는곳 내",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 2,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 1
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K230",
+        "updnDvNm": "하행",
+        "exitNo": null,
+        "dtlLoc": "(B1)북쪽 맞이방,표내는곳 내> (B2)수내방향 승강장 4-1",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 2
+      }
+    ]
+  }
+]

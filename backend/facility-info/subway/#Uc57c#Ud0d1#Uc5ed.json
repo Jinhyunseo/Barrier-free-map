@@ -1,0 +1,184 @@
+[
+  {
+    "railOprIsttCd": "KR",
+    "lnCd": "K1",
+    "stinCd": "K226",
+    "stinNm": "",
+    "elevators": [
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K226",
+        "exitNo": "1,2",
+        "dtlLoc": "(B1,지상)야탑역맞이방및1,2번출구중간",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지상",
+        "runStinFlorTo": 1,
+        "rglnPsno": 15,
+        "rglnWgt": 1000
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K226",
+        "exitNo": "3,4",
+        "dtlLoc": "(B1,지상)야탑역맞이방및3,4번출구중간",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지상",
+        "runStinFlorTo": 1,
+        "rglnPsno": 15,
+        "rglnWgt": 1000
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K226",
+        "exitNo": null,
+        "dtlLoc": "(B1,B2)죽전,고색,인천방면게이트안↔하선승강장(5-4)",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 2,
+        "rglnPsno": 15,
+        "rglnWgt": 1000
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K226",
+        "exitNo": null,
+        "dtlLoc": "(B1,B2)왕십리,청량리방면게이트안↔상선승강장(2-1)",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 2,
+        "rglnPsno": 15,
+        "rglnWgt": 1000
+      }
+    ],
+    "escalators": [
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K226",
+        "updnDvNm": "상행",
+        "exitNo": "1",
+        "dtlLoc": "(B1) 야탑역 1번출구",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지상",
+        "runStinFlorTo": 1
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K226",
+        "updnDvNm": "하행",
+        "exitNo": "1",
+        "dtlLoc": "(1층) 야탑역 1번출구",
+        "grndDvNmFr": "지상",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 1
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K226",
+        "updnDvNm": "상행",
+        "exitNo": "4",
+        "dtlLoc": "(B1) 야탑역 4번출구",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지상",
+        "runStinFlorTo": 1
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K226",
+        "updnDvNm": "하행",
+        "exitNo": "4",
+        "dtlLoc": "(1층) 야탑역 4번출구",
+        "grndDvNmFr": "지상",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 1
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K226",
+        "updnDvNm": "상행",
+        "exitNo": "2",
+        "dtlLoc": "(B1_중간층) 야탑역 2번출구",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지상",
+        "runStinFlorTo": 1
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K226",
+        "updnDvNm": "하행",
+        "exitNo": "2",
+        "dtlLoc": "(1층) 야탑역 2번출구",
+        "grndDvNmFr": "지상",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 1
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K226",
+        "updnDvNm": "상행",
+        "exitNo": "3",
+        "dtlLoc": "(B1) 야탑역 3번출구",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 1
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K226",
+        "updnDvNm": "하행",
+        "exitNo": "3",
+        "dtlLoc": "(B1_중간층) 야탑역 3번출구",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 1
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K226",
+        "updnDvNm": "상행",
+        "exitNo": "3",
+        "dtlLoc": "(B1_중간층) 야탑역 3번출구",
+        "grndDvNmFr": "지하",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 1
+      },
+      {
+        "railOprIsttCd": "KR",
+        "lnCd": "K1",
+        "stinCd": "K226",
+        "updnDvNm": "하행",
+        "exitNo": "3",
+        "dtlLoc": "(1층) 야탑역 3번출구",
+        "grndDvNmFr": "지상",
+        "runStinFlorFr": 1,
+        "grndDvNmTo": "지하",
+        "runStinFlorTo": 1
+      }
+    ]
+  }
+]
