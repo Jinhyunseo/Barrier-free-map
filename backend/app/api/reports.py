@@ -6,14 +6,19 @@ import uuid
 from datetime import datetime
 from pathlib import Path
 
-from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, UploadFile
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.core.database import get_db
 from app.data.station_metadata import get_station_coordinates
-from app.schemas.report import ReportCreateResponse, ReportStatusResponse, ReportType
+from app.schemas.report import (
+    ReportableFacilityResponse,
+    ReportCreateResponse,
+    ReportStatusResponse,
+    ReportType,
+)
 from app.services.gemini_service import gemini_service
 
 logger = logging.getLogger(__name__)
@@ -456,6 +461,7 @@ async def create_report(
                         SET
                             status_code = :status_code,
                             is_usable = :is_usable,
+                            is_usable_wheelchair = :is_usable_wheelchair,
                             source_type = 'USER_REPORT',
                             source_report_id = :source_report_id,
                             last_updated_at = CURRENT_TIMESTAMP
@@ -464,6 +470,10 @@ async def create_report(
                     {
                         "status_code": new_status,
                         "is_usable": int(new_status == "NORMAL"),
+                        "is_usable_wheelchair": int(
+                            new_status == "NORMAL"
+                            and facility["facility_type"] == "ELEVATOR"
+                        ),
                         "source_report_id": report_id,
                         "facility_id": facility_id,
                     },
@@ -494,7 +504,8 @@ async def create_report(
                         "status_code": new_status,
                         "is_usable": int(new_status == "NORMAL"),
                         "is_usable_wheelchair": int(
-                            facility["facility_type"] == "ELEVATOR"
+                            new_status == "NORMAL"
+                            and facility["facility_type"] == "ELEVATOR"
                         ),
                         "source_report_id": report_id,
                     },
@@ -563,6 +574,101 @@ async def create_report(
         reason=ai_result.reason,
         created_at=datetime.now(),
     )
+
+
+@router.get("/facilities", response_model=list[ReportableFacilityResponse])
+async def get_reportable_facilities(
+    station_name: list[str] = Query(
+        default=[],
+        description="추천 경로에서 지나가는 역명. 동일 파라미터를 여러 번 전달할 수 있습니다.",
+    ),
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    추천 경로에 포함된 역의 엘리베이터/에스컬레이터를 DB facility_id와 함께 반환합니다.
+
+    프론트엔드는 경로 추천이 완료된 뒤 이 API를 호출해 사용자가 제보할 실제 시설을
+    선택하게 합니다. 역명은 '야탑'과 '야탑역'을 동일하게 취급합니다.
+    """
+    normalized_names: list[str] = []
+    for raw_name in station_name:
+        name = str(raw_name or "").strip()
+        if not name:
+            continue
+        if name.endswith("역"):
+            name = name[:-1].strip()
+        if name and name not in normalized_names:
+            normalized_names.append(name)
+
+    if not normalized_names:
+        return []
+
+    station_filters: list[str] = []
+    params: dict[str, str] = {}
+    for index, name in enumerate(normalized_names):
+        key = f"station_{index}"
+        station_filters.append(
+            f"REPLACE(TRIM(s.station_name), '역', '') = :{key}"
+        )
+        params[key] = name
+
+    result = await db.execute(
+        text(
+            f"""
+            SELECT
+                f.facility_id,
+                f.station_id,
+                s.station_name,
+                s.line_name,
+                f.facility_type,
+                f.facility_name,
+                f.exit_no,
+                f.direction,
+                f.detail_location,
+                fs.status_code,
+                fs.is_usable
+            FROM `facility` AS f
+            INNER JOIN `station` AS s
+                ON s.station_id = f.station_id
+            LEFT JOIN `facility_status` AS fs
+                ON fs.facility_id = f.facility_id
+            WHERE f.facility_type IN ('ELEVATOR', 'ESCALATOR')
+              AND ({' OR '.join(station_filters)})
+            ORDER BY
+                s.station_name,
+                CASE f.facility_type
+                    WHEN 'ELEVATOR' THEN 1
+                    WHEN 'ESCALATOR' THEN 2
+                    ELSE 3
+                END,
+                f.exit_no,
+                f.facility_id
+            """
+        ),
+        params,
+    )
+
+    facilities = result.mappings().all()
+    return [
+        ReportableFacilityResponse(
+            facility_id=row["facility_id"],
+            station_id=row["station_id"],
+            station_name=row["station_name"],
+            line_name=row["line_name"],
+            facility_type=row["facility_type"],
+            facility_name=row["facility_name"],
+            exit_no=row["exit_no"],
+            direction=row["direction"],
+            detail_location=row["detail_location"],
+            status_code=row["status_code"],
+            is_usable=(
+                bool(row["is_usable"])
+                if row["is_usable"] is not None
+                else None
+            ),
+        )
+        for row in facilities
+    ]
 
 
 @router.get("/{report_id}", response_model=ReportStatusResponse)

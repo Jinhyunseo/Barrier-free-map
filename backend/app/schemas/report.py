@@ -13,6 +13,22 @@ class ReportType(str, Enum):
     RESTORED_ESCALATOR = "RESTORED_ESCALATOR"
 
 
+class ReportableFacilityResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    facility_id: int
+    station_id: int
+    station_name: str
+    line_name: str | None = None
+    facility_type: str
+    facility_name: str | None = None
+    exit_no: str | None = None
+    direction: str | None = None
+    detail_location: str | None = None
+    status_code: str | None = None
+    is_usable: bool | None = None
+
+
 class ReportCreateResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
