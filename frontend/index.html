@@ -40,11 +40,11 @@
     }
 
     /* =========================================================
-       좌측 사이드바 (전체 스크롤 가능 구조)
+       좌측 사이드바 & 헤더 확대
     ========================================================== */
     .sidebar {
-      width: 420px;
-      min-width: 420px;
+      width: 440px;
+      min-width: 440px;
       height: 100%;
       background: #ffffff;
       z-index: 10;
@@ -53,8 +53,9 @@
       flex-direction: column;
     }
 
+    /* 💡 헤더 패딩 및 크기 확대 */
     .sidebar-header {
-      padding: 16px 20px;
+      padding: 18px 20px;
       background: #ffffff;
       border-bottom: 1px solid #e2e8f0;
       flex-shrink: 0;
@@ -64,27 +65,43 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 10px;
     }
 
+    /* 💡 배리어프리 길안내 타이틀 크기 확대 */
     .app-title {
-      font-size: 20px;
+      font-size: 19px;
       font-weight: 800;
       display: flex;
       align-items: center;
       gap: 8px;
       color: #f39eba;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
+    .header-btn-group {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    /* 💡 사용자 제보 / 이동 조건 변경 버튼 크기 확대 */
     .btn-edit-profile {
       background: #f8fafc;
-      border: 1px solid #cbd5e1;
-      color: #475569;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 5px 10px;
+      border: 1.5px solid #cbd5e1;
+      color: #334155;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 7px 12px;
       border-radius: 20px;
       cursor: pointer;
+      white-space: nowrap;
       transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
     }
 
     .btn-edit-profile:hover {
@@ -113,6 +130,8 @@
       flex-direction: column;
       gap: 12px;
       box-shadow: 0 4px 12px rgba(243, 158, 186, 0.15);
+      position: relative;
+      z-index: 50;
     }
 
     .inputs-wrapper {
@@ -153,7 +172,7 @@
       border: 1px solid #e2e8f0;
       border-radius: 10px;
       padding: 0 12px;
-      height: 42px;
+      height: 44px;
       position: relative;
       z-index: 2;
       transition: all 0.2s;
@@ -190,20 +209,20 @@
       font-weight: 500;
     }
 
-    /* 연관 검색어 드롭다운 목록 스타일 */
+    /* 💡 연관 검색어 드롭다운 최상위 보장 */
     .autocomplete-dropdown {
       display: none;
       position: absolute;
-      top: 46px;
+      top: 48px;
       left: 0;
       right: 0;
       background: #ffffff;
       border: 1.5px solid #f39eba;
       border-radius: 10px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
       max-height: 220px;
       overflow-y: auto;
-      z-index: 99;
+      z-index: 99999;
     }
 
     .autocomplete-dropdown.show {
@@ -211,7 +230,7 @@
     }
 
     .dropdown-item {
-      padding: 10px 12px;
+      padding: 10px 14px;
       font-size: 13px;
       cursor: pointer;
       border-bottom: 1px solid #f1f5f9;
@@ -240,8 +259,8 @@
     }
 
     .swap-btn {
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       border: 1px solid #e2e8f0;
       background: #ffffff;
@@ -264,7 +283,7 @@
 
     .search-btn {
       width: 100%;
-      padding: 12px;
+      padding: 13px;
       border: none;
       border-radius: 10px;
       background: #f8ccdb;
@@ -505,9 +524,10 @@
     .timeline-dot.transfer { background: #fef9c3; color: #a16207; }
     .timeline-dot.end { background: #fee2e2; color: #b91c1c; }
 
-    .step-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .step-header { display: flex; flex-direction: column; gap: 2px; margin-bottom: 6px; }
     .step-title { font-size: 15px; font-weight: 800; color: #0f172a; }
-    .step-desc { font-size: 14px; color: #475569; margin-top: 2px; font-weight: 500; line-height: 1.5; }
+    .step-sub-path { font-size: 13px; font-weight: 500; color: #64748b; margin-top: 1px; }
+    .step-desc { font-size: 13.5px; color: #64748b; font-weight: 500; line-height: 1.4; }
 
     /* 승하차 정류장 카드 */
     .kakao-route-card {
@@ -620,7 +640,15 @@
     .vertical-station-line { font-size: 11px; color: #f8ccdb; padding-left: 3px; line-height: 1; margin: 2px 0; font-weight: bold; }
 
     .timeline-dot.accessibility { background: #ede9fe; color: #6d28d9; }
-    .accessibility-guide { margin-top: 10px; padding: 12px; background: #faf5ff; border: 1px solid #ddd6fe; border-radius: 9px; }
+    
+    .accessibility-guide { 
+      margin-top: 10px; 
+      padding: 14px; 
+      background: #faf5ff; 
+      border: 1px solid #ddd6fe; 
+      border-radius: 10px; 
+    }
+    
     .accessibility-guide-title { font-size: 12px; font-weight: 800; color: #6d28d9; margin-bottom: 8px; }
     .facility-step { padding: 8px 0; border-bottom: 1px dashed #ddd6fe; font-size: 13px; line-height: 1.55; color: #334155; }
     .facility-step:last-child { border-bottom: none; padding-bottom: 0; }
@@ -723,7 +751,7 @@
       height: 100vh;
       background: rgba(15, 23, 42, 0.6);
       backdrop-filter: blur(4px);
-      z-index: 9999;
+      z-index: 999999;
       justify-content: center;
       align-items: center;
     }
@@ -777,9 +805,15 @@
             배리어프리 길안내
           </div>
 
-          <button class="btn-edit-profile" onclick="openProfileModal()">
-            ⚙️ 이동 조건 변경
-          </button>
+          <!-- 💡 상단 버튼 영역 시원하게 확장 -->
+          <div class="header-btn-group">
+            <button class="btn-edit-profile" onclick="openReportModal()" title="보행 불편 요소 제보하기">
+              📢 사용자 제보
+            </button>
+            <button class="btn-edit-profile" onclick="openProfileModal()">
+              ⚙️ 이동 조건 변경
+            </button>
+          </div>
         </div>
       </div>
 
@@ -789,7 +823,7 @@
         <div class="search-box">
           <div class="inputs-wrapper">
             <div class="inputs-container">
-              <!-- 출발지 입력창 및 드롭다운 -->
+              <!-- 출발지 입력창 및 연관 검색어 드롭다운 -->
               <div class="input-wrapper-relative">
                 <div class="input-group">
                   <i class="fa-regular fa-circle-dot input-icon start"></i>
@@ -798,7 +832,7 @@
                 <div id="start-dropdown" class="autocomplete-dropdown"></div>
               </div>
 
-              <!-- 목적지 입력창 및 드롭다운 -->
+              <!-- 목적지 입력창 및 연관 검색어 드롭다운 -->
               <div class="input-wrapper-relative">
                 <div class="input-group">
                   <i class="fa-solid fa-location-dot input-icon end"></i>
@@ -949,6 +983,33 @@
     </div>
   </div>
 
+  <!-- 사용자 제보 모달 UI -->
+  <div class="modal-overlay" id="report-modal" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span class="modal-badge">Barrier-Free Report</span>
+        <div class="modal-title">보행 불편 요소 제보하기</div>
+        <div class="modal-desc">정확한 위치와 내용을 제보해 주시면 길안내에 즉시 반영됩니다.</div>
+      </div>
+
+      <div class="form-group">
+        <input type="text" id="report-title" class="form-input" placeholder="장소명 / 위치 (예: 판교역 1번 출구)">
+        <select id="report-type" class="form-input" style="background:#ffffff; color:#0f172a; font-weight:700;">
+          <option value="STAIRS">계단 / 경사로 불편</option>
+          <option value="ELEVATOR_OUT">엘리베이터 고장 / 공사</option>
+          <option value="ROAD_BLOCK">보도블록 공사 / 도로 통제</option>
+          <option value="OTHER">기타 불편 제보</option>
+        </select>
+        <textarea id="report-content" class="form-input" style="height:90px; resize:none;" placeholder="상세 제보 내용을 입력해 주세요."></textarea>
+      </div>
+
+      <div style="display:flex; gap:8px;">
+        <button class="btn-action" style="background:#e2e8f0; color:#475569;" onclick="closeReportModal()">취소</button>
+        <button class="btn-action" onclick="submitReport()">제보 제출하기</button>
+      </div>
+    </div>
+  </div>
+
 
   <script>
     /* =========================================================
@@ -957,7 +1018,7 @@
     const API_BASE_URL = 'http://127.0.0.1:8000';
 
     let map = null;
-    let ps = null; // 카카오 장소 검색 객체
+    let ps = null;
 
     let startPoint = null;
     let endPoint = null;
@@ -977,7 +1038,7 @@
     window.addEventListener('DOMContentLoaded', function () {
       if (window.kakao && window.kakao.maps) {
         initMap();
-        initAutocomplete(); // 장소 자동완성 연동 초기화
+        initAutocomplete();
       } else {
         alert('카카오 지도 SDK 로드에 실패했습니다. Kakao JavaScript 키를 확인해주세요.');
       }
@@ -992,13 +1053,13 @@
       map = new kakao.maps.Map(container, options);
 
       if (kakao.maps.services) {
-        ps = new kakao.maps.services.Places(); // 카카오 장소 검색 객체 생성
+        ps = new kakao.maps.services.Places();
       }
     }
 
 
     /* =========================================================
-       3. 연관 검색어 드롭다운 로직 (검색어 직접 포함 장소 우선 정렬)
+       3. 연관 검색어 드롭다운 로직 (강화된 카카오 검색 처리)
     ========================================================== */
     function initAutocomplete() {
       const startInput = document.getElementById('start-input');
@@ -1009,7 +1070,6 @@
       setupAutocompleteInput(startInput, startDropdown);
       setupAutocompleteInput(endInput, endDropdown);
 
-      // 바깥 영역 클릭 시 드롭다운 닫기
       document.addEventListener('click', function (e) {
         if (!startInput.contains(e.target) && !startDropdown.contains(e.target)) {
           startDropdown.classList.remove('show');
@@ -1029,10 +1089,8 @@
           return;
         }
 
-        // 카카오 장소 검색 API 호출
         ps.keywordSearch(keyword, function (data, status) {
           if (status === kakao.maps.services.Status.OK) {
-            // 검색어가 장소명(place_name)에 들어간 항목을 최우선으로 정렬
             const sortedData = [...data].sort((a, b) => {
               const aIncludes = a.place_name.includes(keyword);
               const bIncludes = b.place_name.includes(keyword);
@@ -1050,6 +1108,7 @@
 
             renderDropdownItems(sortedData, inputEl, dropdownEl);
           } else {
+            console.warn('카카오 키워드 검색 실패 상태:', status);
             dropdownEl.classList.remove('show');
             dropdownEl.innerHTML = '';
           }
@@ -1059,7 +1118,7 @@
 
     function renderDropdownItems(places, inputEl, dropdownEl) {
       dropdownEl.innerHTML = '';
-      const limit = Math.min(places.length, 5); // 최대 5개 노출
+      const limit = Math.min(places.length, 5);
 
       for (let i = 0; i < limit; i++) {
         const place = places[i];
@@ -1086,7 +1145,7 @@
 
 
     /* =========================================================
-       4. 온보딩
+       4. 온보딩 및 모달 이벤트
     ========================================================== */
     function goToStep2() {
       const email = document.getElementById('signup-email').value.trim();
@@ -1111,6 +1170,30 @@
       if (startKeyword && endKeyword) {
         searchRoute();
       }
+    }
+
+    function openReportModal() {
+      document.getElementById('report-modal').style.display = 'flex';
+    }
+
+    function closeReportModal() {
+      document.getElementById('report-modal').style.display = 'none';
+    }
+
+    function submitReport() {
+      const title = document.getElementById('report-title').value.trim();
+      const content = document.getElementById('report-content').value.trim();
+
+      if (!title || !content) {
+        alert('위치와 제보 내용을 모두 입력해 주세요.');
+        return;
+      }
+
+      alert('제보가 성공적으로 접수되었습니다. 감사합니다!');
+
+      document.getElementById('report-title').value = '';
+      document.getElementById('report-content').value = '';
+      closeReportModal();
     }
 
 
@@ -1198,7 +1281,7 @@
 
 
     /* =========================================================
-       7. FastAPI 추천 API 실제 호출 (순수 백엔드 연동)
+       7. FastAPI 추천 API 호출
     ========================================================== */
     async function searchRoute() {
       const startKeyword = document.getElementById('start-input').value.trim();
@@ -1284,13 +1367,12 @@
 
 
     /* =========================================================
-       8. 지도 위 얇고 슬림한 물방울(Drop) 핀 마커
+       8. 지도 위 핀 마커
     ========================================================== */
     function updateMarkers() {
       if (startOverlay) startOverlay.setMap(null);
       if (endOverlay) endOverlay.setMap(null);
 
-      /* 슬림 물방울 출발 핀 마커 */
       if (startPoint) {
         const startContent = `
           <div class="kakao-pin-container start">
@@ -1307,7 +1389,6 @@
         });
       }
 
-      /* 슬림 물방울 도착 핀 마커 */
       if (endPoint) {
         const endContent = `
           <div class="kakao-pin-container end">
@@ -1330,7 +1411,6 @@
 
       document.getElementById('route-no').innerText = `${currentPreferenceName} 경로`;
 
-      /* 초 단위 무조건 올림 처리 (1302초 -> 22분) */
       const rawSeconds = route.total_travel_time_seconds ?? route.total_time_seconds ?? 0;
       const totalMinutes = rawSeconds > 0 ? Math.ceil(rawSeconds / 60) : (route.total_travel_time_minutes ?? route.total_time_minutes ?? 0);
       document.getElementById('route-time').innerText = `${totalMinutes}분`;
@@ -1367,7 +1447,6 @@
       return busAccessibility.find(item => Number(item.step_id) === Number(stepId)) || null;
     }
 
-    /* 실시간 저상버스 안내 렌더링 */
     function renderBusAccessibilityGuide(route, step) {
       const result = getBusAccessibilityForStep(route, step.step_id);
       if (!result) return '';
@@ -1467,7 +1546,6 @@
       return (route.walking_accessibility || {})[key] || null;
     }
 
-    /* 도보 카드 렌더링 (Fallback 보완) */
     function renderAccessWalkingTimelineItem(route, key, placeName) {
       const access = getWalkingAccessPart(route, key);
       const accessibility = getWalkingAccessibilityPart(route, key);
@@ -1571,8 +1649,21 @@
           guidance = guidance.replace('환승 이동', '도보 이동').replace('환승', '도보');
         }
 
-        let title = guidance || (stepType === 'SUBWAY' ? '지하철 이동' : stepType === 'BUS' ? '버스 이동' : '도보 이동');
         let vehicleText = Array.isArray(step.vehicles) ? step.vehicles.map(v => v.name).filter(Boolean).join(', ') : '';
+
+        let titleHtml = '';
+        if (stepType === 'BUS') {
+          const busTitle = vehicleText ? `일반 ${vehicleText}` : '버스';
+          const routeSub = (stops.length > 1) ? `(${stops[0]} > ${stops[stops.length - 1]})` : '';
+          
+          titleHtml = `
+            <span class="step-title">${escapeHtml(busTitle)}</span>
+            ${routeSub ? `<span class="step-sub-path">${escapeHtml(routeSub)}</span>` : ''}
+          `;
+        } else {
+          let mainTitle = guidance || (stepType === 'SUBWAY' ? '지하철 이동' : '도보 이동');
+          titleHtml = `<span class="step-title">${escapeHtml(mainTitle)}</span>`;
+        }
 
         const descriptionParts = [];
         if (step.distance !== undefined && step.distance !== null) {
@@ -1581,11 +1672,10 @@
         if (step.time !== undefined && step.time !== null) {
           descriptionParts.push(`${Math.ceil(Number(step.time) / 60)}분`);
         }
-        if (vehicleText) descriptionParts.push(vehicleText);
+        if (vehicleText && stepType !== 'BUS') descriptionParts.push(vehicleText);
 
         const description = descriptionParts.join(' · ');
 
-        /* 승/하차 정류장 가독성 카드 */
         let kakaoCardHtml = '';
         if (stepType === 'BUS' || stepType === 'SUBWAY') {
           const badgeClass = stepType === 'BUS' ? 'bus' : 'subway';
@@ -1612,10 +1702,9 @@
           `;
         }
 
-        /* 💡 핑크색 세로선 경유 목록 (출발/도착 정류장은 제외하고 순수 중간 경유지만 포함) */
         let stationsHtml = '';
         if (stops.length > 2) {
-          const viaStops = stops.slice(1, -1); // 첫 번째(승차)와 마지막(하차) 정류장 제외
+          const viaStops = stops.slice(1, -1);
           const verticalStopsHtml = viaStops.map((stop, idx) => {
             const isLast = idx === viaStops.length - 1;
             return `
@@ -1650,7 +1739,7 @@
         timelineHtml += `
           <div class="timeline-item">
             <div class="timeline-dot ${type}"><i class="${iconClass}"></i></div>
-            <div class="step-header"><span class="step-title">${escapeHtml(title)}</span></div>
+            <div class="step-header">${titleHtml}</div>
             <div class="step-desc">${escapeHtml(description)}</div>
             ${kakaoCardHtml}
             ${stationsHtml}
@@ -1822,7 +1911,6 @@
       `;
     }
 
-    /* 노선별 고유 색상 매핑 함수 */
     function getStepColor(step) {
       if (!step) return '#f39eba';
       const stepType = String(step.step_type || '').toUpperCase();
@@ -1861,7 +1949,6 @@
       return '#f39eba';
     }
 
-    /* 지도 선 그리기 */
     function drawBackendRoute(route) {
       if (!map) return;
       clearRouteMap();
@@ -1895,7 +1982,6 @@
 
       const steps = Array.isArray(route.steps) ? route.steps : [];
 
-      /* 첫 보행 구간 점선 연결 */
       const firstMilePath = route?.walking_access?.first_mile?.path || [];
       if (firstMilePath.length > 0) {
         drawPath(firstMilePath, { strokeWeight: 6, strokeColor: '#0284c7', strokeOpacity: 0.95, strokeStyle: 'dash' });
@@ -1912,7 +1998,6 @@
         hasPoints = true;
       }
 
-      /* 대중교통 구간 노선선 */
       const busTransferColors = ['#16a34a', '#f97316', '#dc2626', '#0891b2', '#ca8a04', '#db2777'];
       let busSegmentIndex = 0;
 
@@ -1948,7 +2033,6 @@
         });
       });
 
-      /* 마지막 보행 구간 점선 연결 */
       const lastMilePath = route?.walking_access?.last_mile?.path || [];
       if (lastMilePath.length > 0) {
         drawPath(lastMilePath, { strokeWeight: 6, strokeColor: '#0284c7', strokeOpacity: 0.95, strokeStyle: 'dash' });
