@@ -1,0 +1,199 @@
+{
+  "station_code": "SNA",
+  "station_name": "수내역",
+  "line": "SUIN_BUNDANG",
+
+  "nodes": [
+    {
+      "id": "SNA_EXIT_1",
+      "name": "1번 출입구",
+      "floor": "G1",
+      "type": "EXIT",
+      "lat": null,
+      "lng": null
+    },
+
+    {
+      "id": "SNA_EXIT1_EV_G1",
+      "name": "1번 출입구 엘리베이터",
+      "floor": "G1",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "id": "SNA_EXIT1_EV_B1",
+      "name": "1번 출입구 엘리베이터",
+      "floor": "B1",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+
+    {
+      "id": "SNA_JEONGJA_EV_B1",
+      "name": "정자방면 엘리베이터",
+      "floor": "B1",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "id": "SNA_JEONGJA_EV_B2",
+      "name": "정자방면 승강장 엘리베이터",
+      "floor": "B2",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "id": "SNA_PLATFORM_JEONGJA",
+      "name": "정자방면 승강장",
+      "floor": "B2",
+      "type": "PLATFORM",
+      "lat": null,
+      "lng": null
+    },
+
+    {
+      "id": "SNA_SEOHYEON_EV_B1",
+      "name": "서현방면 엘리베이터",
+      "floor": "B1",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "id": "SNA_SEOHYEON_EV_B2",
+      "name": "서현방면 승강장 엘리베이터",
+      "floor": "B2",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "id": "SNA_PLATFORM_SEOHYEON",
+      "name": "서현방면 승강장",
+      "floor": "B2",
+      "type": "PLATFORM",
+      "lat": null,
+      "lng": null
+    }
+  ],
+
+  "edges": [
+    {
+      "id": "SNA_WALK_EXIT1_EV",
+      "source": "SNA_EXIT_1",
+      "target": "SNA_EXIT1_EV_G1",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "1번 출입구에서 엘리베이터로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE",
+      "route_ids": [
+        "SNA_ROUTE_EXIT1_JEONGJA",
+        "SNA_ROUTE_EXIT1_SEOHYEON"
+      ]
+    },
+
+    {
+      "id": "SNA_EV_EXIT1",
+      "source": "SNA_EXIT1_EV_G1",
+      "target": "SNA_EXIT1_EV_B1",
+      "mode": "ELEVATOR",
+      "facility_id": "2126115",
+      "instruction": "1번 출입구 엘리베이터를 이용해 지하 1층 맞이방으로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE",
+      "route_ids": [
+        "SNA_ROUTE_EXIT1_JEONGJA",
+        "SNA_ROUTE_EXIT1_SEOHYEON"
+      ]
+    },
+
+    {
+      "id": "SNA_WALK_EXIT1_JEONGJA_EV",
+      "source": "SNA_EXIT1_EV_B1",
+      "target": "SNA_JEONGJA_EV_B1",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "개집표기를 통과해 정자방면 엘리베이터로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE",
+      "route_ids": [
+        "SNA_ROUTE_EXIT1_JEONGJA"
+      ]
+    },
+
+    {
+      "id": "SNA_EV_JEONGJA",
+      "source": "SNA_JEONGJA_EV_B1",
+      "target": "SNA_JEONGJA_EV_B2",
+      "mode": "ELEVATOR",
+      "facility_id": "2050938",
+      "instruction": "정자방면 엘리베이터를 이용해 지하 2층으로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE",
+      "route_ids": [
+        "SNA_ROUTE_EXIT1_JEONGJA"
+      ]
+    },
+
+    {
+      "id": "SNA_WALK_JEONGJA_PLATFORM",
+      "source": "SNA_JEONGJA_EV_B2",
+      "target": "SNA_PLATFORM_JEONGJA",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "정자방면 승강장으로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE",
+      "route_ids": [
+        "SNA_ROUTE_EXIT1_JEONGJA"
+      ]
+    },
+
+    {
+      "id": "SNA_WALK_EXIT1_SEOHYEON_EV",
+      "source": "SNA_EXIT1_EV_B1",
+      "target": "SNA_SEOHYEON_EV_B1",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "개집표기를 통과해 서현방면 엘리베이터로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE",
+      "route_ids": [
+        "SNA_ROUTE_EXIT1_SEOHYEON"
+      ]
+    },
+
+    {
+      "id": "SNA_EV_SEOHYEON",
+      "source": "SNA_SEOHYEON_EV_B1",
+      "target": "SNA_SEOHYEON_EV_B2",
+      "mode": "ELEVATOR",
+      "facility_id": "2050937",
+      "instruction": "서현방면 엘리베이터를 이용해 지하 2층으로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE",
+      "route_ids": [
+        "SNA_ROUTE_EXIT1_SEOHYEON"
+      ]
+    },
+
+    {
+      "id": "SNA_WALK_SEOHYEON_PLATFORM",
+      "source": "SNA_SEOHYEON_EV_B2",
+      "target": "SNA_PLATFORM_SEOHYEON",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "서현방면 승강장으로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE",
+      "route_ids": [
+        "SNA_ROUTE_EXIT1_SEOHYEON"
+      ]
+    }
+  ]
+}

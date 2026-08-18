@@ -1,0 +1,311 @@
+{
+  "station_code": "MRN",
+  "station_name": "모란역",
+  "line": "LINE8+SUIN_BUNDANG",
+
+  "nodes": [
+    {
+      "id": "MRN_EXIT_11",
+      "name": "11번 출입구",
+      "floor": "G1",
+      "type": "EXIT",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "id": "MRN_EXIT_11_EV_G1",
+      "name": "11번 출입구 엘리베이터",
+      "floor": "G1",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "id": "MRN_EXIT_11_EV_B1",
+      "name": "11번 출입구 엘리베이터",
+      "floor": "B1",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+
+    {
+      "id": "MRN_L8_SUJIN_EV_B1",
+      "name": "8호선 수진방면 엘리베이터",
+      "floor": "B1",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "id": "MRN_L8_SUJIN_EV_B3",
+      "name": "8호선 수진방면 승강장 엘리베이터",
+      "floor": "B3",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "id": "MRN_L8_PLATFORM_SUJIN",
+      "name": "8호선 수진방면 승강장",
+      "floor": "B3",
+      "type": "PLATFORM",
+      "lat": null,
+      "lng": null
+    },
+
+    {
+      "id": "MRN_L8_TERMINAL_EV_B2",
+      "name": "8호선 모란 종착방면 엘리베이터",
+      "floor": "B2",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "id": "MRN_L8_TERMINAL_EV_B3",
+      "name": "8호선 모란 종착방면 승강장 엘리베이터",
+      "floor": "B3",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "id": "MRN_L8_PLATFORM_TERMINAL",
+      "name": "8호선 모란 종착방면 승강장",
+      "floor": "B3",
+      "type": "PLATFORM",
+      "lat": null,
+      "lng": null
+    },
+
+    {
+      "id": "MRN_SB_TAEPYEONG_EV_B1",
+      "name": "수인분당선 태평방면 엘리베이터",
+      "floor": "B1",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "id": "MRN_SB_TAEPYEONG_EV_B2",
+      "name": "수인분당선 태평방면 승강장 엘리베이터",
+      "floor": "B2",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "id": "MRN_SB_PLATFORM_TAEPYEONG",
+      "name": "수인분당선 태평방면 승강장",
+      "floor": "B2",
+      "type": "PLATFORM",
+      "lat": null,
+      "lng": null
+    },
+
+    {
+      "id": "MRN_SB_YATAP_EV_B1",
+      "name": "수인분당선 야탑방면 엘리베이터",
+      "floor": "B1",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "id": "MRN_SB_YATAP_EV_B2",
+      "name": "수인분당선 야탑방면 승강장 엘리베이터",
+      "floor": "B2",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "id": "MRN_SB_PLATFORM_YATAP",
+      "name": "수인분당선 야탑방면 승강장",
+      "floor": "B2",
+      "type": "PLATFORM",
+      "lat": null,
+      "lng": null
+    }
+  ],
+
+  "edges": [
+    {
+      "id": "MRN_WALK_EXIT11_EV",
+      "source": "MRN_EXIT_11",
+      "target": "MRN_EXIT_11_EV_G1",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "11번 출입구에서 엘리베이터로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE"
+    },
+    {
+      "id": "MRN_EV_EXIT11",
+      "source": "MRN_EXIT_11_EV_G1",
+      "target": "MRN_EXIT_11_EV_B1",
+      "mode": "ELEVATOR",
+      "facility_id": "2116585",
+      "instruction": "11번 출입구 엘리베이터를 이용해 지하 1층으로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE"
+    },
+
+    {
+      "id": "MRN_WALK_EXIT11_L8_SUJIN",
+      "source": "MRN_EXIT_11_EV_B1",
+      "target": "MRN_L8_SUJIN_EV_B1",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "대합실을 지나 8호선 수진방면 엘리베이터로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE"
+    },
+    {
+      "id": "MRN_EV_L8_SUJIN",
+      "source": "MRN_L8_SUJIN_EV_B1",
+      "target": "MRN_L8_SUJIN_EV_B3",
+      "mode": "ELEVATOR",
+      "facility_id": "2116583",
+      "instruction": "엘리베이터를 이용해 지하 3층 수진방면 승강장 층으로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE"
+    },
+    {
+      "id": "MRN_WALK_L8_SUJIN_PLATFORM",
+      "source": "MRN_L8_SUJIN_EV_B3",
+      "target": "MRN_L8_PLATFORM_SUJIN",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "8호선 수진방면 승강장으로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE"
+    },
+
+    {
+      "id": "MRN_EV_L8_TERMINAL",
+      "source": "MRN_L8_TERMINAL_EV_B2",
+      "target": "MRN_L8_TERMINAL_EV_B3",
+      "mode": "ELEVATOR",
+      "facility_id": "2116584",
+      "instruction": "8호선 모란 종착방면 엘리베이터를 이용해 지하 3층으로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE"
+    },
+    {
+      "id": "MRN_WALK_L8_TERMINAL_PLATFORM",
+      "source": "MRN_L8_TERMINAL_EV_B3",
+      "target": "MRN_L8_PLATFORM_TERMINAL",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "8호선 모란 종착방면 승강장으로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE"
+    },
+
+    {
+      "id": "MRN_WALK_EXIT11_SB_TAEPYEONG",
+      "source": "MRN_EXIT_11_EV_B1",
+      "target": "MRN_SB_TAEPYEONG_EV_B1",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "환승통로를 이용해 수인분당선 태평방면 엘리베이터로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE"
+    },
+    {
+      "id": "MRN_EV_SB_TAEPYEONG",
+      "source": "MRN_SB_TAEPYEONG_EV_B1",
+      "target": "MRN_SB_TAEPYEONG_EV_B2",
+      "mode": "ELEVATOR",
+      "facility_id": "2050878",
+      "instruction": "수인분당선 태평방면 엘리베이터를 이용해 지하 2층으로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE"
+    },
+    {
+      "id": "MRN_WALK_SB_TAEPYEONG_PLATFORM",
+      "source": "MRN_SB_TAEPYEONG_EV_B2",
+      "target": "MRN_SB_PLATFORM_TAEPYEONG",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "수인분당선 태평방면 승강장으로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE"
+    },
+
+    {
+      "id": "MRN_WALK_EXIT11_SB_YATAP",
+      "source": "MRN_EXIT_11_EV_B1",
+      "target": "MRN_SB_YATAP_EV_B1",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "환승통로를 이용해 수인분당선 야탑방면 엘리베이터로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE"
+    },
+    {
+      "id": "MRN_EV_SB_YATAP",
+      "source": "MRN_SB_YATAP_EV_B1",
+      "target": "MRN_SB_YATAP_EV_B2",
+      "mode": "ELEVATOR",
+      "facility_id": "2050879",
+      "instruction": "수인분당선 야탑방면 엘리베이터를 이용해 지하 2층으로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE"
+    },
+    {
+      "id": "MRN_WALK_SB_YATAP_PLATFORM",
+      "source": "MRN_SB_YATAP_EV_B2",
+      "target": "MRN_SB_PLATFORM_YATAP",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "수인분당선 야탑방면 승강장으로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE"
+    },
+
+    {
+      "id": "MRN_WALK_TRANSFER_SUJIN_TAEPYEONG",
+      "source": "MRN_L8_SUJIN_EV_B1",
+      "target": "MRN_SB_TAEPYEONG_EV_B1",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "환승통로를 이용해 8호선 수진방면과 수인분당선 태평방면 사이를 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_TRANSFER_ROUTE"
+    },
+    {
+      "id": "MRN_WALK_TRANSFER_SUJIN_YATAP",
+      "source": "MRN_L8_SUJIN_EV_B1",
+      "target": "MRN_SB_YATAP_EV_B1",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "환승통로를 이용해 8호선 수진방면과 수인분당선 야탑방면 사이를 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_TRANSFER_ROUTE"
+    },
+
+    {
+      "id": "MRN_WALK_TRANSFER_TERMINAL_TAEPYEONG",
+      "source": "MRN_L8_TERMINAL_EV_B2",
+      "target": "MRN_SB_PLATFORM_TAEPYEONG",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "환승통로를 이용해 8호선 모란 종착방면에서 수인분당선 태평방면으로 이동",
+      "confidence": "INFERRED",
+      "provenance_source": "KRIC_TRANSFER_ROUTE"
+    },
+    {
+      "id": "MRN_WALK_TRANSFER_TERMINAL_YATAP",
+      "source": "MRN_L8_TERMINAL_EV_B2",
+      "target": "MRN_SB_PLATFORM_YATAP",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "환승통로를 이용해 8호선 모란 종착방면에서 수인분당선 야탑방면으로 이동",
+      "confidence": "INFERRED",
+      "provenance_source": "KRIC_TRANSFER_ROUTE"
+    }
+  ]
+}

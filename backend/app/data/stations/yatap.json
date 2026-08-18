@@ -1,0 +1,235 @@
+{
+  "station_code": "YTP",
+  "station_name": "야탑역",
+  "line": "SUIN_BUNDANG",
+
+  "nodes": [
+    {
+      "id": "YTP_EXIT_12",
+      "name": "1·2번 출입구",
+      "floor": "G1",
+      "type": "EXIT",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "id": "YTP_EXIT_12_EV_G1",
+      "name": "1·2번 출입구 엘리베이터",
+      "floor": "G1",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "id": "YTP_EXIT_12_EV_B1",
+      "name": "1·2번 출입구 엘리베이터",
+      "floor": "B1",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+
+    {
+      "id": "YTP_EXIT_34",
+      "name": "3·4번 출입구",
+      "floor": "G1",
+      "type": "EXIT",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "id": "YTP_EXIT_34_EV_G1",
+      "name": "3·4번 출입구 엘리베이터",
+      "floor": "G1",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "id": "YTP_EXIT_34_EV_B1",
+      "name": "3·4번 출입구 엘리베이터",
+      "floor": "B1",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+
+    {
+      "id": "YTP_MORAN_EV_B1",
+      "name": "모란방면 엘리베이터",
+      "floor": "B1",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "id": "YTP_MORAN_EV_B2",
+      "name": "모란방면 승강장 엘리베이터",
+      "floor": "B2",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "id": "YTP_PLATFORM_MORAN",
+      "name": "모란방면 승강장",
+      "floor": "B2",
+      "type": "PLATFORM",
+      "lat": null,
+      "lng": null
+    },
+
+    {
+      "id": "YTP_IMAE_EV_B1",
+      "name": "이매방면 엘리베이터",
+      "floor": "B1",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "id": "YTP_IMAE_EV_B2",
+      "name": "이매방면 승강장 엘리베이터",
+      "floor": "B2",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "id": "YTP_PLATFORM_IMAE",
+      "name": "이매방면 승강장",
+      "floor": "B2",
+      "type": "PLATFORM",
+      "lat": null,
+      "lng": null
+    }
+  ],
+
+  "edges": [
+    {
+      "id": "YTP_WALK_EXIT12_EV",
+      "source": "YTP_EXIT_12",
+      "target": "YTP_EXIT_12_EV_G1",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "1·2번 출입구에서 엘리베이터로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE"
+    },
+    {
+      "id": "YTP_EV_EXIT12",
+      "source": "YTP_EXIT_12_EV_G1",
+      "target": "YTP_EXIT_12_EV_B1",
+      "mode": "ELEVATOR",
+      "facility_id": "2050607",
+      "instruction": "엘리베이터를 이용해 지하 1층으로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE"
+    },
+
+    {
+      "id": "YTP_WALK_EXIT34_EV",
+      "source": "YTP_EXIT_34",
+      "target": "YTP_EXIT_34_EV_G1",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "3·4번 출입구에서 엘리베이터로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE"
+    },
+    {
+      "id": "YTP_EV_EXIT34",
+      "source": "YTP_EXIT_34_EV_G1",
+      "target": "YTP_EXIT_34_EV_B1",
+      "mode": "ELEVATOR",
+      "facility_id": "2050608",
+      "instruction": "엘리베이터를 이용해 지하 1층으로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE"
+    },
+
+    {
+      "id": "YTP_WALK_EXIT12_MORAN_EV",
+      "source": "YTP_EXIT_12_EV_B1",
+      "target": "YTP_MORAN_EV_B1",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "개집표기를 통과해 모란방면 엘리베이터로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE"
+    },
+    {
+      "id": "YTP_WALK_EXIT12_IMAE_EV",
+      "source": "YTP_EXIT_12_EV_B1",
+      "target": "YTP_IMAE_EV_B1",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "개집표기를 통과해 이매방면 엘리베이터로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE"
+    },
+
+    {
+      "id": "YTP_WALK_EXIT34_MORAN_EV",
+      "source": "YTP_EXIT_34_EV_B1",
+      "target": "YTP_MORAN_EV_B1",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "개집표기를 통과해 모란방면 엘리베이터로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE"
+    },
+    {
+      "id": "YTP_WALK_EXIT34_IMAE_EV",
+      "source": "YTP_EXIT_34_EV_B1",
+      "target": "YTP_IMAE_EV_B1",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "개집표기를 통과해 이매방면 엘리베이터로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE"
+    },
+
+    {
+      "id": "YTP_EV_MORAN",
+      "source": "YTP_MORAN_EV_B1",
+      "target": "YTP_MORAN_EV_B2",
+      "mode": "ELEVATOR",
+      "facility_id": "2050606",
+      "instruction": "모란방면 엘리베이터를 이용해 지하 2층으로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE"
+    },
+    {
+      "id": "YTP_WALK_MORAN_PLATFORM",
+      "source": "YTP_MORAN_EV_B2",
+      "target": "YTP_PLATFORM_MORAN",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "모란방면 승강장으로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE"
+    },
+
+    {
+      "id": "YTP_EV_IMAE",
+      "source": "YTP_IMAE_EV_B1",
+      "target": "YTP_IMAE_EV_B2",
+      "mode": "ELEVATOR",
+      "facility_id": "2050605",
+      "instruction": "이매방면 엘리베이터를 이용해 지하 2층으로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE"
+    },
+    {
+      "id": "YTP_WALK_IMAE_PLATFORM",
+      "source": "YTP_IMAE_EV_B2",
+      "target": "YTP_PLATFORM_IMAE",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "이매방면 승강장으로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE"
+    }
+  ]
+}

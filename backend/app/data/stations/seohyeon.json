@@ -1,0 +1,199 @@
+{
+  "station_code": "SHN",
+  "station_name": "서현역",
+  "line": "SUIN_BUNDANG",
+
+  "nodes": [
+    {
+      "id": "SHN_EXIT_1",
+      "name": "1번 출입구",
+      "floor": "G1",
+      "type": "EXIT",
+      "lat": null,
+      "lng": null
+    },
+
+    {
+      "id": "SHN_EXIT1_EV_G1",
+      "name": "1번 출입구 엘리베이터",
+      "floor": "G1",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "id": "SHN_EXIT1_EV_B1",
+      "name": "1번 출입구 엘리베이터",
+      "floor": "B1",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+
+    {
+      "id": "SHN_IMAE_EV_B1",
+      "name": "이매방면 엘리베이터",
+      "floor": "B1",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "id": "SHN_IMAE_EV_B2",
+      "name": "이매방면 승강장 엘리베이터",
+      "floor": "B2",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "id": "SHN_PLATFORM_IMAE",
+      "name": "이매방면 승강장",
+      "floor": "B2",
+      "type": "PLATFORM",
+      "lat": null,
+      "lng": null
+    },
+
+    {
+      "id": "SHN_SUNAE_EV_B1",
+      "name": "수내방면 엘리베이터",
+      "floor": "B1",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "id": "SHN_SUNAE_EV_B2",
+      "name": "수내방면 승강장 엘리베이터",
+      "floor": "B2",
+      "type": "ELEVATOR",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "id": "SHN_PLATFORM_SUNAE",
+      "name": "수내방면 승강장",
+      "floor": "B2",
+      "type": "PLATFORM",
+      "lat": null,
+      "lng": null
+    }
+  ],
+
+  "edges": [
+    {
+      "id": "SHN_WALK_EXIT1_EV",
+      "source": "SHN_EXIT_1",
+      "target": "SHN_EXIT1_EV_G1",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "1번 출입구에서 엘리베이터로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE",
+      "route_ids": [
+        "SHN_ROUTE_EXIT1_IMAE",
+        "SHN_ROUTE_EXIT1_SUNAE"
+      ]
+    },
+
+    {
+      "id": "SHN_EV_EXIT1",
+      "source": "SHN_EXIT1_EV_G1",
+      "target": "SHN_EXIT1_EV_B1",
+      "mode": "ELEVATOR",
+      "facility_id": "2115488",
+      "instruction": "1번 출입구 엘리베이터를 이용해 지하 1층으로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE",
+      "route_ids": [
+        "SHN_ROUTE_EXIT1_IMAE",
+        "SHN_ROUTE_EXIT1_SUNAE"
+      ]
+    },
+
+    {
+      "id": "SHN_WALK_EXIT1_IMAE_EV",
+      "source": "SHN_EXIT1_EV_B1",
+      "target": "SHN_IMAE_EV_B1",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "개집표기를 통과해 이매방면 엘리베이터로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE",
+      "route_ids": [
+        "SHN_ROUTE_EXIT1_IMAE"
+      ]
+    },
+
+    {
+      "id": "SHN_EV_IMAE",
+      "source": "SHN_IMAE_EV_B1",
+      "target": "SHN_IMAE_EV_B2",
+      "mode": "ELEVATOR",
+      "facility_id": "2050935",
+      "instruction": "이매방면 엘리베이터를 이용해 지하 2층으로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE",
+      "route_ids": [
+        "SHN_ROUTE_EXIT1_IMAE"
+      ]
+    },
+
+    {
+      "id": "SHN_WALK_IMAE_PLATFORM",
+      "source": "SHN_IMAE_EV_B2",
+      "target": "SHN_PLATFORM_IMAE",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "이매방면 승강장으로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE",
+      "route_ids": [
+        "SHN_ROUTE_EXIT1_IMAE"
+      ]
+    },
+
+    {
+      "id": "SHN_WALK_EXIT1_SUNAE_EV",
+      "source": "SHN_EXIT1_EV_B1",
+      "target": "SHN_SUNAE_EV_B1",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "개집표기를 통과해 수내방면 엘리베이터로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE",
+      "route_ids": [
+        "SHN_ROUTE_EXIT1_SUNAE"
+      ]
+    },
+
+    {
+      "id": "SHN_EV_SUNAE",
+      "source": "SHN_SUNAE_EV_B1",
+      "target": "SHN_SUNAE_EV_B2",
+      "mode": "ELEVATOR",
+      "facility_id": "2050936",
+      "instruction": "수내방면 엘리베이터를 이용해 지하 2층으로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE",
+      "route_ids": [
+        "SHN_ROUTE_EXIT1_SUNAE"
+      ]
+    },
+
+    {
+      "id": "SHN_WALK_SUNAE_PLATFORM",
+      "source": "SHN_SUNAE_EV_B2",
+      "target": "SHN_PLATFORM_SUNAE",
+      "mode": "WALK",
+      "facility_id": null,
+      "instruction": "수내방면 승강장으로 이동",
+      "confidence": "CONFIRMED",
+      "provenance_source": "KRIC_ACCESSIBLE_ROUTE",
+      "route_ids": [
+        "SHN_ROUTE_EXIT1_SUNAE"
+      ]
+    }
+  ]
+}
