@@ -6,13 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>배리어프리 길안내 Service</title>
 
-  <!-- 파비콘 404 에러 방지 -->
   <link rel="icon" href="data:,">
 
-  <!-- FontAwesome 아이콘 라이브러리 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <!-- 카카오 지도 SDK -->
   <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=a6e4cc9d6599ccd6f520b7e4932b0a70&libraries=services"></script>
 
   <style>
@@ -40,11 +37,11 @@
     }
 
     /* =========================================================
-       좌측 사이드바 & 헤더 확대
+       좌측 사이드바
     ========================================================== */
     .sidebar {
-      width: 440px;
-      min-width: 440px;
+      width: 460px;
+      min-width: 460px;
       height: 100%;
       background: #ffffff;
       z-index: 10;
@@ -53,9 +50,8 @@
       flex-direction: column;
     }
 
-    /* 💡 헤더 패딩 및 크기 확대 */
     .sidebar-header {
-      padding: 18px 20px;
+      padding: 16px;
       background: #ffffff;
       border-bottom: 1px solid #e2e8f0;
       flex-shrink: 0;
@@ -65,16 +61,16 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
+      gap: 6px;
+      width: 100%;
     }
 
-    /* 💡 배리어프리 길안내 타이틀 크기 확대 */
     .app-title {
-      font-size: 19px;
+      font-size: 18px;
       font-weight: 800;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       color: #f39eba;
       white-space: nowrap;
       flex-shrink: 0;
@@ -82,18 +78,18 @@
 
     .header-btn-group {
       display: flex;
-      gap: 6px;
+      gap: 4px;
       align-items: center;
+      flex-shrink: 0;
     }
 
-    /* 💡 사용자 제보 / 이동 조건 변경 버튼 크기 확대 */
     .btn-edit-profile {
       background: #f8fafc;
       border: 1.5px solid #cbd5e1;
       color: #334155;
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 800;
-      padding: 7px 12px;
+      padding: 6px 10px;
       border-radius: 20px;
       cursor: pointer;
       white-space: nowrap;
@@ -120,7 +116,7 @@
       background: #f8fafc;
     }
 
-    /* 입력 필드 및 연관 검색어 드롭다운 스타일 */
+    /* 검색 박스 */
     .search-box {
       background: #ffffff;
       border: 1.5px solid #f39eba;
@@ -209,7 +205,6 @@
       font-weight: 500;
     }
 
-    /* 💡 연관 검색어 드롭다운 최상위 보장 */
     .autocomplete-dropdown {
       display: none;
       position: absolute;
@@ -529,7 +524,6 @@
     .step-sub-path { font-size: 13px; font-weight: 500; color: #64748b; margin-top: 1px; }
     .step-desc { font-size: 13.5px; color: #64748b; font-weight: 500; line-height: 1.4; }
 
-    /* 승하차 정류장 카드 */
     .kakao-route-card {
       margin-top: 10px;
       background: #f8fafc;
@@ -580,10 +574,7 @@
       color: #0f172a;
     }
 
-    /* 토글 경유 정류장 스타일 */
-    .station-toggle-wrapper {
-      margin-top: 8px;
-    }
+    .station-toggle-wrapper { margin-top: 8px; }
 
     .btn-toggle-stations {
       background: #fdf2f4;
@@ -660,7 +651,6 @@
     .facility-status.unavailable { background: #fee2e2; color: #b91c1c; }
     .internal-path-warning { margin-top: 8px; padding: 8px 10px; border-radius: 7px; background: #fff7ed; color: #9a3412; font-size: 12px; font-weight: 700; line-height: 1.5; }
 
-    /* 실시간 저상버스 안내 전용 UI */
     .bus-accessibility-guide {
       margin-top: 10px;
       padding: 12px;
@@ -682,7 +672,49 @@
       font-weight: 700; line-height: 1.45;
     }
 
-    /* 슬림 물방울 위치 핀 마커 디자인 */
+    .file-input-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .file-input-label {
+      font-size: 12px;
+      font-weight: 800;
+      color: #475569;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .form-input-file {
+      padding: 8px;
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 12.5px;
+      color: #475569;
+      cursor: pointer;
+    }
+
+    .form-input-file::-webkit-file-upload-button {
+      background: #f8ccdb;
+      border: none;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-weight: 800;
+      color: #000000;
+      cursor: pointer;
+      margin-right: 8px;
+      transition: background 0.2s;
+    }
+
+    .form-input-file::-webkit-file-upload-button:hover {
+      background: #f39eba;
+      color: #ffffff;
+    }
+
+    /* 위치 핀 마커 스타일 */
     .kakao-pin-container {
       position: relative;
       display: flex;
@@ -760,7 +792,7 @@
       background: #ffffff;
       padding: 32px;
       border-radius: 20px;
-      width: 400px;
+      width: 420px;
       box-shadow: 0 20px 30px rgba(0, 0, 0, 0.25);
       border: 2px solid #f39eba;
       animation: modalFadeIn 0.3s ease-out;
@@ -795,7 +827,6 @@
 <body>
   <div class="app-container">
 
-    <!-- 좌측 사이드바 -->
     <div class="sidebar">
 
       <div class="sidebar-header">
@@ -805,7 +836,6 @@
             배리어프리 길안내
           </div>
 
-          <!-- 💡 상단 버튼 영역 시원하게 확장 -->
           <div class="header-btn-group">
             <button class="btn-edit-profile" onclick="openReportModal()" title="보행 불편 요소 제보하기">
               📢 사용자 제보
@@ -817,13 +847,11 @@
         </div>
       </div>
 
-      <!-- 통합 스크롤 영역 -->
       <div class="sidebar-scroll-content">
 
         <div class="search-box">
           <div class="inputs-wrapper">
             <div class="inputs-container">
-              <!-- 출발지 입력창 및 연관 검색어 드롭다운 -->
               <div class="input-wrapper-relative">
                 <div class="input-group">
                   <i class="fa-regular fa-circle-dot input-icon start"></i>
@@ -832,7 +860,6 @@
                 <div id="start-dropdown" class="autocomplete-dropdown"></div>
               </div>
 
-              <!-- 목적지 입력창 및 연관 검색어 드롭다운 -->
               <div class="input-wrapper-relative">
                 <div class="input-group">
                   <i class="fa-solid fa-location-dot input-icon end"></i>
@@ -924,11 +951,9 @@
       </div>
     </div>
 
-    <!-- Kakao 지도 -->
     <div id="map"></div>
   </div>
 
-  <!-- 1단계 모달 -->
   <div class="modal-overlay" id="signup-modal">
     <div class="modal-card">
       <div class="modal-header">
@@ -947,7 +972,6 @@
     </div>
   </div>
 
-  <!-- 2단계 모달 -->
   <div class="modal-overlay" id="profile-modal" style="display: none;">
     <div class="modal-card">
       <div class="modal-header">
@@ -983,7 +1007,6 @@
     </div>
   </div>
 
-  <!-- 사용자 제보 모달 UI -->
   <div class="modal-overlay" id="report-modal" style="display: none;">
     <div class="modal-card">
       <div class="modal-header">
@@ -1001,6 +1024,13 @@
           <option value="OTHER">기타 불편 제보</option>
         </select>
         <textarea id="report-content" class="form-input" style="height:90px; resize:none;" placeholder="상세 제보 내용을 입력해 주세요."></textarea>
+
+        <div class="file-input-wrapper">
+          <label class="file-input-label" for="report-file">
+            <i class="fa-solid fa-camera"></i> 현장 사진 첨부 (선택)
+          </label>
+          <input type="file" id="report-file" accept="image/*" class="form-input-file">
+        </div>
       </div>
 
       <div style="display:flex; gap:8px;">
@@ -1010,10 +1040,24 @@
     </div>
   </div>
 
+  <div class="modal-overlay" id="slope-warning-modal" style="display: none;">
+    <div class="modal-card" style="border-color: #ea580c; text-align: center;">
+      <div class="modal-header">
+        <span class="modal-badge" style="background: #fff7ed; color: #c2410c;">⚠️ 급경사 주의 안내</span>
+        <div class="modal-title" style="color: #c2410c; margin-top: 6px;">급경사 구간이 포함되어 있습니다</div>
+        <div class="modal-desc" id="slope-modal-desc" style="margin-top: 12px; font-size: 13.5px; color: #334155; line-height: 1.6;">
+        </div>
+      </div>
+      <button class="btn-action" style="background: #ea580c; color: #ffffff; margin-top: 10px;" onclick="closeSlopeWarningModal()">
+        확인하고 경로 보기
+      </button>
+    </div>
+  </div>
+
 
   <script>
     /* =========================================================
-       1. 설정 및 변수
+       1. 설정 및 전역 변수
     ========================================================== */
     const API_BASE_URL = 'http://127.0.0.1:8000';
 
@@ -1025,7 +1069,10 @@
 
     let startOverlay = null;
     let endOverlay = null;
+
     let currentPolylines = [];
+    let currentSlopeOverlays = { lines: [], markers: [] };
+    let currentSlopeSegments = [];
 
     let currentPreference = 'balanced';
     let currentPreferenceName = '균형 추천';
@@ -1033,7 +1080,7 @@
 
 
     /* =========================================================
-       2. 초기화 및 지도
+       2. 초기화 및 카카오 지도 로드
     ========================================================== */
     window.addEventListener('DOMContentLoaded', function () {
       if (window.kakao && window.kakao.maps) {
@@ -1059,7 +1106,7 @@
 
 
     /* =========================================================
-       3. 연관 검색어 드롭다운 로직 (강화된 카카오 검색 처리)
+       3. 연관 검색어 드롭다운 로직
     ========================================================== */
     function initAutocomplete() {
       const startInput = document.getElementById('start-input');
@@ -1108,7 +1155,6 @@
 
             renderDropdownItems(sortedData, inputEl, dropdownEl);
           } else {
-            console.warn('카카오 키워드 검색 실패 상태:', status);
             dropdownEl.classList.remove('show');
             dropdownEl.innerHTML = '';
           }
@@ -1145,7 +1191,7 @@
 
 
     /* =========================================================
-       4. 온보딩 및 모달 이벤트
+       4. 모달 및 이벤트 핸들러
     ========================================================== */
     function goToStep2() {
       const email = document.getElementById('signup-email').value.trim();
@@ -1183,22 +1229,59 @@
     function submitReport() {
       const title = document.getElementById('report-title').value.trim();
       const content = document.getElementById('report-content').value.trim();
+      const fileInput = document.getElementById('report-file');
 
       if (!title || !content) {
         alert('위치와 제보 내용을 모두 입력해 주세요.');
         return;
       }
 
-      alert('제보가 성공적으로 접수되었습니다. 감사합니다!');
+      const hasFile = fileInput.files && fileInput.files.length > 0;
+      const fileText = hasFile ? `\n(첨부된 사진: ${fileInput.files[0].name})` : '';
+
+      alert(`제보가 성공적으로 접수되었습니다. 감사합니다!${fileText}`);
 
       document.getElementById('report-title').value = '';
       document.getElementById('report-content').value = '';
+      fileInput.value = '';
       closeReportModal();
+    }
+
+    /* 💡 급경사 주의 모달 감지 및 연동 (지도 상의 경로선 위에 실제 매칭된 경사 구간/마커가 존재할 때만 팝업 표출) */
+    function checkAndShowSlopeWarning(backendData) {
+      const avoidSlopeChecked = document.getElementById('cond-slope')?.checked;
+
+      // 💡 지도 상의 파란 보행 경로선 위에 실제로 매칭되어 렌더링된 경사 구간/마커가 존재하는지 확인
+      const hasRenderedSlope = (currentSlopeSegments && currentSlopeSegments.length > 0) || 
+                               (currentSlopeOverlays && currentSlopeOverlays.markers && currentSlopeOverlays.markers.length > 0);
+
+      // 백엔드 경고 신호(has_steep_warning)와 실제 지도 상 렌더링 결과(hasRenderedSlope)가 모두 참일 때만 팝업 표출
+      if (avoidSlopeChecked && backendData?.has_steep_warning && hasRenderedSlope) {
+        const descEl = document.getElementById('slope-modal-desc');
+
+        if (descEl && backendData?.slope_warning_message) {
+          descEl.innerText = backendData.slope_warning_message;
+        } else if (descEl) {
+          descEl.innerHTML = `
+            선택하신 경로에 <strong>8% 이상의 급경사 구간</strong>이 포함되어 있습니다.<br>
+            지형 특성상 완만한 대체 경로로 안내해 드리니 이동 시 주의하시기 바랍니다.
+          `;
+        }
+
+        document.getElementById('slope-warning-modal').style.display = 'flex';
+      }
+    }
+
+    function closeSlopeWarningModal() {
+      const modal = document.getElementById('slope-warning-modal');
+      if (modal) {
+        modal.style.display = 'none';
+      }
     }
 
 
     /* =========================================================
-       5. 경로 선호도 선택 UI
+       5. 경로 선호도
     ========================================================== */
     function selectPreference(prefKey, element) {
       currentPreference = prefKey;
@@ -1237,7 +1320,7 @@
 
 
     /* =========================================================
-       6. 검색 핸들러 & 스왑
+       6. 검색 실행
     ========================================================== */
     document.getElementById('start-input').addEventListener('keydown', function (event) {
       if (event.key === 'Enter') searchRoute();
@@ -1281,7 +1364,7 @@
 
 
     /* =========================================================
-       7. FastAPI 추천 API 호출
+       7. API 경로 탐색 호출
     ========================================================== */
     async function searchRoute() {
       const startKeyword = document.getElementById('start-input').value.trim();
@@ -1351,6 +1434,8 @@
         renderBackendRoute(data);
         drawBackendRoute(data.recommended_route);
 
+        checkAndShowSlopeWarning(data);
+
         const summary = data.summary || {};
         showStatus(
           `총 ${summary.total_candidate_count ?? '-'}개 후보 중 ${summary.available_route_count ?? '-'}개의 이용 가능 경로를 분석했습니다.`
@@ -1367,7 +1452,7 @@
 
 
     /* =========================================================
-       8. 지도 위 핀 마커
+       8. 출발/도착 마커
     ========================================================== */
     function updateMarkers() {
       if (startOverlay) startOverlay.setMap(null);
@@ -1429,9 +1514,15 @@
 
       const evaluation = route.evaluation || {};
       const positiveReasons = Array.isArray(evaluation.positive_reasons) ? evaluation.positive_reasons : [];
-      const reasonText = positiveReasons.length > 0
-        ? positiveReasons.join(' ')
-        : '선택하신 이동 조건과 접근성 정보를 바탕으로 최적화된 맞춤 경로입니다.';
+
+      const aiReason = (typeof data.ai_reason === 'string' && data.ai_reason.trim())
+        ? data.ai_reason.trim()
+        : (typeof route.ai_reason === 'string' && route.ai_reason.trim() ? route.ai_reason.trim() : null);
+
+      const reasonText = aiReason
+        || (positiveReasons.length > 0
+          ? positiveReasons.join(' ')
+          : '선택하신 이동 조건과 접근성 정보를 바탕으로 최적화된 맞춤 경로입니다.');
 
       document.getElementById('ai-reason').innerText = reasonText;
 
@@ -1593,7 +1684,6 @@
       `;
     }
 
-    /* 타임라인 전체 렌더링 */
     function renderBackendTimeline(route) {
       const steps = Array.isArray(route.steps) ? route.steps : [];
       const internalPaths = getInternalAccessibilityPaths(route);
@@ -1601,8 +1691,6 @@
       let timelineHtml = '';
 
       const originName = latestRouteResponse?.origin?.name || '출발지';
-
-      /* 1. 첫 보행 구간 카드 추가 */
       timelineHtml += renderAccessWalkingTimelineItem(route, 'first_mile', originName);
 
       steps.forEach((step, stepIndex) => {
@@ -1655,7 +1743,7 @@
         if (stepType === 'BUS') {
           const busTitle = vehicleText ? `일반 ${vehicleText}` : '버스';
           const routeSub = (stops.length > 1) ? `(${stops[0]} > ${stops[stops.length - 1]})` : '';
-          
+
           titleHtml = `
             <span class="step-title">${escapeHtml(busTitle)}</span>
             ${routeSub ? `<span class="step-sub-path">${escapeHtml(routeSub)}</span>` : ''}
@@ -1770,7 +1858,6 @@
         }
       });
 
-      /* 2. 마지막 보행 구간 카드 추가 */
       const destinationNameForWalk = latestRouteResponse?.destination?.name || '목적지';
       timelineHtml += renderAccessWalkingTimelineItem(route, 'last_mile', destinationNameForWalk);
 
@@ -1949,24 +2036,278 @@
       return '#f39eba';
     }
 
+
+    /* =========================================================
+       9. [알고리즘] 경로 흐름 기반 급경사 세그먼트 모듈
+    ========================================================== */
+
+    function getDistance(p1, p2) {
+      const R = 6371000;
+      const toRad = (deg) => (deg * Math.PI) / 180;
+      const dLat = toRad(p2.lat - p1.lat);
+      const dLng = toRad(p2.lng - p1.lng);
+      const a =
+        Math.sin(dLat / 2) ** 2 +
+        Math.cos(toRad(p1.lat)) * Math.cos(toRad(p2.lat)) * Math.sin(dLng / 2) ** 2;
+      return 2 * R * Math.asin(Math.sqrt(a));
+    }
+
+    function projectPointToPath(point, routeCoords, cumDist) {
+      let best = { segIndex: 0, along: 0, perpDist: Infinity };
+
+      for (let i = 0; i < routeCoords.length - 1; i++) {
+        const a = routeCoords[i];
+        const b = routeCoords[i + 1];
+
+        const ax = a.lng, ay = a.lat;
+        const bx = b.lng, by = b.lat;
+        const px = point.lng, py = point.lat;
+
+        const dx = bx - ax, dy = by - ay;
+        const lenSq = dx * dx + dy * dy;
+        let t = lenSq === 0 ? 0 : ((px - ax) * dx + (py - ay) * dy) / lenSq;
+        t = Math.max(0, Math.min(1, t));
+
+        const projLat = ay + t * dy;
+        const projLng = ax + t * dx;
+        const perpDist = getDistance(point, { lat: projLat, lng: projLng });
+
+        if (perpDist < best.perpDist) {
+          const along = cumDist[i] + t * getDistance(a, b);
+          best = { segIndex: i, along, perpDist, projLat, projLng };
+        }
+      }
+      return best;
+    }
+
+    function distanceToCoord(along, routeCoords, cumDist) {
+      for (let i = 0; i < cumDist.length - 1; i++) {
+        if (along >= cumDist[i] && along <= cumDist[i + 1]) {
+          const segLen = cumDist[i + 1] - cumDist[i];
+          const t = segLen === 0 ? 0 : (along - cumDist[i]) / segLen;
+          const a = routeCoords[i], b = routeCoords[i + 1];
+          return { lat: a.lat + t * (b.lat - a.lat), lng: a.lng + t * (b.lng - a.lng) };
+        }
+      }
+      return routeCoords[routeCoords.length - 1];
+    }
+
+    function extractSubPath(routeCoords, cumDist, startAlong, endAlong) {
+      const path = [distanceToCoord(startAlong, routeCoords, cumDist)];
+      for (let i = 0; i < routeCoords.length; i++) {
+        if (cumDist[i] > startAlong && cumDist[i] < endAlong) {
+          path.push(routeCoords[i]);
+        }
+      }
+      path.push(distanceToCoord(endAlong, routeCoords, cumDist));
+      return path;
+    }
+
+    function buildSlopeSegments(routeCoords, slopePoints, options = {}) {
+      const {
+        matchThreshold = 12, // 12m로 제한하여 다른 골목길 경사 오매칭 전면 차단
+        mergeGapThreshold = 15,
+        slopeThreshold = 8.0
+      } = options;
+
+      if (!routeCoords || routeCoords.length < 2 || !slopePoints || slopePoints.length === 0) {
+        return [];
+      }
+
+      const cumDist = [0];
+      for (let i = 1; i < routeCoords.length; i++) {
+        cumDist.push(cumDist[i - 1] + getDistance(routeCoords[i - 1], routeCoords[i]));
+      }
+
+      const projected = slopePoints
+        .filter((p) => Number(p.slope) >= slopeThreshold)
+        .map((p) => ({ ...p, ...projectPointToPath(p, routeCoords, cumDist) }))
+        .filter((p) => p.perpDist <= matchThreshold) // 파란 경로선과 12m 이내 위치한 경사만 채택
+        .sort((a, b) => a.along - b.along);
+
+      const rawSegments = [];
+      let current = null;
+
+      for (const p of projected) {
+        if (!current) {
+          current = { start: p.along, end: p.along, points: [p] };
+        } else if (p.along - current.end <= mergeGapThreshold) {
+          current.end = p.along;
+          current.points.push(p);
+        } else {
+          rawSegments.push(current);
+          current = { start: p.along, end: p.along, points: [p] };
+        }
+      }
+      if (current) rawSegments.push(current);
+
+      const PADDING = 5;
+      return rawSegments.map((seg) => {
+        const start = Math.max(0, seg.start - PADDING);
+        const end = Math.min(cumDist[cumDist.length - 1], seg.end + PADDING);
+        const maxSlope = Math.max(...seg.points.map((p) => Number(p.slope)));
+        const peakPoint = seg.points.reduce((a, b) => (Number(a.slope) > Number(b.slope) ? a : b));
+
+        return {
+          start,
+          end,
+          length: Math.round(end - start),
+          maxSlope,
+          pointCount: seg.points.length,
+          peakPoint,
+          path: extractSubPath(routeCoords, cumDist, start, end),
+        };
+      });
+    }
+
+    function getSeverityColor(maxSlope) {
+      if (maxSlope >= 20) return '#D32F2F';
+      if (maxSlope >= 15) return '#EA580C';
+      return '#F59E0B';
+    }
+
+    function createZoomAwareSlopeMarker(map, seg, detailZoomLevel = 4) {
+      const position = new kakao.maps.LatLng(seg.peakPoint.lat, seg.peakPoint.lng);
+      const overlay = new kakao.maps.CustomOverlay({
+        position,
+        yAnchor: 1.2,
+        zIndex: 10,
+      });
+
+      function render() {
+        const isDetail = map.getLevel() <= detailZoomLevel;
+        const color = getSeverityColor(seg.maxSlope);
+
+        const content = isDetail
+          ? `<div onclick="showSegmentDetail(map, currentSlopeSegments[${seg.index}])" style="
+               background:#ffffff; border:2px solid ${color}; border-radius:14px;
+               padding:4px 10px; font-size:12px; font-weight:800; color:#0f172a; white-space:nowrap;
+               box-shadow:0 3px 8px rgba(0,0,0,.2); cursor:pointer; transform:translateY(-2px);
+             ">⚠️ ${seg.maxSlope.toFixed(1)}% · ${seg.length}m</div>`
+          : `<div onclick="showSegmentDetail(map, currentSlopeSegments[${seg.index}])" style="
+               width:26px; height:26px; border-radius:50%; background:${color}; color:#ffffff;
+               display:flex; align-items:center; justify-content:center;
+               box-shadow:0 2px 6px rgba(0,0,0,.3); cursor:pointer; font-size:13px; font-weight:900;
+             ">⚠️</div>`;
+
+        overlay.setContent(content);
+      }
+
+      render();
+      overlay.setMap(map);
+      kakao.maps.event.addListener(map, 'zoom_changed', render);
+      return overlay;
+    }
+
+    function showSegmentDetail(mapInstance, seg) {
+      if (!seg) return;
+
+      const bounds = new kakao.maps.LatLngBounds();
+      seg.path.forEach((c) => bounds.extend(new kakao.maps.LatLng(c.lat, c.lng)));
+      mapInstance.setBounds(bounds, 100, 100, 100, 100);
+    }
+
+    function drawSlopeSegments(mapInstance, routeCoords, slopePoints, options = {}, startIndex = 0) {
+      const segments = buildSlopeSegments(routeCoords, slopePoints, options);
+      const overlays = { lines: [], markers: [] };
+
+      segments.forEach((seg, idx) => {
+        seg.index = startIndex + idx;
+        const color = getSeverityColor(seg.maxSlope);
+        const kakaoPath = seg.path.map((c) => new kakao.maps.LatLng(c.lat, c.lng));
+
+        const line = new kakao.maps.Polyline({
+          path: kakaoPath,
+          strokeWeight: 9,
+          strokeColor: color,
+          strokeOpacity: 0.9,
+          strokeStyle: 'solid',
+          zIndex: 8,
+        });
+        line.setMap(mapInstance);
+
+        kakao.maps.event.addListener(line, 'mouseover', () => line.setOptions({ strokeWeight: 13 }));
+        kakao.maps.event.addListener(line, 'mouseout', () => line.setOptions({ strokeWeight: 9 }));
+        kakao.maps.event.addListener(line, 'click', () => showSegmentDetail(mapInstance, seg));
+
+        overlays.lines.push(line);
+
+        const marker = createZoomAwareSlopeMarker(mapInstance, seg);
+        overlays.markers.push(marker);
+      });
+
+      return { segments, overlays };
+    }
+
+
+    /* =========================================================
+       10. 경로 및 지도 렌더링
+    ========================================================== */
+    function clearRouteMap() {
+      if (Array.isArray(currentPolylines)) {
+        currentPolylines.forEach(polyline => polyline.setMap(null));
+        currentPolylines = [];
+      }
+
+      if (currentSlopeOverlays) {
+        if (Array.isArray(currentSlopeOverlays.lines)) {
+          currentSlopeOverlays.lines.forEach(line => line.setMap(null));
+        }
+        if (Array.isArray(currentSlopeOverlays.markers)) {
+          currentSlopeOverlays.markers.forEach(marker => marker.setMap(null));
+        }
+        currentSlopeOverlays = { lines: [], markers: [] };
+      }
+      currentSlopeSegments = [];
+    }
+
     function drawBackendRoute(route) {
-      if (!map) return;
+      if (!map || !route) return;
       clearRouteMap();
 
       const bounds = new kakao.maps.LatLngBounds();
       let hasPoints = false;
 
-      function drawPath(pathData, options = {}) {
-        if (!Array.isArray(pathData) || pathData.length === 0) return;
+      const walkingRouteSegments = [];
+      let currentWalkGroup = null;
 
-        const kakaoPath = pathData
-          .filter(point => Array.isArray(point) && point.length >= 2)
-          .map(point => new kakao.maps.LatLng(Number(point[1]), Number(point[0])));
+      function endWalkGroup() {
+        currentWalkGroup = null;
+      }
+
+      function drawPath(pathData, options = {}, isWalkingSection = false) {
+        if (!Array.isArray(pathData) || pathData.length === 0) {
+          if (!isWalkingSection) endWalkGroup();
+          return;
+        }
+
+        if (!isWalkingSection) {
+          endWalkGroup();
+        }
+
+        const kakaoPath = [];
+        pathData.forEach(point => {
+          if (Array.isArray(point) && point.length >= 2) {
+            const lng = Number(point[0]);
+            const lat = Number(point[1]);
+            if (!isNaN(lat) && !isNaN(lng)) {
+              const latLng = new kakao.maps.LatLng(lat, lng);
+              kakaoPath.push(latLng);
+              bounds.extend(latLng);
+              hasPoints = true;
+
+              if (isWalkingSection) {
+                if (!currentWalkGroup) {
+                  currentWalkGroup = [];
+                  walkingRouteSegments.push(currentWalkGroup);
+                }
+                currentWalkGroup.push({ lat, lng });
+              }
+            }
+          }
+        });
 
         if (kakaoPath.length < 2) return;
-
-        kakaoPath.forEach(point => bounds.extend(point));
-        hasPoints = true;
 
         const polyline = new kakao.maps.Polyline({
           path: kakaoPath,
@@ -1980,24 +2321,16 @@
         currentPolylines.push(polyline);
       }
 
-      const steps = Array.isArray(route.steps) ? route.steps : [];
-
+      // 1. First Mile 도보 경로
       const firstMilePath = route?.walking_access?.first_mile?.path || [];
       if (firstMilePath.length > 0) {
-        drawPath(firstMilePath, { strokeWeight: 6, strokeColor: '#0284c7', strokeOpacity: 0.95, strokeStyle: 'dash' });
-      } else if (startPoint && steps.length > 0 && steps[0].path && steps[0].path.length > 0) {
-        const firstBusLatLng = new kakao.maps.LatLng(Number(steps[0].path[0][1]), Number(steps[0].path[0][0]));
-        const walkPolyline = new kakao.maps.Polyline({
-          path: [startPoint, firstBusLatLng],
-          strokeWeight: 6, strokeColor: '#0284c7', strokeOpacity: 0.95, strokeStyle: 'dash'
-        });
-        walkPolyline.setMap(map);
-        currentPolylines.push(walkPolyline);
-        bounds.extend(startPoint);
-        bounds.extend(firstBusLatLng);
-        hasPoints = true;
+        endWalkGroup();
+        drawPath(firstMilePath, { strokeWeight: 6, strokeColor: '#0284c7', strokeOpacity: 0.95, strokeStyle: 'dash' }, true);
+        endWalkGroup();
       }
 
+      // 2. 대중교통 및 보행 구간
+      const steps = Array.isArray(route.steps) ? route.steps : [];
       const busTransferColors = ['#16a34a', '#f97316', '#dc2626', '#0891b2', '#ca8a04', '#db2777'];
       let busSegmentIndex = 0;
 
@@ -2022,7 +2355,7 @@
         } else if (stepType === 'SUBWAY') {
           color = '#7c3aed';
         } else {
-          color = getStepColor(step);
+          color = (typeof getStepColor === 'function') ? getStepColor(step) : '#64748b';
         }
 
         drawPath(pathData, {
@@ -2030,42 +2363,67 @@
           strokeColor: color,
           strokeOpacity: 0.9,
           strokeStyle: style
-        });
+        }, isWalk);
       });
 
+      // 3. Last Mile 도보 경로
       const lastMilePath = route?.walking_access?.last_mile?.path || [];
       if (lastMilePath.length > 0) {
-        drawPath(lastMilePath, { strokeWeight: 6, strokeColor: '#0284c7', strokeOpacity: 0.95, strokeStyle: 'dash' });
-      } else if (endPoint && steps.length > 0) {
-        const lastStep = steps[steps.length - 1];
-        if (lastStep.path && lastStep.path.length > 0) {
-          const lastIdx = lastStep.path.length - 1;
-          const lastBusLatLng = new kakao.maps.LatLng(Number(lastStep.path[lastIdx][1]), Number(lastStep.path[lastIdx][0]));
-          const walkPolyline = new kakao.maps.Polyline({
-            path: [lastBusLatLng, endPoint],
-            strokeWeight: 6, strokeColor: '#0284c7', strokeOpacity: 0.95, strokeStyle: 'dash'
-          });
-          walkPolyline.setMap(map);
-          currentPolylines.push(walkPolyline);
-          bounds.extend(lastBusLatLng);
-          bounds.extend(endPoint);
-          hasPoints = true;
-        }
+        endWalkGroup();
+        drawPath(lastMilePath, { strokeWeight: 6, strokeColor: '#0284c7', strokeOpacity: 0.95, strokeStyle: 'dash' }, true);
+        endWalkGroup();
       }
 
+      // 4. 출발/도착 마커 영역 포함
       if (startPoint) bounds.extend(startPoint);
       if (endPoint) bounds.extend(endPoint);
 
       if (hasPoints || startPoint || endPoint) {
         map.setBounds(bounds);
       }
+
+      // 추천 경로(파란 점선)에 해당하는 보행 데이터에서만 경사 수집
+      const rawSlopes = [
+        ...(route?.detected_slopes || []),
+        ...(route?.walking_access?.first_mile?.detected_slopes || []),
+        ...(route?.walking_access?.last_mile?.detected_slopes || [])
+      ];
+
+      const slopePoints = rawSlopes.map(s => {
+        const lat = Number(s.latitude ?? s.lat ?? s.y);
+        const lng = Number(s.longitude ?? s.lng ?? s.x);
+        const slope = Number(s.slope_degree ?? s.slope ?? s.incline ?? s.max_slope_percent ?? 8.0);
+        return { lat, lng, slope };
+      }).filter(p => !isNaN(p.lat) && !isNaN(p.lng) && !isNaN(p.slope) && p.lat > 0 && p.lng > 0);
+
+      // 12m 이내로 파란 도보선에 투영된 경사만 정밀 렌더링 (경로 밖 강제 마커 제거)
+      if (slopePoints.length > 0 && walkingRouteSegments.length > 0) {
+        let combinedSegments = [];
+        let combinedOverlays = { lines: [], markers: [] };
+
+        walkingRouteSegments.forEach((coordsGroup) => {
+          if (!Array.isArray(coordsGroup) || coordsGroup.length < 2) return;
+
+          const result = drawSlopeSegments(map, coordsGroup, slopePoints, {
+            matchThreshold: 12,     // 12m 오차범위만 허용
+            mergeGapThreshold: 15,
+            slopeThreshold: 8.0
+          }, combinedSegments.length);
+
+          combinedSegments = combinedSegments.concat(result.segments);
+          combinedOverlays.lines = combinedOverlays.lines.concat(result.overlays.lines);
+          combinedOverlays.markers = combinedOverlays.markers.concat(result.overlays.markers);
+        });
+
+        currentSlopeSegments = combinedSegments;
+        currentSlopeOverlays = combinedOverlays;
+      }
     }
 
-    function clearRouteMap() {
-      currentPolylines.forEach(polyline => polyline.setMap(null));
-      currentPolylines = [];
-    }
 
+    /* =========================================================
+       11. 유틸리티
+    ========================================================== */
     function clearRouteUI() {
       document.getElementById('route-no').innerText = `${currentPreferenceName} 경로`;
       document.getElementById('route-time').innerText = '-';
