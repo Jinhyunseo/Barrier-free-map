@@ -990,10 +990,6 @@
           <span> 엘리베이터 필수</span>
         </label>
         <label class="checkbox-label">
-          <input type="checkbox" id="cond-escalator" value="no_escalator">
-          <span> 에스컬레이터 이용 어려움</span>
-        </label>
-        <label class="checkbox-label">
           <input type="checkbox" id="cond-slope" value="avoid_steep_slope">
           <span> 급경사 피하기</span>
         </label>
@@ -1247,15 +1243,13 @@
       closeReportModal();
     }
 
-    /* 💡 급경사 주의 모달 감지 및 연동 (지도 상의 경로선 위에 실제 매칭된 경사 구간/마커가 존재할 때만 팝업 표출) */
+    /* 급경사 주의 모달 감지 및 연동 */
     function checkAndShowSlopeWarning(backendData) {
       const avoidSlopeChecked = document.getElementById('cond-slope')?.checked;
 
-      // 💡 지도 상의 파란 보행 경로선 위에 실제로 매칭되어 렌더링된 경사 구간/마커가 존재하는지 확인
       const hasRenderedSlope = (currentSlopeSegments && currentSlopeSegments.length > 0) || 
                                (currentSlopeOverlays && currentSlopeOverlays.markers && currentSlopeOverlays.markers.length > 0);
 
-      // 백엔드 경고 신호(has_steep_warning)와 실제 지도 상 렌더링 결과(hasRenderedSlope)가 모두 참일 때만 팝업 표출
       if (avoidSlopeChecked && backendData?.has_steep_warning && hasRenderedSlope) {
         const descEl = document.getElementById('slope-modal-desc');
 
@@ -1378,7 +1372,6 @@
       const mobilityConstraints = {
         avoid_stairs: document.getElementById('cond-stairs').checked,
         require_elevator: document.getElementById('cond-elevator').checked,
-        avoid_escalator: document.getElementById('cond-escalator').checked,
         avoid_steep_slope: document.getElementById('cond-slope').checked,
         require_low_floor_bus: document.getElementById('cond-low-floor-bus').checked
       };
@@ -2105,7 +2098,7 @@
 
     function buildSlopeSegments(routeCoords, slopePoints, options = {}) {
       const {
-        matchThreshold = 12, // 12m로 제한하여 다른 골목길 경사 오매칭 전면 차단
+        matchThreshold = 12,
         mergeGapThreshold = 15,
         slopeThreshold = 8.0
       } = options;
@@ -2122,7 +2115,7 @@
       const projected = slopePoints
         .filter((p) => Number(p.slope) >= slopeThreshold)
         .map((p) => ({ ...p, ...projectPointToPath(p, routeCoords, cumDist) }))
-        .filter((p) => p.perpDist <= matchThreshold) // 파란 경로선과 12m 이내 위치한 경사만 채택
+        .filter((p) => p.perpDist <= matchThreshold)
         .sort((a, b) => a.along - b.along);
 
       const rawSegments = [];
@@ -2382,7 +2375,6 @@
         map.setBounds(bounds);
       }
 
-      // 추천 경로(파란 점선)에 해당하는 보행 데이터에서만 경사 수집
       const rawSlopes = [
         ...(route?.detected_slopes || []),
         ...(route?.walking_access?.first_mile?.detected_slopes || []),
@@ -2396,7 +2388,6 @@
         return { lat, lng, slope };
       }).filter(p => !isNaN(p.lat) && !isNaN(p.lng) && !isNaN(p.slope) && p.lat > 0 && p.lng > 0);
 
-      // 12m 이내로 파란 도보선에 투영된 경사만 정밀 렌더링 (경로 밖 강제 마커 제거)
       if (slopePoints.length > 0 && walkingRouteSegments.length > 0) {
         let combinedSegments = [];
         let combinedOverlays = { lines: [], markers: [] };
@@ -2405,7 +2396,7 @@
           if (!Array.isArray(coordsGroup) || coordsGroup.length < 2) return;
 
           const result = drawSlopeSegments(map, coordsGroup, slopePoints, {
-            matchThreshold: 12,     // 12m 오차범위만 허용
+            matchThreshold: 12,
             mergeGapThreshold: 15,
             slopeThreshold: 8.0
           }, combinedSegments.length);
